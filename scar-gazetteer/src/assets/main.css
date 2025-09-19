@@ -1,17 +1,17 @@
 /*
-	import common definitions from _common.scss 
+  import common definitions from _common.scss
 */
 /*
-	work with standard foreground and background colours
+  work with standard foreground and background colours
 */
 /*
-	resets
+  resets
 */
 body {
   background: #fff; }
 
 /*
-	Basic Tags
+  Basic Tags
 */
 h1, h2, h3, h4, h5, h6 {
   margin: 0.75em 0 0.5em 0; }
@@ -44,10 +44,10 @@ p {
   margin: 1em 0; }
 
 /*
-	Form
+  Form
 */
 /*
-	Used on forms to indent an element so that is aligned with a radio button or checkbox label.
+  Used on forms to indent an element so that is aligned with a radio button or checkbox label.
 */
 .radio-indent, .checkbox-indent {
   margin-left: 1.5em; }
@@ -89,13 +89,13 @@ form div.buttons input {
   margin: 1em 2em; }
 
 /*
-	enhancing forms with jquery
+  enhancing forms with jquery
 */
 .fc-icon {
   display: inline-block; }
 
 /*
-	Table
+  Table
 */
 th.number, td.number {
   text-align: right; }
@@ -149,7 +149,7 @@ table.large_data tfoot th:last-child {
   border-radius: 0 0 0.5em 0; }
 
 /*
-	Extra Classes
+  Extra Classes
 */
 .nowrap {
   white-space: nowrap; }
@@ -219,7 +219,7 @@ code.block {
   margin-top: 1em; }
 
 /*
-	header styles
+  header styles
 */
 #site_title_div {
   padding: 12px 12px 12px 18px;
@@ -255,7 +255,7 @@ code.block {
   margin: 0; }
 
 /*
-	Header Menu Div
+  Header Menu Div
 */
 #header_menu {
   background: none transparent;
@@ -294,7 +294,7 @@ code.block {
   font-weight: bold; }
 
 /*#header_menu_content {
-	margin: -19px 0.5em 0;
+  margin: -19px 0.5em 0;
 }*/
 .header_menu_divs {
   background-color: #e6ecf8;
@@ -304,7 +304,7 @@ code.block {
   padding: 1em; }
 
 /*
-	App header
+  App header
 */
 #app_toolbar_wrap {
   background: #eaeef4;
@@ -327,7 +327,7 @@ code.block {
   float: right; }
 
 /*
-	Mega menu
+  Mega menu
 */
 .mega_menu h3 {
   color: black;
@@ -347,8 +347,8 @@ code.block {
   min-width: 8em;
   text-align: left; }
 
-/* 
-	Support form in site header 
+/*
+  Support form in site header
 */
 #my_support_tickets {
   overflow: hidden; }
@@ -407,7 +407,7 @@ code.block {
     display: none; }
 
 /*
-	page styles
+  page styles
 */
 #page_body {
   background: #eef2fa;
@@ -419,7 +419,7 @@ code.block {
   margin-right: 18px; }
 
 /*
-	Header Login Form
+  Header Login Form
 */
 #user_login_tab {
   text-align: center; }
@@ -427,8 +427,8 @@ code.block {
 #header_login_form {
   margin: 12px; }
 
-/* 
-	Contact Form
+/*
+  Contact Form
 */
 #contact_form {
   text-align: center; }
@@ -441,7 +441,7 @@ code.block {
     height: 8em; }
 
 /*
-	results feed styles
+  results feed styles
 */
 p.compact {
   margin: 0;
@@ -457,7 +457,7 @@ div.results_feed ul.application_list {
   margin-right: 12px; }
 
 /*
-	container elements
+  container elements
 */
 div.generic_container {
   background: #f6f8fc;
@@ -509,11 +509,6 @@ div.metadata, div.place {
 
 div.map_item {
   margin-bottom: 24px; }
-
-/* openlayers/leaflet map divs */
-#map {
-  border: 1px solid #aaa;
-  margin-top: 16px; }
 
 div.news_article {
   display: block;
@@ -585,7 +580,7 @@ p.detail {
       color: #4773cb; }
 
 /*
-	Page Elements
+  Page Elements
 */
 .mini_container {
   box-shadow: #315bae 0 2px 4px;
@@ -620,18 +615,18 @@ p.detail {
     border: 1px solid #000; }
 
 /*
-	Font awesome extensions
+  Font awesome extensions
 */
 .icon-small::before {
   vertical-align: baseline;
   font-size: 0.75em; }
 
 /*
-	Twitter Bootstrap library overrides
+  Twitter Bootstrap library overrides
 */
 .alert {
   /*a {
-  	color: black;
+    color: black;
   }*/ }
   .alert h1, .alert h2, .alert h3, .alert h4, .alert h5, .alert h6 {
     margin: 0.25em 0 0.5em 0; }
@@ -690,7 +685,7 @@ ul.breadcrumb li a, ul.breadcrumb li span {
   margin-top: 0; }
 
 /*
-	ExtJS fixes
+  ExtJS fixes
 */
 ul.x-tab-strip {
   margin: 0;
@@ -713,7 +708,7 @@ ul.x-tab-strip li span.x-tab-strip-text {
   font-size: 13px; }
 
 /*
-	jQuery UI fixes
+  jQuery UI fixes
 */
 .ui-tabs-nav a:active, .ui-tabs-nav a:focus {
   outline-style: none; }
@@ -731,22 +726,23 @@ ul.x-tab-strip li span.x-tab-strip-text {
   color: #08C; }
 
 /*
-	css3 overrides for bootstrap messing with legacy cf_layouts	
+  css3 overrides for bootstrap messing with legacy cf_layouts
 */
 div[id^="cf_layoutareacf_layoutarea"] {
   padding: 1em; }
 
 /*
-	Standard Tags
+  Standard Tags
 */
 input[type=button],
 input[type=submit],
 input[type=reset],
-input[type=file] {
+input[type=file],
+button {
   margin-right: 1em; }
 
 /*
-	Common Classes
+  Common Classes
 */
 div.clearer {
   clear: left;
@@ -775,7 +771,7 @@ div.ajax_msg {
   text-decoration: none; }
 
 /*
-	Site Footer
+  Site Footer
 */
 #footer_trans {
   background: #eaeef4 url("/static/images/skywaves_white.png") repeat-x center center;
@@ -802,7 +798,7 @@ a.ui-button {
   border: 1px solid #4773cb; }
 
 /*
- 	Print version
+  Print version
 */
 .visible-print {
   display: none; }
@@ -880,7 +876,7 @@ a.ui-button {
   background-color: #49afcd; }
 
 #mapcatadmin .nav-pills>li.active>a {
-  background-color: #5bb75b;  
+  background-color: #5bb75b;
 }
 
 #subtab .nav-tabs>li.active>a {
@@ -889,9 +885,9 @@ a.ui-button {
 }
 
 .optionGroup {
-    font-weight: bold;  
+    font-weight: bold;
 }
-    
+
 .optionChild {
     padding-left: 15px;
 }

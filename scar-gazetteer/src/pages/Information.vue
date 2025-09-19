@@ -4,6 +4,7 @@
             <b-col cols="3">
                 <b-nav pills vertical>
                     <b-nav-item exact active-class="active" to="/information">General information</b-nav-item>
+                    <b-nav-item active-class="active" to="/information/terminology">Terminology</b-nav-item>
                     <b-nav-item active-class="active" to="/information/statistics">Statistics</b-nav-item>
                     <b-nav-item active-class="active" to="/information/glossary">Glossary</b-nav-item>
                     <b-nav-item active-class="active" to="/information/naming-authorities">Naming authorities</b-nav-item>

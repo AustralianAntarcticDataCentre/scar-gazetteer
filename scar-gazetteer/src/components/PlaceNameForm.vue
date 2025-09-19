@@ -1,208 +1,127 @@
 <template>
     <b-form @submit="submit">
-            <b-form-group
-            label="Mapping Place Name:"
-            label-for="place_name_mapping"
-            >
-                <b-form-input
-                id="place_name_mapping"
-                v-model="$v.form_data.place_name_mapping.$model"
-                type="text"
-                :state="validateState('place_name_mapping')"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Gazetteer Place Name:"
-            label-for="place_name_gazetteer"
-            >
-                <b-form-input
-                id="place_name_mapping"
-                v-model="$v.form_data.place_name_gazetteer.$model"
-                :state="validateState('place_name_gazetteer')"
-                type="text"
-                />
-            </b-form-group>
+        <b-form-group label-for="place_id" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Place ID:
+            </template>
+            <b-form-input id="place_id" v-model="$v.form_data.place_id.$model" required type="text"
+                :state="validateState('place_id')" />
+        </b-form-group>
+        <b-form-group label-for="place_name_mapping" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Mapping Place Name:
+            </template>
+            <small>Must be at least 5 characters.</small>
+            <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_mapping.$model" type="text"
+                required :state="validateState('place_name_mapping')" />
+        </b-form-group>
+        <b-form-group label-for="place_name_gazetteer" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Gazetteer Place Name:
+            </template>
+            <small>Must be at least 5 characters.</small>
+            <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_gazetteer.$model"
+                required :state="validateState('place_name_gazetteer')" type="text" />
+        </b-form-group>
 
-            <b-form-group
-            label="Latitude:"
-            label-for="latitude"
-            >
-                <b-form-input
-                id="latitude"
-                v-model="$v.form_data.latitude.$model"
-                type="text"
-                :state="validateState('latitude')"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Longitude:"
-            label-for="longitude"
-            >
-                <b-form-input
-                id="longitude"
-                v-model="$v.form_data.longitude.$model"
-                type="text"
-                :state="validateState('longitude')"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Coordinate Accuracy:"
-            label-for="coordinate_accuracy"
-            >
-                <b-form-input
-                id="coordinate_accuracy"
-                v-model="$v.form_data.coordinate_accuracy.$model"
-                type="text"
-                :state="validateState('coordinate_accuracy')"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Altitude:"
-            label-for="altitude"
-            >
-                <b-form-input
-                id="altitude"
-                v-model="$v.form_data.altitude.$model"
-                type="text"
-                :state="validateState('altitude')"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Altitude Accuracy:"
-            label-for="altitude_accuracy"
-            >
-                <b-form-input
-                id="altitude"
-                v-model="$v.form_data.altitude_accuracy.$model"
-                type="text"
-                :state="validateState('altitude_accuracy')"
-                />
-            </b-form-group>
-            <b-form-group
-                label="Narrative"
-                label-for="narrative"
-                >
-                <b-form-textarea
-                id="narrative"
-                v-model="$v.form_data.narrative.$model"
-                rows="3"
-                max-rows="6"
-                />
-            </b-form-group>
-            <b-form-group
-                label="Named For"
-                label-for="named-for"
-                >
-                <b-form-textarea
-                id="named-for"
-                v-model="$v.form_data.named_for.$model"
-                rows="3"
-                max-rows="6"
-                />
-            </b-form-group>
-            <b-form-group
-                    label="Source Gazetteer:"
-                    label-for="gazetteer">
-                <b-form-select
-                    id="gazetteer"
-                    v-model="$v.form_data.gazetteer.$model"
-                    :options="lists.gazetteers"
-                    :state="validateState('gazetteer')"
-                />
-            </b-form-group>
-            <b-form-group
-                    label="Feature Type:"
-                    label-for="feature_type">
-                <b-form-select
-                    id="feature_type"
-                    v-model="$v.form_data.feature_type_code.$model"
-                    :options="lists.feature_types"
-                    :state="validateState('feature_type_code')"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Feature Class:"
-            label-for="feature_class"
-            >
-                <b-form-input
-                id="feature_class"
-                v-model="$v.form_data.scar_feature_class.$model"
-                type="text"
-                />
-            </b-form-group>
-            <b-form-group
-                    label="Is Relic:"
-                    label-for="is_relic">
-                <b-form-select
-                    id="is_relic"
-                    v-model="$v.form_data.relic_flag.$model"
-                    :options="lists.relic"
-                />
-            </b-form-group>
-            <b-form-group
-                    label="Date Named:"
-                    label-for="date_named">
-                <b-form-input
-                id="date_named"
-                v-model="$v.form_data.date_named.$model"
-                type="date"
-                />
-            </b-form-group>
-            <b-form-group
-                label="Comments:"
-                label-for="comments"
-                >
-                <b-form-textarea
-                id="comments"
-                v-model="$v.form_data.comments.$model"
-                rows="3"
-                max-rows="6"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Source Name:"
-            label-for="source_name"
-            >
-                <b-form-input
-                id="source_name"
-                v-model="$v.form_data.source_name.$model"
-                type="text"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Source Publisher:"
-            label-for="source_publisher"
-            >
-                <b-form-input
-                id="source_publisher"
-                v-model="$v.form_data.source_publisher.$model"
-                type="text"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Source Identifier:"
-            label-for="source_identifier"
-            >
-                <b-form-input
-                id="source_identifier"
-                v-model="$v.form_data.source_identifier.$model"
-                type="text"
-                />
-            </b-form-group>
-            <b-form-group
-            label="Source Scale:"
-            label-for="source_scale"
-            >
-                <b-form-input
-                id="source_scale"
-                v-model="$v.form_data.source_scale.$model"
-                type="text"
-                />
-            </b-form-group>
-            <br />
-            <b-button  type="submit" variant="primary">Submit</b-button> 
-            <b-button variant="secondary" @click="reset">Reset</b-button>
-        </b-form>
+        <b-form-group label-for="latitude" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Latitude:
+            </template>
+            <small>Must be between -90 and -60 degrees.</small>
+            <b-form-input id="latitude" v-model="$v.form_data.latitude.$model" required type="text"
+                :state="validateState('latitude')" />
+        </b-form-group>
+        <b-form-group label-for="longitude" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Longitude:
+            </template>
+            <small>Must be between -180 and 180 degrees.</small>
+            <b-form-input id="longitude" v-model="$v.form_data.longitude.$model" required type="text"
+                :state="validateState('longitude')" />
+        </b-form-group>
+        <b-form-group label="Coordinate Accuracy:" label-for="coordinate_accuracy" class="my-1">
+            <b-form-input id="coordinate_accuracy" v-model="$v.form_data.coordinate_accuracy.$model" type="text"
+                :state="validateState('coordinate_accuracy')" />
+        </b-form-group>
+        <b-form-group label="Altitude:" label-for="altitude" class="my-1">
+            <b-form-input id="altitude" v-model="$v.form_data.altitude.$model" type="text"
+                :state="validateState('altitude')" />
+        </b-form-group>
+        <b-form-group label="Altitude Accuracy:" label-for="altitude_accuracy" class="my-1">
+            <b-form-input id="altitude" v-model="$v.form_data.altitude_accuracy.$model" type="text"
+                :state="validateState('altitude_accuracy')" />
+        </b-form-group>
+        <b-form-group label="Narrative:" label-for="narrative" class="my-1">
+            <small>Use [L]&lt;placename&gt;[/L] to link to other place names.</small>
+            <b-form-textarea id="narrative" v-model="$v.form_data.narrative.$model" rows="3" max-rows="6" />
+        </b-form-group>
+        <b-form-group label="Narrative Translation:" label-for="narrative_translation" class="my-1">
+            <small>Use [L]&lt;placename&gt;[/L] to link to other place names.</small>
+            <b-form-textarea id="narrative_translation" v-model="$v.form_data.narrative_translation.$model" rows="3"
+                max-rows="6" />
+        </b-form-group>
+
+        <b-form-group label="Is Machine Translation:" label-for="machine_translation" class="my-1">
+            <b-form-select id="machine_translation" class="form-select my-1" v-model="$v.form_data.machine_translation.$model"
+                :options="lists.machine_translation" />
+        </b-form-group>
+
+        <b-form-group label="Named For:" label-for="named-for" class="my-1">
+            <b-form-textarea id="named-for" v-model="$v.form_data.named_for.$model" rows="3" max-rows="6" />
+        </b-form-group>
+
+        <b-form-group label="UN SDG:" label-for="un_sdg" class="my-1">
+            <small>A place name can be linked to a related UN Sutainable Development Goal</small>
+            <b-form-select id="un_sdg" class="form-select my-1" v-model.number="$v.form_data.un_sdg.$model" :options="lists.un_sdg" />
+        </b-form-group>
+
+        <b-form-group label-for="gazetteer" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Source Gazetteer:
+            </template>
+            <b-form-select id="gazetteer" class="form-select" required v-model="$v.form_data.gazetteer.$model" :options="lists.gazetteers"
+                :state="validateState('gazetteer')" />
+        </b-form-group>
+        <b-form-group label-for="feature_type" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Feature Type:
+            </template>
+            <b-form-select id="feature_type" class="form-select" required v-model="$v.form_data.feature_type_code.$model"
+                :options="lists.feature_types" :state="validateState('feature_type_code')" />
+        </b-form-group>
+        <b-form-group label="Feature Class:" label-for="feature_class" class="my-1">
+            <b-form-input id="feature_class" v-model="$v.form_data.scar_feature_class.$model" type="text" />
+        </b-form-group>
+        <b-form-group label="* Is Relic:" label-for="is_relic" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Is Relic:
+            </template>
+            <b-form-select id="is_relic" class="form-select" v-model="$v.form_data.relic_flag.$model" :options="lists.relic" />
+        </b-form-group>
+        <b-form-group label="Date Named:" label-for="date_named" class="my-1">
+            <b-form-input id="date_named" v-model="$v.form_data.date_named.$model" type="date" />
+        </b-form-group>
+        <b-form-group label="Comments:" label-for="comments" class="my-1">
+            <b-form-textarea id="comments" v-model="$v.form_data.comments.$model" rows="3" max-rows="6" />
+        </b-form-group>
+        <b-form-group label="Source Name:" label-for="source_name" class="my-1">
+            <b-form-input id="source_name" v-model="$v.form_data.source_name.$model" type="text" />
+        </b-form-group>
+        <b-form-group label="Source Publisher:" label-for="source_publisher" class="my-1">
+            <b-form-input id="source_publisher" v-model="$v.form_data.source_publisher.$model" type="text" />
+        </b-form-group>
+        <b-form-group label="Source Identifier:" label-for="source_identifier" class="my-1">
+            <b-form-input id="source_identifier" v-model="$v.form_data.source_identifier.$model" type="text" />
+        </b-form-group>
+        <b-form-group label="Source Scale:" label-for="source_scale" class="my-1">
+            <b-form-input id="source_scale" v-model="$v.form_data.source_scale.$model" type="text" />
+        </b-form-group>
+        <br />
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button variant="secondary" @click="reset">Reset</b-button>
+        <b-button v-if="$route.path !== '/new-name'" variant="danger" @click="deletePlacename">Delete</b-button>
+    </b-form>
 </template>
 
 <script>
@@ -217,26 +136,55 @@ export default {
         form: Object
     },
     mixins: [validationMixin],
-    data: function() {
+    data: function () {
         return {
             form_data: {
+                place_id: null,
                 place_name_mapping: null,
                 place_name_gazetteer: null,
                 latitude: null,
                 longitude: null,
+                un_sdg: 0,
+                machine_translation: false,
             },
             lists: {
-                gazetteers: [{value: null, text: 'Select Gazetteer'}],
-                feature_types: [{value: null, text: 'Select Feature Type'}],
-                relic: [{value: false, text: 'No'}, {value: true, text:'Yes'}],
+                gazetteers: [{ value: null, text: 'Select Gazetteer' }],
+                feature_types: [{ value: null, text: 'Select Feature Type' }],
+                un_sdg: [
+                    { value: 0, text: "None"},
+                    { value: 1, text: "No Poverty"},
+                    { value: 2, text: "Zero Hunger"},
+                    { value: 3, text: "Good Health and Well-being"},
+                    { value: 4, text: "Quality Education"},
+                    { value: 5, text: "Gender Equality"},
+                    { value: 6, text: "Clean Water and Sanitation"},
+                    { value: 7, text: "Affordable and Clean Energy"},
+                    { value: 8, text: "Decent Work and Economic Growth"},
+                    { value: 9, text: "Industry, Innovation, and Infrastructure"},
+                    { value: 10, text: "Reduced Inequality"},
+                    { value: 11, text: "Sustainable Cities and Communities"},
+                    { value: 12, text: "Responsible Consumption and Production"},
+                    { value: 13, text: "Climate Action"},
+                    { value: 14, text: "Life Below Water"},
+                    { value: 15, text: "Life on Land"},
+                    { value: 16, text: "Peace, Justice, and Strong Institutions"},
+                    { value: 17, text: "Partnerships for the Goals"}
+                ],
+                relic: [{ value: false, text: 'No' }, { value: true, text: 'Yes' }],
+                machine_translation: [{ value: false, text: 'No' }, { value: true, text: 'Yes' }],
                 location_method: [
-                    {value: null, text: 'None'}
+                    { value: null, text: 'None' }
                 ]
             }
         }
     },
     validations: {
         form_data: {
+            place_id: {
+                required,
+                decimal,
+                between: between(0, 9999999999)
+            },
             place_name_mapping: {
                 required,
                 minLength: minLength(5)
@@ -248,12 +196,12 @@ export default {
             latitude: {
                 required,
                 decimal,
-                between: between(-90,-60)
+                between: between(-90, -60)
             },
             longitude: {
                 required,
                 decimal,
-                between: between(-180,180)
+                between: between(-180, 180)
             },
             coordinate_accuracy: {
                 decimal
@@ -267,7 +215,16 @@ export default {
             narrative: {
 
             },
+            narrative_translation: {
+
+            },
+            machine_translation: {
+
+            },
             named_for: {
+
+            },
+            un_sdg: {
 
             },
             gazetteer: {
@@ -303,18 +260,18 @@ export default {
         }
     },
     watch: {
-        form: function() {
+        form: function () {
             this.form_data = this.form
         }
     },
-    mounted: async function() {
+    mounted: async function () {
         this.form_data = this.form
 
         let response = await axios.get('/api/gazetteers?order=country.asc')
         let gaz = response.data
 
         let formatted = gaz.map(g => {
-            return {value: g.gazetteer_code, text: g.country}
+            return { value: g.gazetteer_code, text: g.country }
         })
 
         this.lists.gazetteers = this.lists.gazetteers.concat(formatted)
@@ -323,7 +280,7 @@ export default {
         let feat = response2.data
 
         let formatted2 = feat.map(f => {
-            return {value: f.feature_type_code, text: f.feature_type_name}
+            return { value: f.feature_type_code, text: f.feature_type_name }
         })
 
         this.lists.feature_types = this.lists.feature_types.concat(formatted2)
@@ -332,9 +289,9 @@ export default {
         validateState(name) {
             const { $dirty, $error } = this.$v.form_data[name];
 
-            return $dirty? !$error : null
+            return $dirty ? !$error : null
         },
-        submit (event) {
+        submit(event) {
             event.preventDefault()
 
             this.$v.form_data.$touch()
@@ -344,8 +301,14 @@ export default {
 
             this.$emit('submit', this.form_data)
         },
-        reset () {
+        reset() {
             this.$emit('reset')
+        },
+        deletePlacename() {
+            if (!window.confirm("Confirm record deletion? This cannot be undone.")) {
+                return
+            }
+            this.$emit('deletePlacename', this.form_data)
         }
     }
 }

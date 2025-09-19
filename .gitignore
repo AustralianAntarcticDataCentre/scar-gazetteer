@@ -1,2 +1,5 @@
-scar-gazetteer/node_modules
-api/.env
+node_modules
+dist
+
+.env
+!.env.template

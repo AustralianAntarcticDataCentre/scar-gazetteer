@@ -9,6 +9,6 @@ export default new VueX.Store({
         user
     },
     state: {
-        
+
     }
 })
