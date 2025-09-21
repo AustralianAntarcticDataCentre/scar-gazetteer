@@ -118,11 +118,9 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { pg } from 'vue-postgrest'
 import axios from 'axios'
 
-import Attribution from 'ol/control/Attribution.js';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
@@ -131,7 +129,6 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
 import { Style, Fill, Stroke, Icon } from 'ol/style';
-import { defaults } from 'ol/control';
 import 'ol/ol.css';
 
 import proj4 from "proj4";
@@ -448,20 +445,4 @@ export default {
   height: 500px;
   background-color: #8bcfef;
 }
-/* 
-div.ol-zoom {
-    margin: 0.25em;
-}
-
-div.ol-zoom>button {
-    border: 1px solid black;
-}
-
-button.ol-zoom-in {
-    margin-right: 0.25em;
-}
-
-div.ol-rotate {
-    display: none;
-} */
 </style>
