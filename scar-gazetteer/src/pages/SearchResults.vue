@@ -1,13 +1,6 @@
 <template>
     <b-container class="search">
         <h1>Search Results</h1>
-        <b-alert show>
-            <p><b-icon-info-circle-fill /> <strong>SCAR Gazetteer Information:</strong>
-                Each place can have one or more entries in the SCAR Composite Gazetteer, dependant on its origin. By
-                viewing an individual entry, you may see multiple references to the same place.
-                SCAR uses a more general feature type coding, so each place will, in general, have multiple feature
-                types.</p>
-        </b-alert>
         <p>Page: {{ page }} of {{ total_pages }} - Total Results: {{ count }}</p>
         <div class="control" v-if="total_pages > 1">
             <div class="page-control">

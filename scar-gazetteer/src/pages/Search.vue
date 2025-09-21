@@ -3,7 +3,7 @@
     <h1>Search for place names</h1>
     <b-form @submit="search">
       <b-form-group label="Place Name:" label-for="search_text">
-        <b-form-input id="search_text" v-model="form.search_text" type="text" />
+        <b-form-input id="search_text" class="my-0" v-model="form.search_text" type="text" />
       </b-form-group>
       <b-form-group label="Feature Type:" label-for="feature_type">
         <b-form-select id="feature_type" class="form-select" v-model="form.feature_type" :options="feature_types" />
