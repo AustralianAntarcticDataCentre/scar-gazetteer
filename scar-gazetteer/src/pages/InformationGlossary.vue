@@ -29,7 +29,7 @@ export default {
     name: 'InformationGlossary',
     data: function () {
         return {
-            perPage: 100,
+            perPage: 50,
             currentPage: 1,
             filter: '',
             fields: [
@@ -52,11 +52,10 @@ export default {
             if (!this.filter) {
                 return this.glossary
             }
-            const filterLower = this.filter.toLowerCase()
             const properties = ['english_term', 'national_term', 'language', 'scar_feature_type']
 
             return this.glossary.filter(entry => {
-                return properties.some(prop => entry[prop] && entry[prop].toLowerCase().includes(filterLower))
+                return properties.some(prop => entry[prop] && entry[prop].toLowerCase().includes(this.filter.toLowerCase()))
             })
         },
         filteredRows() {
