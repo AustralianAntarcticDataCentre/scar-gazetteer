@@ -15,7 +15,7 @@ ogr2ogr -f GeoJSON antarctica.json add_coastline_medium_res_polygon_v7_10.gpkg a
 
 There is a problem in that the JWT return from <https://data.aad.gov.au> contains an array of `roles` while postgrest (v9) cannot check for multiple roles for authentication purposes.
 
-To work around this, the AAD token was, during testing, overridden with another one which also contains a singular `role` item. This test token was generated using the script below, based on the one provided in the postgrest documentation at <https://docs.postgrest.org/en/v13/tutorials/tut1.html#step-3-sign-a-token>.
+To work around this, the AAD token (stored in the cookie at `aad_token`) was, during testing, overridden with another one which also contains a singular `role` item. This test token was generated using the script below, based on the one provided in the postgrest documentation at <https://docs.postgrest.org/en/v13/tutorials/tut1.html#step-3-sign-a-token>.
 
 ```bash
 #!/bin/bash
