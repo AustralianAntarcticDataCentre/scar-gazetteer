@@ -9,6 +9,11 @@
             <b-icon-info-circle v-b-tooltip.hover :title="place.feature_types.definition" />
         </p>
 
+        <audio v-if="place.pronunciation_audio_url" controls>
+            <source :src="place.pronunciation_audio_url" type="audio/wav">
+            Your browser does not support audio.
+        </audio>
+
         <h3>Origin</h3>
         <p v-if="place.gazetteers">This name originates from <strong>{{ place.gazetteers.country }}</strong>. It is part
             of the {{ gazetteerName }} and the SCAR Composite Gazetteer of Antarctica.</p>
