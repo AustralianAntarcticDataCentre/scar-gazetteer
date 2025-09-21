@@ -30,13 +30,13 @@ services:
     depends_on:
       - db
 
-  web:
-    image: scar/scar-gazetteer:latest
-    build: ./scar-gazetteer
-    ports:
-      - "8080:80"
-    depends_on:
-      - api
+  # web:
+  #   image: scar/scar-gazetteer:latest
+  #   build: ./scar-gazetteer
+  #   ports:
+  #     - "8080:80"
+  #   depends_on:
+  #     - api
 
 volumes:
   dbdata:

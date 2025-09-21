@@ -20,6 +20,10 @@ module.exports = {
         config.plugin('CompressionPlugin').use(CompressionPlugin);
     },
     devServer: {
+        // Particularly useful for the files in /public/data
+        headers: {
+            'Cache-Control': 'public, max-age=31536000, immutable'
+        },
         proxy: {
             '^/api': {
                 target: 'http://localhost:3000',

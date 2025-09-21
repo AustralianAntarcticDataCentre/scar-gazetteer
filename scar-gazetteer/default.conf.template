@@ -12,6 +12,9 @@ server {
     gzip_static on;
   }
 
+  # /api redirect
+  # caching
+
   location /user/api {
     proxy_pass https://data.aad.gov.au/user/api;
   }
