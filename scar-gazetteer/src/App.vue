@@ -74,7 +74,7 @@
         <b-alert v-if="loginError && form.submitted && loginError.response.status === 429" variant="warning" show>
           Error: Too many requests
         </b-alert>
-        <b-alert v-if="loginError && form.submitted && loginError.response.status !== 401 && loginError.status !== 429" variant="warning" show>
+        <b-alert v-if="loginError && form.submitted && loginError.response.status !== 401 && loginError.response.status !== 429" variant="warning" show>
           Error: Could not log in
         </b-alert>
       </b-form>
