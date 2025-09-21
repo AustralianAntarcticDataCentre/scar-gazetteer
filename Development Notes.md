@@ -9,6 +9,13 @@ The commands below show how this was achieved on Ubuntu.
 sudo apt install gdal-bin
 ogr2ogr -f GeoJSON antarctica.json add_coastline_medium_res_polygon_v7_10.gpkg add_coastline_medium_res_polygon_v7_10
 ```
+
+A similar command was used for the world land data from <https://www.naturalearthdata.com/downloads/50m-physical-vectors/50m-land/>.
+
+```bash
+ogr2ogr -f GeoJSON -t_srs EPSG:4326 world.json ne_50m_land.shp
+```
+
 ---
 
 ## JWT/postgrest Issue
