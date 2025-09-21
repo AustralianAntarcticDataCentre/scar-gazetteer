@@ -122,12 +122,6 @@ button.page-link {
   margin: 0;
 }
 
-#map-container {
-  border: 1px solid var(--bs-dark);
-  height: 500px;
-  background-color: #8bcfef;
-}
-
 /* prevents page content from shifting depending on whether there is a scrollbar */
 html {
   scrollbar-gutter: stable;
