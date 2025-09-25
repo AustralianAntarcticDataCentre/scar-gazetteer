@@ -2,7 +2,7 @@ import axios from 'axios'
 import Cookie from 'js-cookie'
 import decode from 'jwt-decode'
 
-const JWT_TOKEN = 'scar_token'
+const AAD_JWT_TOKEN = 'aad_token'
 
 const ADMIN_ROLES = [
     'AADC',
@@ -11,20 +11,20 @@ const ADMIN_ROLES = [
 ]
 
 function getToken() {
-    return Cookie.get(JWT_TOKEN)
+    return Cookie.get(AAD_JWT_TOKEN)
 }
 
-function isTokenExpired (token) {
+function isTokenExpired(token) {
     const tokenDecoded = decode(token)
     if (!tokenDecoded.exp) {
-      return null
+        return null
     }
-  
+
     const date = new Date(0)
     date.setUTCSeconds(tokenDecoded.exp)
-  
+
     return date < new Date()
-  }
+}
 
 export default {
     namespaced: true,
@@ -33,68 +33,68 @@ export default {
         username: '',
         email_address: '',
         isAdmin: false,
-        token: '',
-        loginError: false
+        aadToken: '',
+        loginError: null
     },
     getters: {
         getToken: (state) => {
-            return state.token
+            return state.aadToken
         }
     },
     mutations: {
         login: (state, userInfo) => {
             state.isLoggedIn = true
             state.username = userInfo.username
-            state.token = userInfo.token
+            state.aadToken = userInfo.aadToken
             state.isAdmin = userInfo.isAdmin
         },
         logout: state => {
             state.isLoggedIn = false
             state.username = ''
             state.isAdmin = false
-            state.token = ''
+            state.aadToken = ''
         },
-        setError: (state, isError) => {
-            state.loginError = isError
+        setError: (state, error) => {
+            state.loginError = error
         }
     },
     actions: {
-        async authenticate({dispatch, commit}, loginInfo) {
+        async authenticate({ dispatch, commit }, loginInfo) {
             try {
-                commit('setError', false)
+                commit('setError', null)
                 let response = await axios.post(`/user/api/authenticate`, loginInfo)
 
-                Cookie.set(JWT_TOKEN, response.data.token, {
+                Cookie.set(AAD_JWT_TOKEN, response.data.token, {
                     expires: new Date(response.data.expires),
                     secure: location.protocol === 'https:'
                 })
 
                 dispatch('checkLoggedIn')
             } catch (error) {
-                console.log(`Login Error: ${error}` )
-                commit('setError', true)
+                console.log(`Login Error: ${error}`)
+                commit('setError', error)
             }
         },
-        checkLoggedIn({commit}) {
-            const token = getToken()
+        checkLoggedIn({ commit }) {
+            const aadToken = getToken(AAD_JWT_TOKEN)
             let isAdmin = false;
 
-            if(token) {
-                if(isTokenExpired(token)) {
+            if (aadToken) {
+                if (isTokenExpired(aadToken)) {
                     commit('logout')
-                    Cookie.remove(JWT_TOKEN)
+                    Cookie.remove(AAD_JWT_TOKEN)
                     return
                 }
 
-                const tokenDecoded = decode(token)
+                const tokenDecoded = decode(aadToken)
 
-                if(ADMIN_ROLES.some(r => tokenDecoded.roles.includes(r))) {
+                if (ADMIN_ROLES.some(role => tokenDecoded.roles.includes(role))) {
                     isAdmin = true
                 }
 
                 commit('login', {
                     username: tokenDecoded.user.username,
-                    token: token,
+                    aadToken: aadToken,
                     isAdmin: isAdmin
                 })
 
@@ -102,8 +102,8 @@ export default {
                 commit('logout')
             }
         },
-        logout({dispatch, commit}){
-            Cookie.remove(JWT_TOKEN)
+        logout({ dispatch, commit }) {
+            Cookie.remove(AAD_JWT_TOKEN)
             commit('setError', false)
             dispatch('checkLoggedIn')
             window.location = '/'

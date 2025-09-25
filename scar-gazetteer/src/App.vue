@@ -7,58 +7,83 @@
           <h1>SCAR COMPOSITE GAZETTEER OF ANTARCTICA</h1>
           <h2>ENEA - P.N.R.A.</h2>
         </b-col>
-        <b-col><img src="~@/assets/pnra_logo_sm.png" alt="P N R A" /></b-col>
+        <b-col></b-col>
       </b-row>
       <b-row>
         <p>
           <a href="http://www.scar.org">Scientific Committee on Antarctic Research (SCAR)</a><br />
-          Collated by <a href="http://www.pnra.aq">Programma Nazionale di Ricerche in Antartide</a> (Italy)<br />
-          in the framework of the SCAR <a href="http://www.scar.org/data-products/scagi">Standing Committee on Antarctic Geographic Information (SCAGI)</a>
+          Collated by <a href="http://www.pnra.aq">Programma Nazionale di Ricerche in Antartide</a> (Italy)<br/>
+          in the framework of the SCAR <a href="http://www.scar.org/data-products/scagi">Standing Committee on Antarctic
+            Geographic Information (SCAGI)</a>
         </p>
       </b-row>
     </b-container>
-      <!--- The main-manu-placeholder is a fixed height and so will keep the page contents in
-      the same position once the navbar gets affixed. --->
-    <div id="main-menu-placeholder">
-      <!-- make sure the affixed navbar still contains margins -->
-      <div id="main-menu" data-spy="affix" data-offset-top="286" >
-        <!-- apply margins -->
-        <b-container>
-          <!-- create navbar -->
-          <b-navbar type="dark" variant="primary">
-              <b-navbar-brand href="/">SCAR Gazetteer</b-navbar-brand>
-              <b-navbar-nav>
-                <b-nav-item to="/search"><b-icon-search /> Search</b-nav-item>
-                <b-nav-item to="/information"><b-icon-info-circle-fill /> Information</b-nav-item>
-                <b-nav-item v-if="$store.state.user.isAdmin" to="/new-name"><b-icon-plus-circle-fill /> Add new name</b-nav-item>
-              </b-navbar-nav>
 
-              <b-navbar-nav class="nav-right">
-                <div v-if="loginError">
-                  <b-icon-exclamation-diamond variant="danger" />
-                </div>
-                <b-nav-form @submit="submit" v-if="!isLoggedIn">
-                  <b-form-input 
-                    size="sm" 
-                    placeholder="Username" 
-                    v-model="form.username" 
-                    :state="formStatus"
-                  />
-                  <b-form-input size="sm" placeholder="Password" type="password" v-model="form.password" :state="formStatus"></b-form-input>
-                  <b-button size ="sm" type="submit">Login</b-button>
-                </b-nav-form>
-                <div v-else class="form-inline">
-                    <b-nav-item>{{username}}</b-nav-item>
-                    <b-button size="sm" @click="logout">Logout</b-button>
-                </div>
-              </b-navbar-nav>
+    <div v-if="isLoggedIn" id="login-status"><small>You are logged in as {{ username }}</small></div>
+
+    <div id="main-menu-placeholder">
+      <div id="main-menu" data-spy="affix" data-offset-top="286">
+        <b-container>
+          <b-navbar type="dark" variant="primary">
+            <b-navbar-brand href="/">SCAR Gazetteer</b-navbar-brand>
+            <b-navbar-nav>
+              <b-nav-item to="/search"><b-icon-search /> Search</b-nav-item>
+              <b-nav-item to="/information"><b-icon-info-circle-fill /> Information</b-nav-item>
+              <b-nav-item v-if="$store.state.user.isAdmin" to="/new-name"><b-icon-plus-circle-fill /> Add new
+                name</b-nav-item>
+              <b-nav-item v-if="$store.state.user.isAdmin" to="/themes"><b-icon-card-text /> Edit Themes</b-nav-item>
+            </b-navbar-nav>
+
+            <b-navbar-nav class="nav-right">
+              <b-button v-if="!isLoggedIn" id="login-button" size="sm" @click="$bvModal.show('login-modal')">
+                <b-icon-person-fill /> Login
+              </b-button>
+              <div v-else class="form-inline">
+                <b-button id="logout-button" size="sm" @click="logout"><b-icon-person /> Logout</b-button>
+              </div>
+            </b-navbar-nav>
           </b-navbar>
         </b-container>
       </div>
     </div>
+
+    <b-modal id="login-modal" title="Login" hide-header-close @ok="handleLogin" @cancel="resetForm" @hidden="resetForm">
+      <b-form @submit.prevent="handleLogin">
+        <b-form-group label="Username" label-for="username">
+          <b-form-input
+            id="username"
+            v-model="form.username"
+            type="text"
+            required
+            autofocus
+          />
+        </b-form-group>
+
+        <b-form-group label="Password" label-for="password">
+          <b-form-input
+            id="password"
+            v-model="form.password"
+            type="password"
+            required
+          />
+        </b-form-group>
+
+        <b-alert v-if="loginError && form.submitted && loginError.response.status === 401" variant="danger" show>
+          Invalid username or password
+        </b-alert>
+        <b-alert v-if="loginError && form.submitted && loginError.response.status === 429" variant="warning" show>
+          Error: Too many requests
+        </b-alert>
+        <b-alert v-if="loginError && form.submitted && loginError.response.status !== 401 && loginError.response.status !== 429" variant="warning" show>
+          Error: Could not log in
+        </b-alert>
+      </b-form>
+    </b-modal>
+
     <router-view />
     <div class="footer">
-      <p><i>The SCAR Composite Gazetteer is hosted by the <a href="https://data.aad.gov.au">Australian Antarctic Data Centre</a></i></p>
+      <p><i>The SCAR CGA was initially compiled by Roberto Cervellati and Chiara Ramorino from the Italian Antarctic names committee - Comitato per i nomi geografici antartici and still maintained by Italian representatives.</i></p>
+      <p><i>The SCAR CGA is hosted by the <a href="https://data.aad.gov.au">Australian Antarctic Data Centre</a>.</i></p>
     </div>
   </b-container>
 </template>
@@ -83,7 +108,7 @@ export default {
       ]
     }
   },
-  data: function() {
+  data: function () {
     return {
       form: {
         username: '',
@@ -98,11 +123,23 @@ export default {
       'checkLoggedIn',
       'logout'
     ]),
-    submit: function(event) {
+    handleLogin: function (bvModalEvt) {
+      if (bvModalEvt) {
+        bvModalEvt.preventDefault()
+      }
       this.form.submitted = true
-      event.preventDefault()
-      this.authenticate({username: this.form.username, password: this.form.password})
+      this.authenticate({ username: this.form.username, password: this.form.password })
+        .then(() => {
+          if (!this.loginError) {
+            this.$bvModal.hide('login-modal')
+            this.resetForm()
+          }
+        })
+    },
+    resetForm: function () {
+      this.form.username = ''
       this.form.password = ''
+      this.form.submitted = false
     }
   },
   computed: {
@@ -111,12 +148,8 @@ export default {
       'loginError',
       'username'
     ]),
-    formStatus: function () {
-      console.log(`${this.form.submitted}`)
-      return this.form.submitted && this.loginError ? false : null
-    }
   },
-  mounted: function() {
+  mounted: function () {
     this.checkLoggedIn()
     setDefaultToken(this.$store.getters['user/getToken'])
   }
@@ -136,19 +169,20 @@ export default {
 }
 
 .nav-right {
-    justify-content: flex-end;
-    flex-grow: 3; 
-    padding-right: 1.5em;
+  justify-content: flex-end;
+  flex-grow: 3;
+  padding-right: 1.5em;
 }
 
 .form-inline {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .form-control {
-  margin: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .footer {
@@ -156,4 +190,15 @@ export default {
   margin: 1.5em;
   font-size: 9pt;
 }
+
+#login-button, #logout-button {
+  margin-right: 0;
+}
+
+#login-status {
+  text-align: right;
+  margin-right: 1em;
+  margin-bottom: 0.2em;
+}
+
 </style>

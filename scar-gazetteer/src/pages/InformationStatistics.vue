@@ -1,10 +1,8 @@
 <template>
     <b-container>
         <h1>Statistics</h1>
-        <b-table
-        :items="stats"
-        :fields="fields"
-        />
+        <b-table striped hover label-sort-asc="" label-sort-desc="" label-sort-clear="" :items="statsWithTotal"
+            :fields="fields" />
     </b-container>
 </template>
 
@@ -16,8 +14,8 @@ export default {
     data: function () {
         return {
             fields: [
-                { key: 'country', sortable: true },
-                { key: 'name_count', sortable: true },
+                { key: 'country' },
+                { key: 'name_count' },
             ]
         }
     },
@@ -25,6 +23,20 @@ export default {
     computed: {
         stats() {
             return this.pg
+        },
+        statsWithTotal() {
+            if (!this.stats || this.stats.length === 0) {
+                return []
+            }
+            const total = this.stats.reduce((sum, item) => sum + (item.name_count || 0), 0)
+            return [
+                ...this.stats,
+                {
+                    country: 'Total',
+                    name_count: total,
+                    _rowVariant: 'primary',
+                }
+            ]
         },
         pgConfig() {
             return {
@@ -36,7 +48,7 @@ export default {
         }
     },
     watch: {
-        '$route.params.id': function() {
+        '$route.params.id': function () {
             this.pg.$get
         },
     }
