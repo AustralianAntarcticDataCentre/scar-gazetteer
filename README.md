@@ -1,8 +1,5 @@
 # SCAR Gazetteer
 
-> [!NOTE]
-> Not yet ready for deployment
-
 ## Overview
 
 Web application for the SCAR Composite Gazetteer of Antarctica
@@ -13,3 +10,7 @@ Web application for the SCAR Composite Gazetteer of Antarctica
 - Postgresql with PostGIS
 - Postgrest
 - Docker
+
+## License
+Copyright Commonwealth of Australia
+Released under MIT License
