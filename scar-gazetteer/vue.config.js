@@ -4,10 +4,6 @@ const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
     pluginOptions: {
-        sitemap: {
-            baseURL: 'https://placenames.aq',
-            routes: router.default.options.routes,
-        }
     },
     chainWebpack: config => {
         config
