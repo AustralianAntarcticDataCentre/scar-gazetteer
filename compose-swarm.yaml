@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   web:
     image: ${CONTAINER_IMAGE_FRONTEND}
@@ -55,7 +53,7 @@ services:
         # to the extra path.
         - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.prefixes=/api"
         - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.forceslash=false"
-        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_api.middlewares=stripprefix_${APP_NAME_DEPLOYMENT}_api@docker"
+        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_api.middlewares=stripprefix_${APP_NAME_DEPLOYMENT}_api"
     logging:
       driver: loki
       options:
