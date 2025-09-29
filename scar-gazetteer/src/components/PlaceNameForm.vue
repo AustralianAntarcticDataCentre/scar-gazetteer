@@ -53,11 +53,11 @@
                 :state="validateState('altitude_accuracy')" />
         </b-form-group>
         <b-form-group label="Narrative:" label-for="narrative" class="my-1">
-            <small>Use [L]&lt;placename&gt;[/L] to link to other place names.</small>
+            <small>Use <i>[L]&lt;placename&gt;[/L]</i> to link to other place names.</small>
             <b-form-textarea id="narrative" v-model="$v.form_data.narrative.$model" rows="3" max-rows="6" />
         </b-form-group>
         <b-form-group label="Narrative Translation:" label-for="narrative_translation" class="my-1">
-            <small>Use [L]&lt;placename&gt;[/L] to link to other place names.</small>
+            <small>Use <i>[L]&lt;placename&gt;[/L]</i> to link to other place names.</small>
             <b-form-textarea id="narrative_translation" v-model="$v.form_data.narrative_translation.$model" rows="3"
                 max-rows="6" />
         </b-form-group>
@@ -72,7 +72,7 @@
         </b-form-group>
 
         <b-form-group label="UN SDG:" label-for="un_sdg" class="my-1">
-            <small>A place name can be linked to a related UN Sutainable Development Goal</small>
+            <small>A place name can be linked to a related <a href="https://sdgs.un.org/goals">UN Sustainable Development Goal</a>.</small>
             <b-form-select id="un_sdg" class="form-select my-1" v-model.number="$v.form_data.un_sdg.$model" :options="lists.un_sdg" />
         </b-form-group>
 

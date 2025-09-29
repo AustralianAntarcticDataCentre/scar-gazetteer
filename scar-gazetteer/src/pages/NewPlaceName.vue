@@ -18,7 +18,7 @@ export default {
         return {
             form_data: {
                 "name_id": null,
-                "latitude": 0,
+                "latitude": -60,
                 "longitude": 0,
                 "altitude": null,
                 "feature_type_code": null,
@@ -47,6 +47,7 @@ export default {
                 "place_name_mapping": null,
                 "view_by_public_flag": true,
                 "un_sdg": 0,
+                "machine_translation": false,
             }
         }
     },
