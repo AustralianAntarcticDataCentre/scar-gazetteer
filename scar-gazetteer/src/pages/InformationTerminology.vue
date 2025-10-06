@@ -2,10 +2,10 @@
   <div class="span9">
     <h1>Terminology</h1>
     <p>
-      <b>Name ID</b>: A unique number identifying a specific geographic feature. A feature can have multiple name IDs because it can have multiple names. Sometimes these names can be the same, indicating a nation has adopted the place names from another country. Sometimes they can be different due to countries adopting different names or the translation of a name from one language to another.
+      <b>Name ID</b>: A unique number assigned to a specific place name entry. A single geographic feature may have multiple place name entries, as contributed by various nations. In some cases, these names are identical, indicating a nation has adopted a place name from another country. In other cases, these names differ, either because a country has translated the name into its own language or has assigned an entirely different one.
     </p>
     <p>
-      <b>Place ID</b>: A unique number identifying a place name approved by a naming authority of a country.
+      <b>Place ID</b>: A unique number identifying a specific geographic feature.
     </p>
     <p>
       <b>Relic</b>: A historical name or the name of a feature that no longer exists (for example, due to a changing coastline).
