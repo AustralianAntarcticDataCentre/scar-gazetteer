@@ -94,7 +94,8 @@ CREATE TABLE gazetteer.place_names (
     country_code character varying(2),
     narrative_translation character varying(4000),
     machine_translation boolean,
-    un_sdg numeric(2,0)
+    un_sdg numeric(2,0),
+    pronunciation_audio_url character varying(500),
 );
 
 
