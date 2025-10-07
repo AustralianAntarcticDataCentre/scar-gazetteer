@@ -38,17 +38,14 @@ CREATE FUNCTION gazetteer.authenticate() RETURNS void
     LANGUAGE plpgsql
     AS $$
 declare
-			roles text;
-			userinfo jsonb;
-        begin
-			select current_setting('request.jwt.claim.roles', true) into roles;
-
-            if roles LIKE '%AADC%' then
-                set local role to scar_admin;
-            else
-                set local role to public_user;
-            end if;
-        end;
+	roles text := current_setting('request.jwt.claims', true)::json->>'roles';
+begin
+	if roles LIKE '%AADC%' then
+		set local role to scar_admin;
+	else
+		set local role to public_user;
+	end if;
+end;
 $$;
 
 
