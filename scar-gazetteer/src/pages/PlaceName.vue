@@ -1,7 +1,7 @@
 <template>
     <b-container class="place">
         <h1>{{ place.place_name_mapping }} <b-button :to="`/place-name/${place.name_id}/edit`"
-                v-if="$store.state.user.isAdmin">Edit</b-button></h1>
+                v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button></h1>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
         <p v-if="place.feature_types">Feature Type: <a
                 :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{

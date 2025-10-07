@@ -2,20 +2,11 @@
   <b-container fluid="sm">
     <b-container id="header">
       <b-row>
-        <b-col><img src="~@/assets/scar_logo_sm.gif" alt="S C A R" /></b-col>
+        <b-col><a href="https://scar.org"><img src="~@/assets/scar_logo_sm.gif" alt="S C A R" /></a></b-col>
         <b-col>
           <h1>SCAR COMPOSITE GAZETTEER OF ANTARCTICA</h1>
-          <h2>ENEA - P.N.R.A.</h2>
         </b-col>
         <b-col></b-col>
-      </b-row>
-      <b-row>
-        <p>
-          <a href="http://www.scar.org">Scientific Committee on Antarctic Research (SCAR)</a><br />
-          Collated by <a href="http://www.pnra.aq">Programma Nazionale di Ricerche in Antartide</a> (Italy)<br/>
-          in the framework of the SCAR <a href="http://www.scar.org/data-products/scagi">Standing Committee on Antarctic
-            Geographic Information (SCAGI)</a>
-        </p>
       </b-row>
     </b-container>
 
@@ -82,7 +73,7 @@
 
     <router-view />
     <div class="footer">
-      <p><i>The SCAR CGA was initially compiled by Roberto Cervellati and Chiara Ramorino from the Italian Antarctic names committee - Comitato per i nomi geografici antartici and still maintained by Italian representatives.</i></p>
+      <p><i>The SCAR CGA is edited by Italian representatives from Comitato per i nomi geografici antartici.</i></p>
       <p><i>The SCAR CGA is hosted by the <a href="https://data.aad.gov.au">Australian Antarctic Data Centre</a>.</i></p>
     </div>
   </b-container>

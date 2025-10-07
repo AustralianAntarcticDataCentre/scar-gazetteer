@@ -2,10 +2,18 @@
     <b-container class="main-content">
         <h1>Welcome to the SCAR Composite Gazetteer of Antarctica</h1>
 
-        <p>The SCAR Composite Gazetteer of Antarctica (CGA) has been compiled over a period of {{ years }} years
+        <p>The SCAR Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
+
+        <p>It has been compiled over a period of {{ years }} years
             (commenced 1992) and consists of {{ name_count }} names that correspond to {{ feature_count }} features.
             The place names information has been submitted by the national names committees from {{ gazetteer_count }} countries.
         </p>
+
+        <p>The CGA is compiled purely for the convenience of the scientific community and has no legal authority or standing.</p>
+
+        <p>Since 2008, Italy and Australia jointly have managed the CGA, the former taking care of the editing, the latter maintaining the database and website. The SCAR <a href="https://scar.org/science/standing/scagi">Standing Committee on Antarctic Geographic Information (SCAGI)</a> coordinates the project.</p>
+
+        <p>For queries about the CGA email scar.cga@unisi.it</p>
 
         <ul class="unstyled">
             <li><b-icon-bar-chart style="text-align: center" /> <a href="/information/statistics"> View SCAR Gazetteer
