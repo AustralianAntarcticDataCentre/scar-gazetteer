@@ -62,39 +62,29 @@ SET default_table_access_method = heap;
 
 CREATE TABLE gazetteer.place_names (
     name_id numeric(10,0) NOT NULL,
+    place_id numeric(10,0),
+    place_name_mapping character varying(500),
+    place_name_gazetteer character varying(500),
     latitude double precision,
     longitude double precision,
-    altitude double precision,
-    feature_type_code numeric(10,0),
-    narrative character varying(4000),
-    named_for character varying(4000),
-    meeting_date character varying(200),
-    meeting_paper character varying(200),
-    date_revised date,
-    gazetteer character varying(20),
-    place_id numeric(10,0),
     coordinate_accuracy double precision,
+    altitude double precision,
     altitude_accuracy double precision,
-    accepted_by character varying(100),
-    source_country_code character varying(100),
-    source_name character varying(500),
-    source_scale character varying(15),
-    scar_map_cat_id numeric(10,0),
-    comments character varying(2000),
-    source_publisher character varying(100),
-    source_identifier character varying(100),
-    date_named date,
-    location_method_id numeric(10,0),
-    geometry public.geometry,
-    reason character varying(5000),
-    relic_flag boolean,
-    place_name_gazetteer character varying(500),
-    place_name_mapping character varying(500),
-    view_by_public_flag boolean,
-    country_code character varying(2),
+    narrative character varying(4000),
     narrative_translation character varying(4000),
     machine_translation boolean,
+    named_for character varying(4000),
     un_sdg numeric(2,0),
+    gazetteer character varying(20),
+    feature_type_code numeric(10,0),
+    relic_flag boolean,
+    date_named date,
+    comments character varying(2000),
+    source_name character varying(500),
+    source_publisher character varying(100),
+    source_identifier character varying(100),
+    source_scale character varying(15),
+    geometry public.geometry,
     pronunciation_audio_url character varying(500),
 );
 
@@ -131,8 +121,7 @@ CREATE TABLE gazetteer.feature_types (
     feature_type_name character varying(100),
     aliases character varying(100),
     comments text,
-    definition text,
-    image_catalogue_nos character varying(100)
+    definition text
 );
 
 
@@ -149,8 +138,8 @@ CREATE TABLE gazetteer.gazetteers (
     gazetteer_name character varying(100),
     national_authority character varying(100),
     agency character varying(100),
-    names_urn character varying(100),
-    country character varying(100)
+    names_url character varying(100),
+    country_id numeric(10,0) 
 );
 
 
@@ -181,9 +170,7 @@ CREATE TABLE gazetteer.glossary (
     english_term character varying(100),
     national_term character varying(100),
     language character varying(100),
-    scar_feature_class character varying(100),
-    scar_feature_type character varying(100),
-    feature_type_code character varying(100)
+    feature_type_code numeric(10,0)
 );
 
 
@@ -197,11 +184,11 @@ ALTER TABLE gazetteer.glossary OWNER TO postgres;
 CREATE VIEW gazetteer.name_count AS
  SELECT count(p.name_id) AS name_count,
     p.gazetteer,
-    g.country
+    g.country_id
    FROM (gazetteer.place_names p
      JOIN gazetteer.gazetteers g ON (((g.gazetteer_code)::text = (p.gazetteer)::text)))
-  GROUP BY p.gazetteer, g.country
-  ORDER BY g.country;
+  GROUP BY p.gazetteer, g.country_id
+  ORDER BY g.country_id;
 
 
 ALTER VIEW gazetteer.name_count OWNER TO postgres;
