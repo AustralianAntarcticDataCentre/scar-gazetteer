@@ -85,7 +85,7 @@ CREATE TABLE gazetteer.place_names (
     source_identifier character varying(100),
     source_scale character varying(15),
     geometry public.geometry,
-    pronunciation_audio_url character varying(500),
+    pronunciation_audio_url character varying(500)
 );
 
 
@@ -404,7 +404,7 @@ CREATE POLICY public_view ON gazetteer.glossary FOR SELECT TO scar_admin, public
 -- Name: place_names public_view; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
-CREATE POLICY public_view ON gazetteer.place_names FOR SELECT TO public_user USING ((view_by_public_flag = true));
+CREATE POLICY public_view ON gazetteer.place_names FOR SELECT TO public_user USING (true);
 
 
 --
