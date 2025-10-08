@@ -61,8 +61,8 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE gazetteer.place_names (
-    name_id numeric(10,0) NOT NULL,
-    place_id numeric(10,0),
+    name_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    place_id BIGINT,
     place_name_mapping character varying(500),
     place_name_gazetteer character varying(500),
     latitude double precision,
@@ -74,9 +74,9 @@ CREATE TABLE gazetteer.place_names (
     narrative_translation character varying(4000),
     machine_translation boolean,
     named_for character varying(4000),
-    un_sdg numeric(2,0),
+    un_sdg INT,
     gazetteer character varying(20),
-    feature_type_code numeric(10,0),
+    feature_type_code BIGINT,
     relic_flag boolean,
     date_named date,
     comments character varying(2000),
@@ -248,15 +248,6 @@ ALTER TABLE ONLY gazetteer.gazetteers
 
 ALTER TABLE ONLY gazetteer.glossary
     ADD CONSTRAINT glossary_pkey PRIMARY KEY (glossary_id);
-
-
---
--- TOC entry 4459 (class 2606 OID 19818)
--- Name: place_names place_names_new_pkey; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
---
-
-ALTER TABLE ONLY gazetteer.place_names
-    ADD CONSTRAINT place_names_new_pkey PRIMARY KEY (name_id);
 
 
 --

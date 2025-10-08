@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { pg } from 'vue-postgrest'
 import qs from 'qs'
 import axios from 'axios'
 
@@ -70,7 +69,6 @@ export default {
             count: 0
         }
     },
-    mixins: [pg],
     computed: {
         page() {
             return this.$route.query.page || 1
@@ -136,7 +134,6 @@ export default {
             this.count = response.headers['content-range'].split('/')[1]
         },
         next: function () {
-
             if (this.page >= this.total_pages) {
                 return
             }

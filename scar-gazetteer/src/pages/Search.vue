@@ -63,11 +63,11 @@ export default {
     },
   },
   mounted: async function () {
-    let response = await axios.get("/api/gazetteers?order=country.asc");
+    let response = await axios.get("/api/gazetteers?order=gazetteer_name.asc");
     let gaz = response.data;
 
     let formatted = gaz.map((g) => {
-      return { value: g.gazetteer_code, text: g.country };
+      return { value: g.gazetteer_code, text: g.gazetteer_name };
     });
 
     this.gazetteers = this.gazetteers.concat(formatted);

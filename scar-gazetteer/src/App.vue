@@ -16,7 +16,7 @@
       <div id="main-menu" data-spy="affix" data-offset-top="286">
         <b-container>
           <b-navbar type="dark" variant="primary">
-            <b-navbar-brand href="/">SCAR Gazetteer</b-navbar-brand>
+            <b-navbar-brand to="/">SCAR Gazetteer</b-navbar-brand>
             <b-navbar-nav>
               <b-nav-item to="/search"><b-icon-search /> Search</b-nav-item>
               <b-nav-item to="/information"><b-icon-info-circle-fill /> Information</b-nav-item>
@@ -111,7 +111,6 @@ export default {
   methods: {
     ...mapActions('user', [
       'authenticate',
-      'checkLoggedIn',
       'logout'
     ]),
     handleLogin: function (bvModalEvt) {
@@ -141,7 +140,6 @@ export default {
     ]),
   },
   mounted: function () {
-    this.checkLoggedIn()
     setDefaultToken(this.$store.getters['user/getToken'])
   }
 }

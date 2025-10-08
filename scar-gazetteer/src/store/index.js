@@ -7,8 +7,5 @@ Vue.use(VueX);
 export default new VueX.Store({
     modules: {
         user
-    },
-    state: {
-
     }
 })

@@ -29,10 +29,9 @@ const NotFound = () => import("../pages/NotFound.vue")
 import store from "../store"
 
 Vue.use(Router)
-Vue.use(Postgrest,
-    {
-        apiRoot: '/api'
-    })
+Vue.use(Postgrest, {
+    apiRoot: '/api'
+})
 
 const router = new Router({
     base: process.env.VUE_APP_PROXY_PATH,
@@ -155,16 +154,20 @@ const router = new Router({
     ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+    await store.dispatch('user/checkLoggedIn');
+
     if(to.matched.some(record => record.meta.requiresAdmin)) {
         if (store.state.user.isAdmin) {
             next()
             return
         }
+
         next('/')
-    } else {
-        next()
+        return
     }
+
+    next()
 })
 
 async function getPlaceIds() {

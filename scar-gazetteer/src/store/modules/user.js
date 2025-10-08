@@ -34,7 +34,7 @@ export default {
         email_address: '',
         isAdmin: false,
         aadToken: '',
-        loginError: null
+        loginError: null,
     },
     getters: {
         getToken: (state) => {
@@ -75,9 +75,9 @@ export default {
                 commit('setError', error)
             }
         },
-        checkLoggedIn({ commit }) {
+        async checkLoggedIn({ commit }) {
             const aadToken = getToken(AAD_JWT_TOKEN)
-            let isAdmin = false;
+            let isAdmin = false
 
             if (aadToken) {
                 if (isTokenExpired(aadToken)) {
@@ -97,7 +97,6 @@ export default {
                     aadToken: aadToken,
                     isAdmin: isAdmin
                 })
-
             } else {
                 commit('logout')
             }

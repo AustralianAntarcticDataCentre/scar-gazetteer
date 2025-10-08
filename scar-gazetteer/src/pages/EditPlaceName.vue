@@ -29,21 +29,21 @@ export default {
     },
     methods: {
         submit(form_data) {
-            Object.assign(this.form_data, form_data)
+            Object.assign(this.pg, form_data)
 
-            this.form_data.$patch({ headers: { Prefer: 'return=minimal' } })
-              .then(() => {
-                this.$router.push({ path: `/place-name/${this.form_data.name_id}` })
-              })
-              .catch(err => {
-                console.error("PUT failed", err)
-              })
+            this.pg.$patch({ headers: { Prefer: 'return=minimal' } })
+                .then(() => {
+                    this.$router.push({ path: `/place-name/${this.pg.name_id}` })
+                })
+                .catch(err => {
+                    console.error("PUT failed", err)
+                })
         },
         reset() {
-            this.form_data.$get()
+            this.pg.$get()
         },
-        deletePlacename(form_data) {
-            form_data.$delete({ headers: { Prefer: 'return=minimal' } })
+        deletePlacename() {
+            this.pg.$delete({ headers: { Prefer: 'return=minimal' } })
                 .then(() => {
                     this.$router.push({ path: '/' })
                 })

@@ -11,7 +11,7 @@
             <template #label>
                 <span style="color: red;">*</span> Mapping Place Name:
             </template>
-            <small>Must be at least 5 characters.</small>
+            <small>Must be at least 2 characters.</small>
             <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_mapping.$model" type="text"
                 required :state="validateState('place_name_mapping')" />
         </b-form-group>
@@ -19,7 +19,7 @@
             <template #label>
                 <span style="color: red;">*</span> Gazetteer Place Name:
             </template>
-            <small>Must be at least 5 characters.</small>
+            <small>Must be at least 2 characters.</small>
             <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_gazetteer.$model"
                 required :state="validateState('place_name_gazetteer')" type="text" />
         </b-form-group>
@@ -120,7 +120,7 @@
         <br />
         <b-button type="submit" variant="primary">Submit</b-button>
         <b-button variant="secondary" @click="reset">Reset</b-button>
-        <b-button v-if="$route.path !== '/new-name'" variant="danger" @click="deletePlacename">Delete</b-button>
+        <b-button v-if="form_data.name_id" variant="danger" @click="deletePlacename">Delete</b-button>
     </b-form>
 </template>
 
@@ -129,27 +129,19 @@ import axios from 'axios'
 import { validationMixin } from "vuelidate"
 import { required, minLength, between, decimal } from 'vuelidate/lib/validators'
 
-
 export default {
     name: 'PlaceNameForm',
     props: {
-        form: Object
+        form: Object,
+        default: () => ({})
     },
     mixins: [validationMixin],
     data: function () {
         return {
-            form_data: {
-                place_id: null,
-                place_name_mapping: null,
-                place_name_gazetteer: null,
-                latitude: null,
-                longitude: null,
-                un_sdg: 0,
-                machine_translation: false,
-            },
+            form_data: this.form,
             lists: {
-                gazetteers: [{ value: null, text: 'Select Gazetteer' }],
-                feature_types: [{ value: null, text: 'Select Feature Type' }],
+                gazetteers: [{ value: null, text: 'Select gazetteer' }],
+                feature_types: [{ value: null, text: 'Select feature type' }],
                 un_sdg: [
                     { value: 0, text: "None"},
                     { value: 1, text: "No Poverty"},
@@ -172,9 +164,6 @@ export default {
                 ],
                 relic: [{ value: false, text: 'No' }, { value: true, text: 'Yes' }],
                 machine_translation: [{ value: false, text: 'No' }, { value: true, text: 'Yes' }],
-                location_method: [
-                    { value: null, text: 'None' }
-                ]
             }
         }
     },
@@ -183,15 +172,15 @@ export default {
             place_id: {
                 required,
                 decimal,
-                between: between(0, 9999999999)
+                between: between(0, Number.MAX_SAFE_INTEGER)
             },
             place_name_mapping: {
                 required,
-                minLength: minLength(5)
+                minLength: minLength(2)
             },
             place_name_gazetteer: {
                 required,
-                minLength: minLength(5)
+                minLength: minLength(2)
             },
             latitude: {
                 required,
@@ -210,7 +199,7 @@ export default {
                 decimal
             },
             altitude_accuracy: {
-
+                decimal
             },
             narrative: {
 
@@ -265,31 +254,32 @@ export default {
         }
     },
     mounted: async function () {
-        this.form_data = this.form
-
-        let response = await axios.get('/api/gazetteers?order=country.asc')
-        let gaz = response.data
-
-        let formatted = gaz.map(g => {
-            return { value: g.gazetteer_code, text: g.country }
-        })
-
-        this.lists.gazetteers = this.lists.gazetteers.concat(formatted)
-
-        let response2 = await axios.get('/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc')
-        let feat = response2.data
-
-        let formatted2 = feat.map(f => {
-            return { value: f.feature_type_code, text: f.feature_type_name }
-        })
-
-        this.lists.feature_types = this.lists.feature_types.concat(formatted2)
+        this.loadGazetteers()
+        this.loadFeatures()
     },
     methods: {
         validateState(name) {
             const { $dirty, $error } = this.$v.form_data[name];
 
             return $dirty ? !$error : null
+        },
+        async loadGazetteers() {
+            const { data } = await axios.get('/api/gazetteers?order=gazetteer_name.asc')
+
+            const formatted = data.map(g => {
+                return { value: g.gazetteer_code, text: g.gazetteer_name }
+            })
+
+            this.lists.gazetteers = this.lists.gazetteers.concat(formatted)
+        },
+        async loadFeatures() {
+            let { data } = await axios.get('/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc')
+
+            let formatted = data.map(f => {
+                return { value: f.feature_type_code, text: f.feature_type_name }
+            })
+
+            this.lists.feature_types = this.lists.feature_types.concat(formatted)
         },
         submit(event) {
             event.preventDefault()
@@ -305,9 +295,8 @@ export default {
             this.$emit('reset')
         },
         deletePlacename() {
-            if (!window.confirm("Confirm record deletion? This cannot be undone.")) {
-                return
-            }
+            if (!window.confirm("Confirm record deletion? This cannot be undone.")) return
+
             this.$emit('deletePlacename', this.form_data)
         }
     }

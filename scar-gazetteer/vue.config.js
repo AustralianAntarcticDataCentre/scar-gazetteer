@@ -1,10 +1,6 @@
 require = require('esm')(module);
-const router = require('./src/routes/main.js');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
-    pluginOptions: {
-    },
     chainWebpack: config => {
         config
             .plugin('html')
@@ -13,13 +9,9 @@ module.exports = {
                 return args;
             });
         config.plugins.delete('prefetch');
-        config.plugin('CompressionPlugin').use(CompressionPlugin);
+        //config.plugin('CompressionPlugin').use(CompressionPlugin);
     },
     devServer: {
-        // Particularly useful for the files in /public/data
-        headers: {
-            'Cache-Control': 'public, max-age=31536000, immutable'
-        },
         proxy: {
             '^/api': {
                 target: 'http://localhost:3000',
