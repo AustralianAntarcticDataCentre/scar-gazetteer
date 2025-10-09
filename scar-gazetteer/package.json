@@ -13,6 +13,7 @@
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.11.3",
+    "dompurify": "^3.2.7",
     "esm": "^3.2.25",
     "iso-country-codes": "^0.0.5",
     "js-cookie": "^3.0.1",

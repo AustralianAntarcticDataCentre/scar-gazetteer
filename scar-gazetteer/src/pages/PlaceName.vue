@@ -32,15 +32,13 @@
             <h3>Narrative</h3>
             <p>
                 <component v-for="(part, index) in transformedNarrativeParts" :key="index" :is="part.component"
-                    v-bind="part.props">
-                    {{ part.text }}
-                </component>
+                    v-bind="part.props" v-html="part.text"/>
             </p>
         </div>
 
         <div v-if="place.narrative_translation">
             <h3>Narrative Translation</h3>
-            <p>{{ place.narrative_translation }}</p>
+            <p v-html="sanitizeHtml(place.narrative_translation)"></p>
             <div v-if="place.machine_translation">
                 <b-alert variant="info" show><b-icon-info-circle-fill /> Note: This text has been machine-translated and may not be accurate.</b-alert>
             </div>
@@ -48,7 +46,7 @@
 
         <div v-if="place.named_for">
             <h3>Named For</h3>
-            <p>{{ place.named_for }}</p>
+            <p v-html="sanitizeHtml(place.named_for)"></p>
         </div>
 
         <div v-if="themes.length > 0">
@@ -115,9 +113,10 @@
 <script>
 import { pg } from 'vue-postgrest'
 import axios from 'axios'
+import DOMPurify from 'dompurify'
 
-import PlaceNameMap from '@/components/PlaceNameMap.vue';
-import { getNameForNumericIsoCountryCode } from '../utils';
+import PlaceNameMap from '@/components/PlaceNameMap.vue'
+import { getNameForNumericIsoCountryCode } from '@/utils'
 
 export default {
     name: 'PlaceName',
@@ -167,7 +166,8 @@ export default {
                     "longitude": this.place.geometry?.coordinates[0],
                 },
                 "name": this.place.place_name_mapping,
-                "description": this.place.narrative || "",
+                // Sanitize HTML to convert any formatting to plain text
+                "description": this.sanitizeHtml(this.place.narrative, { USE_PROFILES: {}, KEEP_CONTENT: true }) || "",
                 "url": `${window.location}`
             }
         },
@@ -237,7 +237,7 @@ export default {
                 if (match.index > lastIndex) {
                     parts.push({
                         component: 'span',
-                        text: narrative_text.substring(lastIndex, match.index),
+                        text: this.sanitizeHtml(narrative_text.substring(lastIndex, match.index)),
                         props: {}
                     })
                 }
@@ -245,7 +245,7 @@ export default {
                 const place_name = match[1]
                 parts.push({
                     component: 'router-link',
-                    text: place_name,
+                    text: this.sanitizeHtml(place_name),
                     props: {
                         to: {
                             path: '/search/results',
@@ -260,7 +260,7 @@ export default {
             if (lastIndex < narrative_text.length) {
                 parts.push({
                     component: 'span',
-                    text: narrative_text.substring(lastIndex),
+                    text: this.sanitizeHtml(narrative_text.substring(lastIndex)),
                     props: {}
                 })
             }
@@ -268,15 +268,21 @@ export default {
             if (parts.length === 0) {
                 parts.push({
                     component: 'span',
-                    text: narrative_text,
+                    text: this.sanitizeHtml(narrative_text),
                     props: {}
                 })
             }
 
             return parts
         },
+        sanitizeHtml(...args) {
+            return DOMPurify.sanitize(...args)
+        },
         getNameForNumericIsoCountryCode,
     },
+    mounted() {
+        console.log(this.sanitizeHtml)
+    }
 }
 </script>
 
