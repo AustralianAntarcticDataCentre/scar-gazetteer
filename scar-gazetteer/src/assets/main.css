@@ -13,9 +13,6 @@ body {
 /*
   Basic Tags
 */
-h1, h2, h3, h4, h5, h6 {
-  margin: 0.75em 0 0.5em 0; }
-
 h1 {
   font-size: 1.8em;
   line-height: 1.8em; }

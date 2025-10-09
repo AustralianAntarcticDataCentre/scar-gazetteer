@@ -1,5 +1,5 @@
 <template>
-    <b-form @submit="submit">
+    <b-form novalidate @submit.prevent="submit">
         <b-form-group label-for="place_id" class="my-1">
             <template #label>
                 <span style="color: red;">*</span> Place ID:
@@ -9,7 +9,7 @@
         </b-form-group>
         <b-form-group label-for="place_name_mapping" class="my-1">
             <template #label>
-                <span style="color: red;">*</span> Mapping Place Name:
+                <span style="color: red;">*</span> Mapping place name:
             </template>
             <small>Must be at least 2 characters.</small>
             <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_mapping.$model" type="text"
@@ -17,7 +17,7 @@
         </b-form-group>
         <b-form-group label-for="place_name_gazetteer" class="my-1">
             <template #label>
-                <span style="color: red;">*</span> Gazetteer Place Name:
+                <span style="color: red;">*</span> Gazetteer place name:
             </template>
             <small>Must be at least 2 characters.</small>
             <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_gazetteer.$model"
@@ -29,18 +29,19 @@
                 <span style="color: red;">*</span> Latitude:
             </template>
             <small>Must be between -90 and -60 degrees.</small>
-            <b-form-input id="latitude" v-model="$v.form_data.latitude.$model" required type="text"
-                :state="validateState('latitude')" />
+            <b-form-input id="latitude" v-model="$v.coordinates.latitude.$model" required type="number"
+                :state="validateState($v.coordinates.latitude)" />
         </b-form-group>
         <b-form-group label-for="longitude" class="my-1">
             <template #label>
                 <span style="color: red;">*</span> Longitude:
             </template>
             <small>Must be between -180 and 180 degrees.</small>
-            <b-form-input id="longitude" v-model="$v.form_data.longitude.$model" required type="text"
-                :state="validateState('longitude')" />
+            <b-form-input id="longitude" v-model="$v.coordinates.longitude.$model" required type="number"
+                :state="validateState($v.coordinates.longitude)" />
         </b-form-group>
-        <b-form-group label="Coordinate Accuracy:" label-for="coordinate_accuracy" class="my-1">
+
+        <b-form-group label="Coordinate accuracy:" label-for="coordinate_accuracy" class="my-1">
             <b-form-input id="coordinate_accuracy" v-model="$v.form_data.coordinate_accuracy.$model" type="text"
                 :state="validateState('coordinate_accuracy')" />
         </b-form-group>
@@ -48,76 +49,74 @@
             <b-form-input id="altitude" v-model="$v.form_data.altitude.$model" type="text"
                 :state="validateState('altitude')" />
         </b-form-group>
-        <b-form-group label="Altitude Accuracy:" label-for="altitude_accuracy" class="my-1">
+        <b-form-group label="Altitude accuracy:" label-for="altitude_accuracy" class="my-1">
             <b-form-input id="altitude" v-model="$v.form_data.altitude_accuracy.$model" type="text"
                 :state="validateState('altitude_accuracy')" />
         </b-form-group>
+
         <b-form-group label="Narrative:" label-for="narrative" class="my-1">
             <small>Use <i>[L]&lt;placename&gt;[/L]</i> to link to other place names.</small>
             <b-form-textarea id="narrative" v-model="$v.form_data.narrative.$model" rows="3" max-rows="6" />
         </b-form-group>
-        <b-form-group label="Narrative Translation:" label-for="narrative_translation" class="my-1">
+        <b-form-group label="Narrative translation:" label-for="narrative_translation" class="my-1">
             <small>Use <i>[L]&lt;placename&gt;[/L]</i> to link to other place names.</small>
             <b-form-textarea id="narrative_translation" v-model="$v.form_data.narrative_translation.$model" rows="3"
                 max-rows="6" />
         </b-form-group>
 
-        <b-form-group label="Is Machine Translation:" label-for="machine_translation" class="my-1">
+        <b-form-group label="Is machine translation:" label-for="machine_translation" class="my-1">
             <b-form-select id="machine_translation" class="form-select my-1" v-model="$v.form_data.machine_translation.$model"
-                :options="lists.machine_translation" />
+                :options="lists.machine_translation" :state="validateState($v.form_data.machine_translation)" />
         </b-form-group>
 
-        <b-form-group label="Named For:" label-for="named-for" class="my-1">
+        <b-form-group label="Named for:" label-for="named-for" class="my-1">
             <b-form-textarea id="named-for" v-model="$v.form_data.named_for.$model" rows="3" max-rows="6" />
         </b-form-group>
 
         <b-form-group label="UN SDG:" label-for="un_sdg" class="my-1">
             <small>A place name can be linked to a related <a href="https://sdgs.un.org/goals">UN Sustainable Development Goal</a>.</small>
-            <b-form-select id="un_sdg" class="form-select my-1" v-model.number="$v.form_data.un_sdg.$model" :options="lists.un_sdg" />
+            <b-form-select id="un_sdg" class="form-select my-1" v-model.number="$v.form_data.un_sdg.$model" :options="lists.un_sdg" :state="validateState($v.form_data.un_sdg)" />
         </b-form-group>
 
         <b-form-group label-for="gazetteer" class="my-1">
             <template #label>
-                <span style="color: red;">*</span> Source Gazetteer:
+                <span style="color: red;">*</span> Source gazetteer:
             </template>
             <b-form-select id="gazetteer" class="form-select" required v-model="$v.form_data.gazetteer.$model" :options="lists.gazetteers"
                 :state="validateState('gazetteer')" />
         </b-form-group>
         <b-form-group label-for="feature_type" class="my-1">
             <template #label>
-                <span style="color: red;">*</span> Feature Type:
+                <span style="color: red;">*</span> Feature type:
             </template>
             <b-form-select id="feature_type" class="form-select" required v-model="$v.form_data.feature_type_code.$model"
                 :options="lists.feature_types" :state="validateState('feature_type_code')" />
         </b-form-group>
-        <b-form-group label="Feature Class:" label-for="feature_class" class="my-1">
-            <b-form-input id="feature_class" v-model="$v.form_data.scar_feature_class.$model" type="text" />
-        </b-form-group>
-        <b-form-group label="* Is Relic:" label-for="is_relic" class="my-1">
+        <b-form-group label-for="is_relic" class="my-1">
             <template #label>
-                <span style="color: red;">*</span> Is Relic:
+                <span style="color: red;">*</span> Is relic:
             </template>
-            <b-form-select id="is_relic" class="form-select" v-model="$v.form_data.relic_flag.$model" :options="lists.relic" />
+            <b-form-select id="is_relic" class="form-select" v-model="$v.form_data.relic_flag.$model" :options="lists.relic" :state="validateState($v.form_data.relic_flag)" />
         </b-form-group>
-        <b-form-group label="Date Named:" label-for="date_named" class="my-1">
+        <b-form-group label="Date named:" label-for="date_named" class="my-1">
             <b-form-input id="date_named" v-model="$v.form_data.date_named.$model" type="date" />
         </b-form-group>
         <b-form-group label="Comments:" label-for="comments" class="my-1">
             <b-form-textarea id="comments" v-model="$v.form_data.comments.$model" rows="3" max-rows="6" />
         </b-form-group>
-        <b-form-group label="Source Name:" label-for="source_name" class="my-1">
+        <b-form-group label="Source name:" label-for="source_name" class="my-1">
             <b-form-input id="source_name" v-model="$v.form_data.source_name.$model" type="text" />
         </b-form-group>
-        <b-form-group label="Source Publisher:" label-for="source_publisher" class="my-1">
+        <b-form-group label="Source publisher:" label-for="source_publisher" class="my-1">
             <b-form-input id="source_publisher" v-model="$v.form_data.source_publisher.$model" type="text" />
         </b-form-group>
-        <b-form-group label="Source Identifier:" label-for="source_identifier" class="my-1">
+        <b-form-group label="Source identifier:" label-for="source_identifier" class="my-1">
             <b-form-input id="source_identifier" v-model="$v.form_data.source_identifier.$model" type="text" />
         </b-form-group>
-        <b-form-group label="Source Scale:" label-for="source_scale" class="my-1">
+        <b-form-group label="Source scale:" label-for="source_scale" class="my-1">
             <b-form-input id="source_scale" v-model="$v.form_data.source_scale.$model" type="text" />
         </b-form-group>
-        <br />
+        <b-alert variant="danger" :show="$v.$dirty && $v.$error">There are errors that require your attention.</b-alert>
         <b-button type="submit" variant="primary">Submit</b-button>
         <b-button variant="secondary" @click="reset">Reset</b-button>
         <b-button v-if="form_data.name_id" variant="danger" @click="deletePlacename">Delete</b-button>
@@ -127,17 +126,22 @@
 <script>
 import axios from 'axios'
 import { validationMixin } from "vuelidate"
-import { required, minLength, between, decimal } from 'vuelidate/lib/validators'
+import { required, minLength, between, decimal, integer } from 'vuelidate/lib/validators'
+
+const boolean = (value) => typeof value === 'boolean'
 
 export default {
     name: 'PlaceNameForm',
     props: {
-        form: Object,
-        default: () => ({})
+        form: Object
     },
     mixins: [validationMixin],
     data: function () {
         return {
+            coordinates: {
+                latitude: this.form.geometry.coordinates[1],
+                longitude: this.form.geometry.coordinates[0]
+            },
             form_data: this.form,
             lists: {
                 gazetteers: [{ value: null, text: 'Select gazetteer' }],
@@ -168,38 +172,40 @@ export default {
         }
     },
     validations: {
-        form_data: {
-            place_id: {
-                required,
-                decimal,
-                between: between(0, Number.MAX_SAFE_INTEGER)
-            },
-            place_name_mapping: {
-                required,
-                minLength: minLength(2)
-            },
-            place_name_gazetteer: {
-                required,
-                minLength: minLength(2)
-            },
+        coordinates: {
             latitude: {
                 required,
                 decimal,
-                between: between(-90, -60)
+                between: between(-90, -60),
             },
             longitude: {
                 required,
                 decimal,
-                between: between(-180, 180)
+                between: between(-180, 180),
+            },
+        },
+        form_data: {
+            place_id: {
+                required,
+                integer,
+                between: between(0, Number.MAX_SAFE_INTEGER),
+            },
+            place_name_mapping: {
+                required,
+                minLength: minLength(2),
+            },
+            place_name_gazetteer: {
+                required,
+                minLength: minLength(2),
             },
             coordinate_accuracy: {
-                decimal
+                decimal,
             },
             altitude: {
-                decimal
+                decimal,
             },
             altitude_accuracy: {
-                decimal
+                decimal,
             },
             narrative: {
 
@@ -208,25 +214,28 @@ export default {
 
             },
             machine_translation: {
-
+                required,
+                boolean,
             },
             named_for: {
 
             },
             un_sdg: {
-
+                integer,
             },
             gazetteer: {
-                required
+                required,
             },
             feature_type_code: {
-                required
+                required,
+                integer,
             },
             scar_feature_class: {
 
             },
             relic_flag: {
-                required
+                required,
+                boolean,
             },
             date_named: {
 
@@ -249,8 +258,13 @@ export default {
         }
     },
     watch: {
-        form: function () {
-            this.form_data = this.form
+        form() {
+            console.log('form updates')
+            Object.assign(this.form_data, this.form)
+            Object.assign(this.coordinates, {
+                latitude: this.form.geometry.coordinates[1],
+                longitude: this.form.geometry.coordinates[0]
+            })
         }
     },
     mounted: async function () {
@@ -259,9 +273,13 @@ export default {
     },
     methods: {
         validateState(name) {
-            const { $dirty, $error } = this.$v.form_data[name];
+            if (typeof name === 'string') {
+                const { $dirty, $error } = this.$v.form_data[name];
+                return $dirty ? $error ? false : undefined : undefined
+            }
 
-            return $dirty ? !$error : null
+            const { $dirty, $error } = name
+            return $dirty ? $error ? false : undefined : undefined
         },
         async loadGazetteers() {
             const { data } = await axios.get('/api/gazetteers?order=gazetteer_name.asc')
@@ -281,17 +299,21 @@ export default {
 
             this.lists.feature_types = this.lists.feature_types.concat(formatted)
         },
-        submit(event) {
-            event.preventDefault()
+        submit() {
+            this.$v.$touch()
 
-            this.$v.form_data.$touch()
-            if (this.$v.form_data.$anyError) {
-                return
+            if (this.$v.$anyError) return
+
+            this.form_data.geometry = {
+                type: "Point",
+                coordinates: [this.coordinates.longitude, this.coordinates.latitude],
             }
 
             this.$emit('submit', this.form_data)
         },
         reset() {
+            if (!window.confirm("Confirm form reset? Changes will be lost.")) return
+
             this.$emit('reset')
         },
         deletePlacename() {

@@ -13,7 +13,7 @@
         <div class="alert alert-info"><strong>Note:</strong> These files maintain <span class="label label-info"
                 id="diacritic_info" data-toggle="tooltip"
                 title="A sign, such as an accent or cedilla, which when written above or below a letter indicates a difference in pronunciation from the same letter when unmarked or differently marked.">diacritics</span>.
-            Please be mindful not to use software like spreadsheets, which do not keep diacritics.</div>
+            Please be mindful not to use software that does not keep diacritics.</div>
 
         <b-form @submit="submit">
             <b-form-group label="Gazetteer:" label-for="gazetteer">
@@ -30,6 +30,7 @@
 
 <script>
 import axios from 'axios'
+import { getNameForNumericIsoCountryCode } from '../utils'
 
 export default {
     name: "Search",
@@ -66,7 +67,7 @@ export default {
         let gaz = response.data
 
         let formatted = gaz.map(g => {
-            return { value: g.gazetteer_code, text: g.country }
+            return { value: g.gazetteer_code, text: getNameForNumericIsoCountryCode(g.country_id) }
         })
 
         this.gazetteers = this.gazetteers.concat(formatted)

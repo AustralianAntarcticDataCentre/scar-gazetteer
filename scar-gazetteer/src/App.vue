@@ -59,6 +59,8 @@
           />
         </b-form-group>
 
+        <input type="submit" hidden />
+
         <b-alert v-if="loginError && form.submitted && loginError.response.status === 401" variant="danger" show>
           Invalid username or password
         </b-alert>

@@ -7,9 +7,9 @@ import https from 'https'
 const Main = () => import("../pages/Main.vue")
 const Search = () => import("../pages/Search.vue")
 const SearchResults = () => import("../pages/SearchResults.vue")
-const Download = () => import("../pages/Download.vue")
 const PlaceName = () => import("../pages/PlaceName.vue")
 const Information = () => import("../pages/Information.vue")
+const InformationDownload = () => import("../pages/InformationDownload.vue")
 const InformationGeneral = () => import("../pages/InformationGeneral.vue")
 const InformationTerminology = () => import("../pages/InformationTerminology.vue")
 const InformationBatchInstructions = () => import("../pages/InformationBatchInstructions.vue")
@@ -30,7 +30,7 @@ import store from "../store"
 
 Vue.use(Router)
 Vue.use(Postgrest, {
-    apiRoot: '/api'
+    apiRoot: '/api',
 })
 
 const router = new Router({
@@ -89,7 +89,11 @@ const router = new Router({
                 {
                     path: 'statistics',
                     component: InformationStatistics
-                }
+                },
+                {
+                    path: 'download',
+                    component: InformationDownload
+                },
             ]
         },
         {
@@ -105,10 +109,6 @@ const router = new Router({
             meta: {
                 sitemap: { ignoreRoute: true }
             }
-        },
-        {
-            path: '/download',
-            component: Download
         },
         {
             path: '/place-name/:id',

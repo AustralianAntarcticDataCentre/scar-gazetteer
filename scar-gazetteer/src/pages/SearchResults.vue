@@ -19,19 +19,19 @@
         <b-table :items="results" :fields="fields">
             <template #cell(place_name_mapping)="p">
                 <div>
-                    <a :href="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
-                        ({{ p.item.gazetteer }})</a><br />
+                    <b-link :to="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
+                        ({{ p.item.gazetteer }})</b-link><br />
                     <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
                 </div>
             </template>
             <template #cell(latitude)="lat">
                 <div>
-                    {{ lat.item.latitude }}°
+                    {{ lat.item.geometry.coordinates[1] }}°
                 </div>
             </template>
             <template #cell(longitude)="lon">
                 <div>
-                    {{ lon.item.longitude }}°
+                    {{ lon.item.geometry.coordinates[0] }}°
                 </div>
             </template>
             <template #cell(feature_types)="f">

@@ -14,6 +14,7 @@
                     <b-nav-item active-class="active" to="/information/citation-information">Citation information</b-nav-item>
                     <b-nav-item active-class="active" to="/information/batch-instructions">Instructions for batch edits</b-nav-item>
                     <b-nav-item active-class="active" to="/information/themes">Themes</b-nav-item>
+                    <b-nav-item active-class="active" to="/information/download">Download</b-nav-item>
                 </b-nav>
             </b-col>
             <b-col>

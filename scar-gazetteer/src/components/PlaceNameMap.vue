@@ -124,8 +124,6 @@ export default {
         updateMarker() {
             this.markerSource.clear();
 
-            console.log(this.coordinates)
-
             if (this.coordinates && typeof this.coordinates?.longitude === 'number' && typeof this.coordinates?.latitude === 'number') {
                 let markerFeature = null;
 

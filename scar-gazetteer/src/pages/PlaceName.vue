@@ -6,7 +6,7 @@
         <p v-if="place.feature_types">Feature Type: <a
                 :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{
                     place.feature_types.feature_type_name }}</a>
-            <b-icon-info-circle v-b-tooltip.hover :title="place.feature_types.definition" />
+            <b-icon-info-circle v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition" />
         </p>
 
         <audio v-if="place.pronunciation_audio_url" controls>
@@ -15,11 +15,11 @@
         </audio>
 
         <h3>Origin</h3>
-        <p v-if="place.gazetteers">This name originates from <strong>{{ place.gazetteers.country }}</strong>. It is part
-            of the {{ gazetteerName }} and the SCAR Composite Gazetteer of Antarctica.</p>
+        <p v-if="place.gazetteers">This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>. It is part
+            of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.</p>
 
         <div v-if="other_names.length">
-            <p>Names that other countries have for this feature: </p>
+            <p>Other names for this place:</p>
             <ul>
                 <li v-for="name of other_names" :key="name.name_id">
                     <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_mapping }}
@@ -84,17 +84,16 @@
 
         <h3>Location</h3>
         <ul>
-            <li>Latitude: {{ place.latitude }}° ({{ toDMS(place.latitude, isLatitude = true) }})</li>
-            <li>Longitude: {{ place.longitude }}° ({{ toDMS(place.longitude, isLatitude = false) }})</li>
+            <li>Latitude: {{ place.geometry.coordinates[1] }}° ({{ toDMS(place.geometry.coordinates[1], isLatitude = true) }})</li>
+            <li>Longitude: {{ place.geometry.coordinates[0] }}° ({{ toDMS(place.geometry.coordinates[0], isLatitude = false) }})</li>
             <li>Altitude: {{ place.altitude || "Not recorded" }}</li>
         </ul>
 
         <h3>Map</h3>
-        <PlaceNameMap :coordinates="{ latitude: place.latitude, longitude: place.longitude }" />
+        <PlaceNameMap :coordinates="{ latitude: place.geometry.coordinates[1], longitude: place.geometry.coordinates[0] }" />
 
         <h3>Source</h3>
         <ul>
-            <li>Location Method: {{ place.location_method_id || "Not recorded" }}</li>
             <li>Source Name: {{ place.source_name || "Not recorded" }}</li>
             <li>Source Publisher: {{ place.source_publisher || "Not recorded" }}</li>
             <li>Source Scale: {{ place.source_scale || "Not recorded" }}</li>
@@ -106,6 +105,11 @@
             <p>{{ place.comments }}</p>
         </template>
     </b-container>
+    <b-container v-else>
+        <div class="spinner-div d-flex justify-content-center">
+            <b-spinner class="spinner"></b-spinner>
+        </div>
+    </b-container>
 </template>
 
 <script>
@@ -113,6 +117,7 @@ import { pg } from 'vue-postgrest'
 import axios from 'axios'
 
 import PlaceNameMap from '@/components/PlaceNameMap.vue';
+import { getNameForNumericIsoCountryCode } from '../utils';
 
 export default {
     name: 'PlaceName',
@@ -158,11 +163,11 @@ export default {
                 "@type": "Place",
                 "geo": {
                     "@type": "GeoCoordinates",
-                    "latitude": this.place?.latitude,
-                    "longitude": this.place?.longitude
+                    "latitude": this.place.geometry?.coordinates[1],
+                    "longitude": this.place.geometry?.coordinates[0],
                 },
-                "name": this.place?.place_name_mapping,
-                "description": this.place?.narrative,
+                "name": this.place.place_name_mapping,
+                "description": this.place.narrative || "",
                 "url": `${window.location}`
             }
         },
@@ -180,9 +185,6 @@ export default {
                 },
                 single: true
             }
-        },
-        markerLatLng() {
-            return [this.place.latitude || 0, this.place.longitude || 0]
         },
         gazetteerName() {
             return this.place.gazetteers.gazetteer_name ?? `${this.place.gazetteers.country} Gazetteer`
@@ -273,6 +275,7 @@ export default {
 
             return parts
         },
+        getNameForNumericIsoCountryCode,
     },
 }
 </script>

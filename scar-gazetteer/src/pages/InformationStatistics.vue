@@ -3,11 +3,15 @@
         <h1>Statistics</h1>
         <b-table striped hover label-sort-asc="" label-sort-desc="" label-sort-clear="" :items="statsWithTotal"
             :fields="fields" />
+        <div class="spinner-div d-flex justify-content-center" v-if="pg.$get.isPending">
+            <b-spinner class="spinner"></b-spinner>
+        </div>
     </b-container>
 </template>
 
 <script>
 import { pg } from 'vue-postgrest'
+import { getNameForNumericIsoCountryCode } from '../utils';
 
 export default {
     name: 'InformationGlossary',
@@ -28,9 +32,14 @@ export default {
             if (!this.stats || this.stats.length === 0) {
                 return []
             }
+
             const total = this.stats.reduce((sum, item) => sum + (item.name_count || 0), 0)
+
             return [
-                ...this.stats,
+                ...this.stats.map((stat) => ({
+                    country: getNameForNumericIsoCountryCode(stat.country_id),
+                    name_count: stat.name_count,
+                })),
                 {
                     country: 'Total',
                     name_count: total,

@@ -58,7 +58,6 @@ export default {
   methods: {
     search(event) {
       event.preventDefault();
-      // console.log(qs.stringify(this.form))
       this.$router.push(`/search/results?${qs.stringify(this.form)}`);
     },
   },

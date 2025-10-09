@@ -16,12 +16,12 @@
         <p>For queries about the CGA email scar.cga@unisi.it</p>
 
         <ul class="unstyled">
-            <li><b-icon-bar-chart style="text-align: center" /> <a href="/information/statistics"> View SCAR Gazetteer
-                    summary information</a></li>
-            <li><b-icon-cloud-arrow-down style="text-align: center" /> <a href="/download"> Download SCAR Gazetteer</a>
+            <li><b-icon-bar-chart style="text-align: center" /> <b-link to="/information/statistics"> View SCAR Gazetteer
+                    summary information</b-link></li>
+            <li><b-icon-cloud-arrow-down style="text-align: center" /> <b-link to="/information/download"> Download SCAR Gazetteer</b-link>
             </li>
-            <li><b-icon-file-earmark-text style="text-align: center" /> <a href="/information/batch-instructions">
-                    Instructions for batch edits</a></li>
+            <li><b-icon-file-earmark-text style="text-align: center" /> <b-link to="/information/batch-instructions">
+                    Instructions for batch edits</b-link></li>
         </ul>
     </b-container>
 </template>
