@@ -36,7 +36,7 @@ export default {
                 { key: 'english_term', sortable: true },
                 { key: 'national_term', sortable: true },
                 { key: 'language', sortable: true },
-                { key: 'scar_feature_type', sortable: true },
+                { key: 'feature_type.name', sortable: true, la: 'Feature Type' },
             ]
         }
     },
@@ -52,7 +52,8 @@ export default {
             if (!this.filter) {
                 return this.glossary
             }
-            const properties = ['english_term', 'national_term', 'language', 'scar_feature_type']
+
+            const properties = ['english_term', 'national_term', 'language', 'feature_type.name']
 
             return this.glossary.filter(entry => {
                 return properties.some(prop => entry[prop] && entry[prop].toLowerCase().includes(this.filter.toLowerCase()))
@@ -65,7 +66,7 @@ export default {
             return {
                 route: 'glossary',
                 query: {
-                    select: ['*']
+                    select: ['*', 'feature_type:feature_types(name:feature_type_name))']
                 }
             }
         }

@@ -280,9 +280,6 @@ export default {
         },
         getNameForNumericIsoCountryCode,
     },
-    mounted() {
-        console.log(this.sanitizeHtml)
-    }
 }
 </script>
 

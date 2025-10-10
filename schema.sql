@@ -286,6 +286,9 @@ ALTER TABLE ONLY gazetteer.place_names
     ADD CONSTRAINT gazetteer_fk FOREIGN KEY (gazetteer) REFERENCES gazetteer.gazetteers(gazetteer_code);
 
 
+ALTER TABLE ONLY gazetteer.glossary
+    ADD CONSTRAINT feature_type_code_fk FOREIGN KEY (feature_type_code) REFERENCES gazetteer.feature_types(feature_type_code);
+
 --
 -- TOC entry 4637 (class 3256 OID 19869)
 -- Name: place_names delete_place_names; Type: POLICY; Schema: gazetteer; Owner: postgres
