@@ -5,8 +5,8 @@
         <p>The SCAR Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
 
         <p>It has been compiled over a period of {{ years }} years
-            (commenced 1992) and consists of {{ name_count }} names that correspond to {{ feature_count }} features.
-            The place names information has been submitted by the national names committees from {{ gazetteer_count }} countries.
+            (commenced 1992) and consists of <b-link :to="'/search/results'">{{ name_count.toLocaleString() }} names</b-link> that correspond to {{ feature_count.toLocaleString() }} features.
+            The place names information has been submitted by the national names committees from <b-link to="/information/statistics">{{ gazetteer_count.toLocaleString() }} countries</b-link>.
         </p>
 
         <p>The CGA is compiled purely for the convenience of the scientific community and has no legal authority or standing.</p>

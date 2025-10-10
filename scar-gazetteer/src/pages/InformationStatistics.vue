@@ -33,12 +33,12 @@ export default {
                 return []
             }
 
-            const total = this.stats.reduce((sum, item) => sum + (item.name_count || 0), 0)
+            const total = this.stats.reduce((sum, item) => sum + (item.name_count || 0), 0).toLocaleString()
 
             return [
                 ...this.stats.map((stat) => ({
                     country: getNameForNumericIsoCountryCode(stat.country_id),
-                    name_count: stat.name_count,
+                    name_count: stat.name_count.toLocaleString(),
                 })),
                 {
                     country: 'Total',
