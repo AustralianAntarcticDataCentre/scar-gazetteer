@@ -61,12 +61,10 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE gazetteer.place_names (
-    name_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    place_id BIGINT,
+    name_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    place_id INT,
     place_name_mapping character varying(500),
     place_name_gazetteer character varying(500),
-    latitude double precision,
-    longitude double precision,
     coordinate_accuracy double precision,
     altitude double precision,
     altitude_accuracy double precision,
@@ -76,7 +74,7 @@ CREATE TABLE gazetteer.place_names (
     named_for character varying(4000),
     un_sdg INT,
     gazetteer character varying(20),
-    feature_type_code BIGINT,
+    feature_type_code INT,
     relic_flag boolean,
     date_named date,
     comments character varying(2000),
@@ -117,7 +115,7 @@ ALTER FUNCTION gazetteer.search(search_text text) OWNER TO postgres;
 --
 
 CREATE TABLE gazetteer.feature_types (
-    feature_type_code numeric(10,0) NOT NULL,
+    feature_type_code INT NOT NULL,
     feature_type_name character varying(100),
     aliases character varying(100),
     comments text,
@@ -133,13 +131,13 @@ ALTER TABLE gazetteer.feature_types OWNER TO postgres;
 --
 
 CREATE TABLE gazetteer.gazetteers (
-    gazetteer_id numeric(10,0) NOT NULL,
+    gazetteer_id INT NOT NULL,
     gazetteer_code character varying(100),
     gazetteer_name character varying(100),
     national_authority character varying(100),
     agency character varying(100),
     names_url character varying(100),
-    country_id numeric(10,0) 
+    country_id INT 
 );
 
 
@@ -166,11 +164,11 @@ ALTER VIEW gazetteer.gaz_count OWNER TO postgres;
 --
 
 CREATE TABLE gazetteer.glossary (
-    glossary_id numeric(10,0) NOT NULL,
+    glossary_id INT NOT NULL,
     english_term character varying(100),
     national_term character varying(100),
     language character varying(100),
-    feature_type_code numeric(10,0)
+    feature_type_code INT
 );
 
 
@@ -199,7 +197,7 @@ ALTER VIEW gazetteer.name_count OWNER TO postgres;
 --
 
 CREATE TABLE gazetteer.themes (
-    id integer NOT NULL,
+    id INT NOT NULL,
     name character varying(1000) NOT NULL,
     description character varying(10000),
     place_names character varying(1000)[]
