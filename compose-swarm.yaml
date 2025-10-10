@@ -26,6 +26,8 @@ services:
       options:
         loki-url: ${LOKI_URL}
         loki-external-labels: "container_name=${APP_NAME_DEPLOYMENT}_web,environment=prod,containerID={{.ID}}"
+    ports:
+      - "80:80"
     networks:
       - aadc-traefik-net
 
