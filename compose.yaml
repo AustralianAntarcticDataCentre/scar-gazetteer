@@ -19,7 +19,7 @@ services:
   #    - db
 
   api:
-    image: postgrest/postgrest:v9.0.1
+    image: postgrest/postgrest:v12.2.12
     # ports:
     #   - "3000:3000"
     environment:
