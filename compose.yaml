@@ -20,8 +20,8 @@ services:
 
   api:
     image: postgrest/postgrest:v9.0.1
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     environment:
       PGRST_DB_URI: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
       PGRST_DB_SCHEMAS: gazetteer
@@ -34,10 +34,10 @@ services:
   web:
     image: scar/scar-gazetteer:latest
     build: ./scar-gazetteer
-    ports:
-      - "8080:80"
-    depends_on:
-      - api
+    # ports:
+    #   - "8080:80"
+    # depends_on:
+    #   - api
 
 #volumes:
 #  dbdata:
