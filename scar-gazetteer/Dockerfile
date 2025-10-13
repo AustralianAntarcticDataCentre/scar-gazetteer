@@ -1,5 +1,5 @@
 # step 1
-FROM node:14-alpine as builder
+FROM node:14-alpine AS builder
 
 WORKDIR /tmp/app
 COPY ./ .
