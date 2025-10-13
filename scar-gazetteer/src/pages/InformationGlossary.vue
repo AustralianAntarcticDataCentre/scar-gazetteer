@@ -36,7 +36,7 @@ export default {
                 { key: 'english_term', sortable: true },
                 { key: 'national_term', sortable: true },
                 { key: 'language', sortable: true },
-                { key: 'feature_type.name', sortable: true, la: 'Feature Type' },
+                { key: 'feature_type.name', sortable: true, label: 'Feature Type' },
             ]
         }
     },
