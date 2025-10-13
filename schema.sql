@@ -188,6 +188,50 @@ CREATE VIEW gazetteer.name_count AS
   GROUP BY p.gazetteer, g.country_id
   ORDER BY g.country_id;
 
+create domain gazetteer."application/vnd.google-earth.kml+xml" as text;
+
+create or replace function gazetteer.place_names_kml_trans(state text, next gazetteer.place_names)
+returns "application/vnd.google-earth.kml+xml" as $$
+    SELECT state || '<Placemark>' 
+	|| '  <name>' || next.place_name_gazetteer || '</name>' ||
+            ST_AsKML(next.geometry) 
+	|| '<ExtendedData><SchemaData schemaUrl="#SCAR_CGA">'
+	|| '<SimpleData name="place_id">' || next.place_id || '</SimpleData>'
+	|| '<SimpleData name="name_id">' || next.name_id || '</SimpleData>'
+	|| '<SimpleData name="place_name_mapping">' || next.place_name_mapping || '</SimpleData>'
+    || '<SimpleData name="place_name_gazetteer">' || next.place_name_gazetteer || '</SimpleData>'
+	|| '<SimpleData name="narrative">' || regexp_replace(next.narrative, E'<[^>]+>', '', 'gi') || '</SimpleData>'
+	|| '</SchemaData></ExtendedData>'
+	|| '</Placemark>'
+    $$ language sql;
+
+create or replace function gazetteer.place_names_kml_final(data "application/vnd.google-earth.kml+xml")
+returns "application/vnd.google-earth.kml+xml" as $$
+    SELECT
+        '<kml xmlns="http://www.opengis.net/kml/2.2">' ||
+        '  <Document>' ||
+		'
+		   <Schema name="SCAR_CGA" id="SCAR_CGA">
+		    <SimpleField type="string" name="place_id"/>
+			<SimpleField type="string" name="name_id"/>
+            <SimpleField type="string" name="place_name_mapping"/>
+            <SimpleField type="string" name="place_name_gazetteer"/>
+			<SimpleField type="string" name="narrative"/>
+        </Schema>
+		' ||
+        '    <name>SCAR Composite Gazetteer</name>' ||
+        data ||
+        '  </Document>' ||
+        '</kml>' AS kml_document
+$$ language sql;
+
+create or replace aggregate gazetteer.place_names_kml_agg (gazetteer.place_names) (
+    initcond = ''
+    ,stype = "application/vnd.google-earth.kml+xml"
+    ,sfunc = gazetteer.place_names_kml_trans
+    ,finalfunc = gazetteer.place_names_kml_final
+);
+		
 
 ALTER VIEW gazetteer.name_count OWNER TO postgres;
 
