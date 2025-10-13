@@ -26,8 +26,7 @@ services:
       options:
         loki-url: ${LOKI_URL}
         loki-external-labels: "container_name=${APP_NAME_DEPLOYMENT}_web,environment=prod,containerID={{.ID}}"
-    ports:
-      - "80:80"
+    ports: !reset
     networks:
       - aadc-traefik-net
 
@@ -56,6 +55,7 @@ services:
         - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.prefixes=/api"
         - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.forceslash=false"
         - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_api.middlewares=stripprefix_${APP_NAME_DEPLOYMENT}_api"
+    ports: !reset
     logging:
       driver: loki
       options:
