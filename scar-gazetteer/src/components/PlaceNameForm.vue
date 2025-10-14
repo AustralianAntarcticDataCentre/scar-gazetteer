@@ -319,6 +319,7 @@ export default {
 
             this.form_data.geometry = {
                 type: "Point",
+                properties: { name: "urn:ogc:def:crs:EPSG::4326" },
                 coordinates: [this.coordinates.longitude, this.coordinates.latitude],
             }
 
