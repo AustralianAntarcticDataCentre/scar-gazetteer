@@ -543,6 +543,41 @@ GRANT ALL ON TABLE gazetteer.themes TO scar_admin;
 
 GRANT USAGE ON SEQUENCE gazetteer.place_names_place_id_seq TO scar_admin;
 
+CREATE VIEW gazetteer.place_names_consolidated AS
+SELECT 
+	n.name_id,
+	n.place_id,
+	n.place_name_mapping, 
+	n.place_name_gazetteer,
+	ST_Y(n.geometry) AS latitude,
+	ST_X(n.geometry) AS longitude,
+	n.coordinate_accuracy,
+	n.altitude,
+	n.altitude_accuracy,
+	n.narrative,
+	n.narrative_translation,
+	n.machine_translation,
+	n.named_for,
+	n.un_sdg,
+	g.gazetteer_code,
+	g.gazetteer_name,
+	n.feature_type_code,
+	f.feature_type_name,
+	n.relic_flag AS is_relic,
+	n.date_named,
+	n."comments",
+	n.source_name,
+	n.source_publisher,
+	n.source_identifier,
+	n.source_scale,
+	n.pronunciation_audio_url
+FROM gazetteer.place_names n
+JOIN gazetteer.gazetteers g ON n.gazetteer = g.gazetteer_code
+JOIN gazetteer.feature_types f ON n.feature_type_code = f.feature_type_code;
+
+GRANT SELECT ON TABLE gazetteer.place_names_consolidated TO public_user;
+GRANT SELECT ON TABLE gazetteer.place_names_consolidated TO scar_admin;
+
 -- Completed on 2025-09-19 03:39:04 UTC
 
 --

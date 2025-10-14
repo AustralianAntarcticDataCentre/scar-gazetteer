@@ -18,24 +18,24 @@
             <template #cell(place_name_mapping)="p">
                 <div>
                     <b-link :to="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
-                        ({{ p.item.gazetteer }})</b-link><br />
+                        ({{ p.item.gazetteer_code }})</b-link><br />
                     <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
                 </div>
             </template>
             <template #cell(latitude)="lat">
                 <div>
-                    {{ lat.item.geometry.coordinates[1] }}°
+                    {{ lat.item.latitude }}°
                 </div>
             </template>
             <template #cell(longitude)="lon">
                 <div>
-                    {{ lon.item.geometry.coordinates[0] }}°
+                    {{ lon.item.longitude }}°
                 </div>
             </template>
             <template #cell(feature_types)="f">
-                <div v-if="f.item.feature_types">
+                <div v-if="f.item.feature_type_name">
                     <a
-                        :href="`https://data.aad.gov.au/feature-type/${f.item.feature_types.feature_type_code}`">{{ f.item.feature_types.feature_type_name }}</a>
+                        :href="`https://data.aad.gov.au/feature-type/${f.item.feature_type_code}`">{{ f.item.feature_type_name }}</a>
                 </div>
             </template>
         </b-table>
@@ -100,7 +100,7 @@ export default {
             }
 
             if (this.$route.query.gazetteer) {
-                filter['gazetteer'] = `eq.${this.$route.query.gazetteer}`
+                filter['gazetteer_code'] = `eq.${this.$route.query.gazetteer}`
             }
 
             if (this.$route.query.feature_type) {
@@ -135,7 +135,7 @@ export default {
             filter['offset'] = (this.page - 1) * this.page_size
 
             try {
-                const response = await axios.get(`/api/rpc/search?select=*,feature_types(feature_type_code,feature_type_name)&${qs.stringify(filter, { arrayFormat: "repeat" })}`, { headers: { 'Prefer': 'count=exact' } })
+                const response = await axios.get(`/api/rpc/search?select=name_id,place_id,place_name_mapping,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code&${qs.stringify(filter, { arrayFormat: "repeat" })}`, { headers: { 'Prefer': 'count=exact' } })
                 this.results = response.data
                 this.count = Number(response.headers['content-range'].split('/')[1])
             } catch (error) {
