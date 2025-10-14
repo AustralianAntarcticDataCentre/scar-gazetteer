@@ -1,9 +1,12 @@
 <template>
     <b-container class="search">
         <h1>Search results</h1>
-        <p>Page: {{ page }} of {{ total_pages }} - total results: {{ count }}</p>
-        <div class="control" v-if="total_pages > 1">
-            <div class="page-control">
+        <p>
+            Page: {{ page.toLocaleString() }} of {{ total_pages.toLocaleString() }}<br>
+            Total results: {{ count.toLocaleString() }}
+        </p>
+        <div class="control">
+            <div class="page-control" v-if="total_pages > 1">
                 <b-button @click="previous" :disabled="page == 1">Previous</b-button>
                 <b-button @click="next" :disabled="page >= total_pages">Next</b-button>
             </div>
@@ -11,12 +14,7 @@
                 <b-button @click="download" variant="outline-primary"><b-icon-download /> Download</b-button>
             </div>
         </div>
-        <div class="control" v-else>
-            <div class="download-control">
-                <b-button @click="download" variant="outline-primary"><b-icon-download /> Download</b-button>
-            </div>
-        </div>
-        <b-table :items="results" :fields="fields">
+        <b-table v-if="!loading" :items="results" :fields="fields">
             <template #cell(place_name_mapping)="p">
                 <div>
                     <b-link :to="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
@@ -41,6 +39,11 @@
                 </div>
             </template>
         </b-table>
+        <b-container v-else>
+            <div class="spinner-div d-flex justify-content-center">
+                <b-spinner class="spinner"></b-spinner>
+            </div>
+        </b-container>
         <div class="control" v-if="total_pages > 1">
             <div class="page-control">
                 <b-button @click="previous" :disabled="page == 1">Previous</b-button>
@@ -58,6 +61,7 @@ export default {
     name: 'SearchResults',
     data: function () {
         return {
+            loading: false,
             fields: [
                 { key: 'place_name_mapping', label: "Place name", sortable: false },
                 { key: 'latitude', sortable: false },
@@ -71,7 +75,7 @@ export default {
     },
     computed: {
         page() {
-            return this.$route.query.page || 1
+            return Math.max(this.$route.query.page ?? 1, 1)
         },
         total_pages() {
             return Math.ceil(this.count / this.page_size)
@@ -124,14 +128,22 @@ export default {
             return filter
         },
         search: async function () {
+            this.loading = true
             let filter = this.parseFilter()
 
             filter['limit'] = this.page_size
-            filter['offset'] = (this.$route.query.page ?? 0) * this.page_size
+            filter['offset'] = (this.page - 1) * this.page_size
 
-            const response = await axios.get(`/api/rpc/search?select=*,feature_types(feature_type_code,feature_type_name)&${qs.stringify(filter, { arrayFormat: "repeat" })}`, { headers: { 'Prefer': 'count=exact' } })
-            this.results = response.data
-            this.count = response.headers['content-range'].split('/')[1]
+            try {
+                const response = await axios.get(`/api/rpc/search?select=*,feature_types(feature_type_code,feature_type_name)&${qs.stringify(filter, { arrayFormat: "repeat" })}`, { headers: { 'Prefer': 'count=exact' } })
+                this.results = response.data
+                this.count = Number(response.headers['content-range'].split('/')[1])
+            } catch (error) {
+                console.error(error)
+                alert(`Unable to perform search: ${error}`)
+            } finally {
+                this.loading = false
+            }
         },
         next: function () {
             if (this.page >= this.total_pages) {
