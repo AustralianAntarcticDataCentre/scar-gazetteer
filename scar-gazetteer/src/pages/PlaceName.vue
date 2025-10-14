@@ -1,12 +1,16 @@
 <template>
     <b-container class="place" v-if="!place.$get.isPending">
-        <h1>{{ place.place_name_mapping }} <b-button :to="`/place-name/${place.name_id}/edit`"
-                v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button></h1>
+        <h1>
+            {{ place.place_name_mapping }}
+            <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button>
+        </h1>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
-        <p v-if="place.feature_types">Feature type: <a
-                :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{
-                    place.feature_types.feature_type_name }}</a>
-            <b-icon-info-circle v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition" />
+        <p v-if="place.feature_types">
+            Feature type: 
+            <a :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{ place.feature_types.feature_type_name }}</a>
+            <span v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition">
+                <b-icon-info-circle />
+            </span>
         </p>
 
         <audio v-if="place.pronunciation_audio_url" controls>
@@ -15,15 +19,16 @@
         </audio>
 
         <h3>Origin</h3>
-        <p v-if="place.gazetteers">This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>. It is part
-            of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.</p>
+        <p v-if="place.gazetteers">
+            This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>.
+            It is part of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.
+        </p>
 
         <div v-if="other_names.length">
             <p>Other names for this place:</p>
             <ul>
                 <li v-for="name of other_names" :key="name.name_id">
-                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_mapping }}
-                        ({{ name.gazetteer }})</router-link>
+                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_mapping }}({{ name.gazetteer }})</router-link>
                 </li>
             </ul>
         </div>
@@ -187,7 +192,7 @@ export default {
             }
         },
         gazetteerName() {
-            return this.place.gazetteers.gazetteer_name ?? `${this.place.gazetteers.country} Gazetteer`
+            return this.place.gazetteers.gazetteer_name || `${getNameForNumericIsoCountryCode(this.place.gazetteers.country_id)} gazetteer`
         },
         transformedNarrativeParts() {
             if (!this.place.narrative) return []
@@ -195,7 +200,7 @@ export default {
         }
     },
     watch: {
-        'pg': function () {
+        'pg.name_id': function () {
             this.getOtherNames()
             this.getThemes()
         }
