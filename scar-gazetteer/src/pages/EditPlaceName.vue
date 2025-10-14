@@ -40,6 +40,7 @@ export default {
                 })
                 .catch(err => {
                     console.error("PUT failed", err)
+                    alert(`Error: could not save place name (${err})`)
                 })
         },
         reset() {
@@ -51,7 +52,8 @@ export default {
                     this.$router.push({ path: '/' })
                 })
                 .catch(err => {
-                    console.error("DELETE failed", err)
+                    console.error("Delete place name failed", err)
+                    alert(`Error: could not delete place name (${err})`)
                 })
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <b-container>
-        <h1>Edit Themes</h1>
+        <h1>Edit themes</h1>
         <b-form @submit.prevent="submitAll" v-if="!themes.$get.isPending">
             <div v-for="(theme, index) in themesData" :key="index" class="theme-section mb-4">
                 <b-card :header="`Theme`" class="mb-3">
@@ -13,7 +13,7 @@
                             max-rows="6" />
                     </b-form-group>
 
-                    <b-form-group label="Place Names:" label-for="`place-names-${index}`">
+                    <b-form-group label="Place names:" label-for="`place-names-${index}`">
                         <div v-for="(placeName, placeIndex) in theme.place_names" :key="placeIndex" class="d-flex mb-2">
                             <b-form-input v-model="theme.place_names[placeIndex]" type="text" class="mr-2" />
                             <b-button variant="outline-danger" class="mx-2 my-2 h-100"
@@ -22,20 +22,20 @@
                             </b-button>
                         </div>
                         <b-button variant="outline-primary" size="sm" @click="addPlaceName(index)" class="mt-2">
-                            Add Place Name
+                            Add place name
                         </b-button>
                     </b-form-group>
 
                     <br>
 
                     <b-button variant="outline-danger" size="sm" @click="removeTheme(index)" class="float-right">
-                        Remove Theme
+                        Remove theme
                     </b-button>
                 </b-card>
             </div>
 
             <div class="mb-3">
-                <b-button variant="success" @click="addTheme">Add New Theme</b-button>
+                <b-button variant="success" @click="addTheme">Add new theme</b-button>
             </div>
 
             <div>

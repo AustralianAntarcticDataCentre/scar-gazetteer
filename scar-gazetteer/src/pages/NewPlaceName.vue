@@ -10,7 +10,7 @@ import { pg } from 'vue-postgrest'
 import PlaceNameForm from '@/components/PlaceNameForm.vue'
 
 const initialForm = () => ({
-    "place_id": null,
+    "place_id": undefined,
     "place_name_mapping": null,
     "place_name_gazetteer": null,
     "geometry": { type: "Point", coordinates: [0, -60] },
@@ -51,9 +51,9 @@ export default {
         }
     },
     methods: {
-        async submit(form_data) {
+        async submit(data) {
             try {
-                Object.assign(this.pg, form_data)
+                Object.assign(this.pg, data)
 
                 await this.pg.$post()
 

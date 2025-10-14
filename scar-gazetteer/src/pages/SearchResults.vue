@@ -1,7 +1,7 @@
 <template>
     <b-container class="search">
-        <h1>Search Results</h1>
-        <p>Page: {{ page }} of {{ total_pages }} - Total Results: {{ count }}</p>
+        <h1>Search results</h1>
+        <p>Page: {{ page }} of {{ total_pages }} - total results: {{ count }}</p>
         <div class="control" v-if="total_pages > 1">
             <div class="page-control">
                 <b-button @click="previous" :disabled="page == 1">Previous</b-button>
@@ -59,10 +59,10 @@ export default {
     data: function () {
         return {
             fields: [
-                { key: 'place_name_mapping', label: "Place Name", sortable: false },
+                { key: 'place_name_mapping', label: "Place name", sortable: false },
                 { key: 'latitude', sortable: false },
                 { key: 'longitude', sortable: false },
-                { key: 'feature_types', label: "Feature Type", sortable: false }
+                { key: 'feature_types', label: "Feature type", sortable: false }
             ],
             page_size: 25,
             results: [],

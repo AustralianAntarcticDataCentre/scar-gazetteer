@@ -71,7 +71,7 @@ export default {
 
                 dispatch('checkLoggedIn')
             } catch (error) {
-                console.log(`Login Error: ${error}`)
+                console.log(`Login error: ${error}`)
                 commit('setError', error)
             }
         },

@@ -3,7 +3,7 @@
         <h1>{{ place.place_name_mapping }} <b-button :to="`/place-name/${place.name_id}/edit`"
                 v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button></h1>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
-        <p v-if="place.feature_types">Feature Type: <a
+        <p v-if="place.feature_types">Feature type: <a
                 :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{
                     place.feature_types.feature_type_name }}</a>
             <b-icon-info-circle v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition" />
@@ -37,7 +37,7 @@
         </div>
 
         <div v-if="place.narrative_translation">
-            <h3>Narrative Translation</h3>
+            <h3>Narrative translation</h3>
             <p v-html="sanitizeHtml(place.narrative_translation)"></p>
             <div v-if="place.machine_translation">
                 <b-alert variant="info" show><b-icon-info-circle-fill /> Note: This text has been machine-translated and may not be accurate.</b-alert>
@@ -45,7 +45,7 @@
         </div>
 
         <div v-if="place.named_for">
-            <h3>Named For</h3>
+            <h3>Named for</h3>
             <p v-html="sanitizeHtml(place.named_for)"></p>
         </div>
 
@@ -92,10 +92,10 @@
 
         <h3>Source</h3>
         <ul>
-            <li>Source Name: {{ place.source_name || "Not recorded" }}</li>
-            <li>Source Publisher: {{ place.source_publisher || "Not recorded" }}</li>
-            <li>Source Scale: {{ place.source_scale || "Not recorded" }}</li>
-            <li>Source Identifier: {{ place.source_identifier || "Not recorded" }}</li>
+            <li>Source name: {{ place.source_name || "Not recorded" }}</li>
+            <li>Source publisher: {{ place.source_publisher || "Not recorded" }}</li>
+            <li>Source scale: {{ place.source_scale || "Not recorded" }}</li>
+            <li>Source identifier: {{ place.source_identifier || "Not recorded" }}</li>
         </ul>
 
         <template v-if="place.comments != null">

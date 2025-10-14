@@ -1,12 +1,5 @@
 <template>
     <b-form novalidate @submit.prevent="submit">
-        <b-form-group label-for="place_id" class="my-1">
-            <template #label>
-                <span style="color: red;">*</span> Place ID:
-            </template>
-            <b-form-input id="place_id" v-model="$v.form_data.place_id.$model" required type="text"
-                :state="validateState('place_id')" />
-        </b-form-group>
         <b-form-group label-for="place_name_mapping" class="my-1">
             <template #label>
                 <span style="color: red;">*</span> Mapping place name:
@@ -22,6 +15,19 @@
             <small>Must be at least 2 characters.</small>
             <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_gazetteer.$model"
                 required :state="validateState('place_name_gazetteer')" type="text" />
+        </b-form-group>
+
+        <b-form-group v-if="!form.name_id" label="Is this place known by an existing name in the SCAR CGA?" v-slot="{ ariaDescribedby }">
+            <b-form-radio v-model="isExistingPlace" :aria-describedby="ariaDescribedby" :value="true">Yes</b-form-radio>
+            <b-form-radio v-model="isExistingPlace" :aria-describedby="ariaDescribedby" :value="false">No</b-form-radio>
+        </b-form-group>
+
+        <b-form-group v-if="isExistingPlace" label-for="place_id" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Place ID:
+            </template>
+            <b-form-input id="place_id" v-model="$v.form_data.place_id.$model" required type="text"
+                :state="validateState('place_id')" />
         </b-form-group>
 
         <b-form-group label-for="latitude" class="my-1">
@@ -126,7 +132,8 @@
 <script>
 import axios from 'axios'
 import { validationMixin } from "vuelidate"
-import { required, minLength, between, decimal, integer } from 'vuelidate/lib/validators'
+import { required, minLength, between, decimal, integer, requiredIf } from 'vuelidate/lib/validators'
+import { getNameForNumericIsoCountryCode } from '@/utils'
 
 const boolean = (value) => typeof value === 'boolean'
 
@@ -138,6 +145,7 @@ export default {
     mixins: [validationMixin],
     data: function () {
         return {
+            isExistingPlace: true,
             coordinates: {
                 latitude: this.form.geometry.coordinates[1],
                 longitude: this.form.geometry.coordinates[0]
@@ -186,7 +194,9 @@ export default {
         },
         form_data: {
             place_id: {
-                required,
+                required: requiredIf(function () {
+                    return this.isExistingPlace
+                }),
                 integer,
                 between: between(0, Number.MAX_SAFE_INTEGER),
             },
@@ -258,8 +268,11 @@ export default {
         }
     },
     watch: {
+        isExistingPlace(val) {
+            if (!val) this.form_data.place_id = undefined
+        },
         form() {
-            console.log('form updates')
+            this.isExistingPlace = true
             Object.assign(this.form_data, this.form)
             Object.assign(this.coordinates, {
                 latitude: this.form.geometry.coordinates[1],
@@ -285,7 +298,7 @@ export default {
             const { data } = await axios.get('/api/gazetteers?order=gazetteer_name.asc')
 
             const formatted = data.map(g => {
-                return { value: g.gazetteer_code, text: g.gazetteer_name }
+                return { value: g.gazetteer_code, text: g.gazetteer_name || getNameForNumericIsoCountryCode(g.country_id) }
             })
 
             this.lists.gazetteers = this.lists.gazetteers.concat(formatted)
