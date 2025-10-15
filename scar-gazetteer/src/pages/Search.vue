@@ -62,7 +62,7 @@ export default {
       this.$router.push(`/search/results?${qs.stringify(this.form)}`);
     },
     async getGazetteers() {
-      let { data } = await axios.get("/api/gazetteers?order=gazetteer_name.asc");
+      let { data } = await axios.get(`${process.env.BASE_URL}/api/gazetteers?order=gazetteer_name.asc`);
 
       let formatted = data.map((g) => {
         return { value: g.gazetteer_code, text: g.gazetteer_name || getNameForNumericIsoCountryCode(g.country_id) || 'Unknown' };
@@ -71,7 +71,7 @@ export default {
       this.gazetteers = this.gazetteers.concat(formatted);
     },
     async getFeatureTypes() {
-      let { data } = await axios.get("/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc");
+      let { data } = await axios.get(`${process.env.BASE_URL}/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc`);
 
       let formatted = data.map((f) => {
         return { value: f.feature_type_code, text: f.feature_type_name };

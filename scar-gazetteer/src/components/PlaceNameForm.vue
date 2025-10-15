@@ -295,7 +295,7 @@ export default {
             return $dirty ? $error ? false : undefined : undefined
         },
         async loadGazetteers() {
-            const { data } = await axios.get('/api/gazetteers?order=gazetteer_name.asc')
+            const { data } = await axios.get(`${process.env.BASE_URL}/api/gazetteers?order=gazetteer_name.asc`)
 
             const formatted = data.map(g => {
                 return { value: g.gazetteer_code, text: g.gazetteer_name || getNameForNumericIsoCountryCode(g.country_id) }
@@ -304,7 +304,7 @@ export default {
             this.lists.gazetteers = this.lists.gazetteers.concat(formatted)
         },
         async loadFeatures() {
-            let { data } = await axios.get('/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc')
+            let { data } = await axios.get(`${process.env.BASE_URL}/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc`)
 
             let formatted = data.map(f => {
                 return { value: f.feature_type_code, text: f.feature_type_name }

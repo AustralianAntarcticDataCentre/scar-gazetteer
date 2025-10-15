@@ -70,7 +70,7 @@
             <b-card no-body class="overflow-hidden">
                 <b-row no-gutters>
                     <b-col md="3">
-                        <b-card-img :src="`/static/un_sdg/un_sdg_${place.un_sdg}.png`"
+                        <b-card-img :src="`${process.env.BASE_URL}/static/un_sdg/un_sdg_${place.un_sdg}.png`"
                             :alt="`UN Sustainable Development Goal Number ${place.un_sdg}`" class="h-100"></b-card-img>
                     </b-col>
                     <b-col md="8">
@@ -208,12 +208,12 @@ export default {
     methods: {
         async getOtherNames() {
             this.other_names = []
-            const response = await axios.get(`/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}`)
+            const response = await axios.get(`${process.env.BASE_URL}/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}`)
             this.other_names = response.data
         },
         async getThemes() {
             this.themes = []
-            const response = await axios.get(`/api/themes?place_names=cs.{${this.place.place_name_mapping}}`)
+            const response = await axios.get(`${process.env.BASE_URL}/api/themes?place_names=cs.{${this.place.place_name_mapping}}`)
             this.themes = response.data
         },
         toDMS(decimal_degrees, isLatitude) {

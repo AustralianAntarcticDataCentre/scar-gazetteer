@@ -138,20 +138,20 @@ export default {
 
                 if (this.deletedThemes.length > 0) {
                     const deletePromises = this.deletedThemes.map(themeId =>
-                        axios.delete(`/api/themes?id=eq.${themeId}`, { headers })
+                        axios.delete(`${process.env.BASE_URL}/api/themes?id=eq.${themeId}`, { headers })
                     )
                     promises.push(...deletePromises)
                 }
 
                 const updatePromises = themes.map(theme => {
                     if (theme.id) {
-                        return axios.patch(`/api/themes?id=eq.${theme.id}`, {
+                        return axios.patch(`${process.env.BASE_URL}/api/themes?id=eq.${theme.id}`, {
                             name: theme.name,
                             description: theme.description || null,
                             place_names: theme.place_names
                         }, { headers })
                     } else {
-                        return axios.post('/api/themes', {
+                        return axios.post(`${process.env.BASE_URL}/api/themes`, {
                             name: theme.name,
                             description: theme.description || null,
                             place_names: theme.place_names

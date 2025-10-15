@@ -30,7 +30,7 @@ import store from "../store"
 
 Vue.use(Router)
 Vue.use(Postgrest, {
-    apiRoot: '/api',
+    apiRoot: `${process.env.VUE_APP_PROXY_PATH}/api`,
 })
 
 const router = new Router({

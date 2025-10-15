@@ -1,6 +1,7 @@
 require = require('esm')(module);
 
 module.exports = {
+    publicPath: process.env.VUE_APP_PROXY_PATH,
     chainWebpack: config => {
         config
             .plugin('html')

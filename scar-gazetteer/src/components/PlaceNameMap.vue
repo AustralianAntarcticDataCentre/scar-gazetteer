@@ -60,7 +60,7 @@ const mapStyle = function (feature) {
 const antarcticaLayer = new VectorLayer({
     source: new VectorSource({
         format: new GeoJSON(),
-        url: '/data/antarctica.json',
+        url: `${process.env.BASE_URL}/data/antarctica.json`,
         attributions: 'Data provided by SCAR ADD (As part of BAS Data Catalogue)',
     }),
     style: mapStyle
@@ -69,7 +69,7 @@ const antarcticaLayer = new VectorLayer({
 const worldLayer = new VectorLayer({
     source: new VectorSource({
         format: new GeoJSON(),
-        url: '/data/world.json',
+        url: `${process.env.BASE_URL}/data/world.json`,
         attributions: "Data provided by Natural Earth",
     }),
     style: mapStyle
@@ -153,7 +153,7 @@ export default {
                     image: new Icon({
                         anchor: [0.5, 1],
                         scale: 0.02,
-                        src: '/static/marker.svg'
+                        src: `${process.env.BASE_URL}/static/marker.svg`
                     })
                 })
             });

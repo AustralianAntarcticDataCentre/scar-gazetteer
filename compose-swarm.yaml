@@ -19,8 +19,11 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=aadc-traefik-net"
         - "traefik.default.protocol=http"
-        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_web.rule=Host(`${APP_HOST}`)"
+        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_web.rule=Host(`${APP_HOST}`) && PathPrefix(`$APP_PROXY_PATH`)"
         - "traefik.http.services.${APP_NAME_DEPLOYMENT}_web.loadbalancer.server.port=80"
+        - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_web.stripprefix.prefixes=$APP_PROXY_PATH"
+        - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_web.stripprefix.forceslash=false"
+        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_web.middlewares=stripprefix_${APP_NAME_DEPLOYMENT}_web"
     logging:
       driver: loki
       options:
@@ -47,12 +50,12 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=aadc-traefik-net"
         - "traefik.default.protocol=http"
-        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_api.rule=Host(`${APP_HOST}`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_api.rule=Host(`${APP_HOST}`) && PathPrefix(`$APP_PROXY_PATH/api`)"
         - "traefik.http.services.${APP_NAME_DEPLOYMENT}_api.loadbalancer.server.port=${API_PORT}"
         # Middleware is required to correctly route to the API without the PathPrefix being passed to the API service,
         # otherwise all requests will send /${APP_PROXY_PATH}/api/{{REQUEST}} and the API wont know how to serve the request due
         # to the extra path.
-        - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.prefixes=/api"
+        - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.prefixes=$APP_PROXY_PATH/api"
         - "traefik.http.middlewares.stripprefix_${APP_NAME_DEPLOYMENT}_api.stripprefix.forceslash=false"
         - "traefik.http.routers.${APP_NAME_DEPLOYMENT}_api.middlewares=stripprefix_${APP_NAME_DEPLOYMENT}_api"
     ports: !reset []

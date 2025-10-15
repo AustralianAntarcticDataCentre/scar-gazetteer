@@ -58,10 +58,10 @@ export default {
                 filter = `?gazetteer=eq.${this.form.gazetteer}`
             }
 
-            let url = `/api/place_names${filter}`
+            let url = `${process.env.BASE_URL}/api/place_names${filter}`
 
             if(this.form.format == 'text/csv') {
-                url = `/api/place_names_consolidated${filter}`
+                url = `${process.env.BASE_URL}/api/place_names_consolidated${filter}`
             }
 
             const options = {
@@ -87,7 +87,7 @@ export default {
         }
     },
     mounted: async function () {
-        let response = await axios.get('/api/gazetteers')
+        let response = await axios.get(`${process.env.BASE_URL}/api/gazetteers`)
         let gaz = response.data
 
         let formatted = gaz.map(g => {
