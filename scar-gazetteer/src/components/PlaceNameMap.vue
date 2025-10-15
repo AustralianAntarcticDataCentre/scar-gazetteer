@@ -119,6 +119,7 @@ export default {
 
                 layers.push(this.markerLayer())
                 this.updateMarker()
+                this.map.render()
             }
         },
         updateMarker() {
@@ -174,6 +175,10 @@ export default {
         })
 
         this.updateMarker()
+    },
+    destroyed() {
+        this.map.setTarget(null)
+        this.map = null
     }
 }
 </script>
