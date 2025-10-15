@@ -47,6 +47,7 @@ export default {
             return {
                 route: 'place_names',
                 single: true,
+                token: this.$store.getters['user/getToken']
             }
         }
     },
