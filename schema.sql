@@ -97,17 +97,19 @@ ALTER TABLE gazetteer.place_names OWNER TO postgres;
 -- Name: search(text); Type: FUNCTION; Schema: gazetteer; Owner: postgres
 --
 
-CREATE FUNCTION gazetteer.search(search_text text) RETURNS SETOF gazetteer.place_names
-    LANGUAGE plpgsql
-    AS $$
+CREATE OR REPLACE FUNCTION gazetteer.search(search_text text)
+ RETURNS SETOF gazetteer.place_names_consolidated
+ LANGUAGE plpgsql
+AS $function$
         BEGIN
 			RETURN QUERY
-            select * from gazetteer.place_names
+            select * from gazetteer.place_names_consolidated
             where LOWER(unaccent(place_name_mapping)) like '%' || LOWER(unaccent(search_text)) || '%'
             OR place_id::text = search_text
             OR name_id::text = search_text;
         end;
-    $$;
+    $function$
+
 
 
 ALTER FUNCTION gazetteer.search(search_text text) OWNER TO postgres;
