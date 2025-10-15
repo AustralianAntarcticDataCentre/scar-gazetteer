@@ -23,7 +23,8 @@ export default {
                 query: {
                     'name_id.eq': this.$route.params.id
                 },
-                single: true
+                single: true,
+                token: this.$store.getters['user/getToken']
             }
         },
         form_data() {
