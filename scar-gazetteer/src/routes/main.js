@@ -144,6 +144,14 @@ const router = new Router({
                 sitemap: { ignoreRoute: true }
             }
         },
+        // Handle legacy internal links
+        {
+            path: '/display_name.cfm',
+            redirect: to => {
+                if (!to.query.gaz_id) return { path: '/search' }
+                return { path: `/place-name/${to.query.gaz_id}` }
+            }
+        },
         {
             path: '*',
             component: NotFound,
