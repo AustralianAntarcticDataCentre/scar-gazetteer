@@ -28,6 +28,7 @@ import { Style, Fill, Stroke, Icon } from 'ol/style';
 import 'ol/ol.css';
 
 import proj4 from "proj4";
+import { join } from '../utils';
 
 // https://epsg.io/3031
 proj4.defs("EPSG:3031", "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs")
@@ -60,7 +61,7 @@ const mapStyle = function (feature) {
 const antarcticaLayer = new VectorLayer({
     source: new VectorSource({
         format: new GeoJSON(),
-        url: `${process.env.BASE_URL}/data/antarctica.json`,
+        url: join(process.env.BASE_URL, `/data/antarctica.json`),
         attributions: 'Data provided by SCAR ADD (As part of BAS Data Catalogue)',
     }),
     style: mapStyle
@@ -69,7 +70,7 @@ const antarcticaLayer = new VectorLayer({
 const worldLayer = new VectorLayer({
     source: new VectorSource({
         format: new GeoJSON(),
-        url: `${process.env.BASE_URL}/data/world.json`,
+        url: join(process.env.BASE_URL, `/data/world.json`),
         attributions: "Data provided by Natural Earth",
     }),
     style: mapStyle
@@ -153,7 +154,7 @@ export default {
                     image: new Icon({
                         anchor: [0.5, 1],
                         scale: 0.02,
-                        src: `${process.env.BASE_URL}/static/marker.svg`
+                        src: join(process.env.BASE_URL, `/static/marker.svg`)
                     })
                 })
             });

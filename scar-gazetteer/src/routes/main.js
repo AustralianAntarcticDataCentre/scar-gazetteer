@@ -27,10 +27,11 @@ const Themes = () => import("../pages/Themes.vue")
 const NotFound = () => import("../pages/NotFound.vue")
 
 import store from "../store"
+import { join } from '../utils'
 
 Vue.use(Router)
 Vue.use(Postgrest, {
-    apiRoot: `${process.env.VUE_APP_PROXY_PATH}/api`,
+    apiRoot: join(process.env.VUE_APP_PROXY_PATH, `/api`),
 })
 
 const router = new Router({

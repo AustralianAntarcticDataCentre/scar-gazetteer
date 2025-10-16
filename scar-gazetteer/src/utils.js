@@ -8,3 +8,12 @@ export function getNameForNumericIsoCountryCode(code) {
 
     console.error(`Unknown ISO country code: '${code}'`)
 }
+
+/**
+ * Joins multiple path components and removes duplicate forward slashes, except for where they follow a colon.
+ * @param  {...string} paths 
+ * @returns {string}
+ */
+export function join(...paths) {
+    return paths.join('/').replaceAll(/(?<!:)\/{2,}/g, '/')
+}

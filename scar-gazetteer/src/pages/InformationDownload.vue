@@ -30,7 +30,7 @@
 
 <script>
 import axios from 'axios'
-import { getNameForNumericIsoCountryCode } from '../utils'
+import { getNameForNumericIsoCountryCode, join } from '../utils'
 import download from 'downloadjs'
 
 export default {
@@ -58,10 +58,10 @@ export default {
                 filter = `?gazetteer=eq.${this.form.gazetteer}`
             }
 
-            let url = `${process.env.BASE_URL}/api/place_names${filter}`
+            let url = join(process.env.BASE_URL, `/api/place_names${filter}`)
 
             if(this.form.format == 'text/csv') {
-                url = `${process.env.BASE_URL}/api/place_names_consolidated${filter}`
+                url = join(process.env.BASE_URL, `/api/place_names_consolidated${filter}`)
             }
 
             const options = {
@@ -87,7 +87,7 @@ export default {
         }
     },
     mounted: async function () {
-        let response = await axios.get(`${process.env.BASE_URL}/api/gazetteers`)
+        let response = await axios.get(join(process.env.BASE_URL, `/api/gazetteers`))
         let gaz = response.data
 
         let formatted = gaz.map(g => {

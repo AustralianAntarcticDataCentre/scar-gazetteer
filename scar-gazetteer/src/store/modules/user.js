@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Cookie from 'js-cookie'
 import decode from 'jwt-decode'
+import { join } from '../../utils'
 
 const AAD_JWT_TOKEN = 'aad_token'
 
@@ -62,7 +63,7 @@ export default {
         async authenticate({ dispatch, commit }, loginInfo) {
             try {
                 commit('setError', null)
-                let response = await axios.post(`${process.env.BASE_URL}/user/api/authenticate`, loginInfo)
+                let response = await axios.post(join(process.env.BASE_URL, `/user/api/authenticate`), loginInfo)
 
                 Cookie.set(AAD_JWT_TOKEN, response.data.token, {
                     expires: new Date(response.data.expires),

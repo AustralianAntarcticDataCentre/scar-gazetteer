@@ -55,6 +55,7 @@
 <script>
 import { pg } from 'vue-postgrest'
 import axios from 'axios'
+import { join } from '../utils';
 
 export default {
     name: "Themes",
@@ -138,20 +139,20 @@ export default {
 
                 if (this.deletedThemes.length > 0) {
                     const deletePromises = this.deletedThemes.map(themeId =>
-                        axios.delete(`${process.env.BASE_URL}/api/themes?id=eq.${themeId}`, { headers })
+                        axios.delete(join(process.env.BASE_URL, `/api/themes?id=eq.${themeId}`, { headers }))
                     )
                     promises.push(...deletePromises)
                 }
 
                 const updatePromises = themes.map(theme => {
                     if (theme.id) {
-                        return axios.patch(`${process.env.BASE_URL}/api/themes?id=eq.${theme.id}`, {
+                        return axios.patch(join(process.env.BASE_URL, `/api/themes?id=eq.${theme.id}`), {
                             name: theme.name,
                             description: theme.description || null,
                             place_names: theme.place_names
                         }, { headers })
                     } else {
-                        return axios.post(`${process.env.BASE_URL}/api/themes`, {
+                        return axios.post(join(process.env.BASE_URL, `/api/themes`), {
                             name: theme.name,
                             description: theme.description || null,
                             place_names: theme.place_names
