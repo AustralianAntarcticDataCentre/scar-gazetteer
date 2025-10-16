@@ -35,10 +35,7 @@
 
         <div v-if="place.narrative">
             <h3>Narrative</h3>
-            <p>
-                <component v-for="(part, index) in transformedNarrativeParts" :key="index" :is="part.component"
-                    v-bind="part.props" v-html="part.text"/>
-            </p>
+            <p v-html="sanitizeHtml(place.narrative)"></p>
         </div>
 
         <div v-if="place.narrative_translation">
@@ -173,7 +170,7 @@ export default {
                 },
                 "name": this.place.place_name_mapping,
                 // Sanitize HTML to convert any formatting to plain text
-                "description": this.sanitizeHtml(this.place.narrative, { USE_PROFILES: {}, KEEP_CONTENT: true }) || "",
+                "description": DOMPurify.sanitize(this.place.narrative || "", { USE_PROFILES: {}, KEEP_CONTENT: true }),
                 "url": `${window.location}`
             }
         },
@@ -232,57 +229,8 @@ export default {
 
             return `${degrees}° ${minutes}' ${seconds}" ${directionLetter}`;
         },
-        // transform [L]link to other place[/L]
-        transformLinks(narrative_text) {
-            const parts = []
-            const markupLinkRegex = /\[L\](.*?)\[\/L\]/g
-            let lastIndex = 0
-            let match
-
-            while ((match = markupLinkRegex.exec(narrative_text)) !== null) {
-                if (match.index > lastIndex) {
-                    parts.push({
-                        component: 'span',
-                        text: this.sanitizeHtml(narrative_text.substring(lastIndex, match.index)),
-                        props: {}
-                    })
-                }
-
-                const place_name = match[1]
-                parts.push({
-                    component: 'router-link',
-                    text: this.sanitizeHtml(place_name),
-                    props: {
-                        to: {
-                            path: '/search/results',
-                            query: { search_text: place_name }
-                        }
-                    }
-                })
-
-                lastIndex = match.index + match[0].length
-            }
-
-            if (lastIndex < narrative_text.length) {
-                parts.push({
-                    component: 'span',
-                    text: this.sanitizeHtml(narrative_text.substring(lastIndex)),
-                    props: {}
-                })
-            }
-
-            if (parts.length === 0) {
-                parts.push({
-                    component: 'span',
-                    text: this.sanitizeHtml(narrative_text),
-                    props: {}
-                })
-            }
-
-            return parts
-        },
-        sanitizeHtml(...args) {
-            return DOMPurify.sanitize(...args)
+        sanitizeHtml(html) {
+            return DOMPurify.sanitize(html, { ALLOWED_TAGS: ['b', 'strong', 'i', 'em', 'a', 'br', 'mark', 'q', 'sub', 'sup', 'u'], KEEP_CONTENT: true })
         },
         getNameForNumericIsoCountryCode,
         join

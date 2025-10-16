@@ -61,11 +61,9 @@
         </b-form-group>
 
         <b-form-group label="Narrative:" label-for="narrative" class="my-1">
-            <small>Use <i>[L]&lt;placename&gt;[/L]</i> to link to other place names.</small>
             <b-form-textarea id="narrative" v-model="$v.form_data.narrative.$model" rows="3" max-rows="6" />
         </b-form-group>
         <b-form-group label="Narrative translation:" label-for="narrative_translation" class="my-1">
-            <small>Use <i>[L]&lt;placename&gt;[/L]</i> to link to other place names.</small>
             <b-form-textarea id="narrative_translation" v-model="$v.form_data.narrative_translation.$model" rows="3"
                 max-rows="6" />
         </b-form-group>
