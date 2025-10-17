@@ -78,10 +78,6 @@ CREATE TABLE gazetteer.place_names (
     relic_flag boolean,
     date_named date,
     comments character varying(2000),
-    source_name character varying(500),
-    source_publisher character varying(100),
-    source_identifier character varying(100),
-    source_scale character varying(15),
     geometry public.geometry,
     pronunciation_audio_url character varying(500)
 );
@@ -497,10 +493,6 @@ SELECT
 	n.relic_flag AS is_relic,
 	n.date_named,
 	n."comments",
-	n.source_name,
-	n.source_publisher,
-	n.source_identifier,
-	n.source_scale,
 	n.pronunciation_audio_url
 FROM gazetteer.place_names n
 JOIN gazetteer.gazetteers g ON n.gazetteer = g.gazetteer_code

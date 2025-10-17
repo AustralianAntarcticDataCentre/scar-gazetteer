@@ -108,18 +108,7 @@
         <b-form-group label="Comments:" label-for="comments" class="my-1">
             <b-form-textarea id="comments" v-model="$v.form_data.comments.$model" rows="3" max-rows="6" />
         </b-form-group>
-        <b-form-group label="Source name:" label-for="source_name" class="my-1">
-            <b-form-input id="source_name" v-model="$v.form_data.source_name.$model" type="text" />
-        </b-form-group>
-        <b-form-group label="Source publisher:" label-for="source_publisher" class="my-1">
-            <b-form-input id="source_publisher" v-model="$v.form_data.source_publisher.$model" type="text" />
-        </b-form-group>
-        <b-form-group label="Source identifier:" label-for="source_identifier" class="my-1">
-            <b-form-input id="source_identifier" v-model="$v.form_data.source_identifier.$model" type="text" />
-        </b-form-group>
-        <b-form-group label="Source scale:" label-for="source_scale" class="my-1">
-            <b-form-input id="source_scale" v-model="$v.form_data.source_scale.$model" type="text" />
-        </b-form-group>
+
         <b-alert variant="danger" :show="$v.$dirty && $v.$error">There are errors that require your attention.</b-alert>
         <b-button type="submit" variant="primary">Submit</b-button>
         <b-button variant="secondary" @click="reset">Reset</b-button>
@@ -252,18 +241,6 @@ export default {
             comments: {
 
             },
-            source_name: {
-
-            },
-            source_publisher: {
-
-            },
-            source_identifier: {
-
-            },
-            source_scale: {
-
-            }
         }
     },
     watch: {

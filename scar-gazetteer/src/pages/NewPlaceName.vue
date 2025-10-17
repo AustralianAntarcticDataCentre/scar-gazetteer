@@ -27,10 +27,6 @@ const initialForm = () => ({
     "relic_flag": false,
     "date_named": null,
     "comments": null,
-    "source_name": null,
-    "source_publisher": null,
-    "source_identifier": null,
-    "source_scale": null,
 })
 
 export default {

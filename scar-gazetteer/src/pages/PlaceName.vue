@@ -83,14 +83,6 @@
         <h3>Map</h3>
         <PlaceNameMap :coordinates="{ latitude: place.geometry.coordinates[1], longitude: place.geometry.coordinates[0] }" />
 
-        <h3>Source</h3>
-        <ul>
-            <li>Source name: {{ place.source_name || "Not recorded" }}</li>
-            <li>Source publisher: {{ place.source_publisher || "Not recorded" }}</li>
-            <li>Source scale: {{ place.source_scale || "Not recorded" }}</li>
-            <li>Source identifier: {{ place.source_identifier || "Not recorded" }}</li>
-        </ul>
-
         <template v-if="place.comments != null">
             <h3>Comments</h3>
             <p>{{ place.comments }}</p>
