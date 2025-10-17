@@ -240,35 +240,6 @@ create or replace aggregate gazetteer.place_names_kml_agg (gazetteer.place_names
 
 ALTER VIEW gazetteer.name_count OWNER TO postgres;
 
---
--- TOC entry 294 (class 1259 OID 19854)
--- Name: themes; Type: TABLE; Schema: gazetteer; Owner: postgres
---
-
-CREATE TABLE gazetteer.themes (
-    id INT NOT NULL,
-    name character varying(1000) NOT NULL,
-    description character varying(10000),
-    place_names character varying(1000)[]
-);
-
-
-ALTER TABLE gazetteer.themes OWNER TO postgres;
-
---
--- TOC entry 295 (class 1259 OID 19861)
--- Name: themes_id_seq; Type: SEQUENCE; Schema: gazetteer; Owner: postgres
---
-
-ALTER TABLE gazetteer.themes ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME gazetteer.themes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
 
 --
 -- TOC entry 4461 (class 2606 OID 19812)
@@ -295,15 +266,6 @@ ALTER TABLE ONLY gazetteer.gazetteers
 
 ALTER TABLE ONLY gazetteer.glossary
     ADD CONSTRAINT glossary_pkey PRIMARY KEY (glossary_id);
-
-
---
--- TOC entry 4469 (class 2606 OID 19860)
--- Name: themes themes_pkey; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
---
-
-ALTER TABLE ONLY gazetteer.themes
-    ADD CONSTRAINT themes_pkey PRIMARY KEY (id);
 
 
 --
@@ -366,14 +328,6 @@ ALTER TABLE gazetteer.feature_types ENABLE ROW LEVEL SECURITY;
 --
 
 CREATE POLICY full_edit ON gazetteer.place_names FOR UPDATE TO scar_admin USING (true);
-
-
---
--- TOC entry 4639 (class 3256 OID 19870)
--- Name: themes full_edit; Type: POLICY; Schema: gazetteer; Owner: postgres
---
-
-CREATE POLICY full_edit ON gazetteer.themes TO scar_admin USING (true) WITH CHECK (true);
 
 
 --
@@ -449,22 +403,6 @@ CREATE POLICY public_view ON gazetteer.place_names FOR SELECT TO public_user USI
 
 
 --
--- TOC entry 4638 (class 3256 OID 19866)
--- Name: themes public_view; Type: POLICY; Schema: gazetteer; Owner: postgres
---
-
-CREATE POLICY public_view ON gazetteer.themes FOR SELECT TO public_user USING (true);
-
-
---
--- TOC entry 4628 (class 0 OID 19854)
--- Dependencies: 294
--- Name: themes; Type: ROW SECURITY; Schema: gazetteer; Owner: postgres
---
-
-ALTER TABLE gazetteer.themes ENABLE ROW LEVEL SECURITY;
-
---
 -- TOC entry 4645 (class 0 OID 0)
 -- Dependencies: 14
 -- Name: SCHEMA gazetteer; Type: ACL; Schema: -; Owner: postgres
@@ -533,15 +471,6 @@ GRANT ALL ON TABLE gazetteer.glossary TO scar_admin;
 GRANT SELECT ON TABLE gazetteer.name_count TO public_user;
 GRANT SELECT ON TABLE gazetteer.name_count TO scar_admin;
 
-
---
--- TOC entry 4652 (class 0 OID 0)
--- Dependencies: 294
--- Name: TABLE themes; Type: ACL; Schema: gazetteer; Owner: postgres
---
-
-GRANT SELECT ON TABLE gazetteer.themes TO public_user;
-GRANT ALL ON TABLE gazetteer.themes TO scar_admin;
 
 GRANT USAGE ON SEQUENCE gazetteer.place_names_place_id_seq TO scar_admin;
 

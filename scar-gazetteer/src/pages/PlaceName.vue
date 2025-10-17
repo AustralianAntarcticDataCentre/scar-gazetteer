@@ -51,15 +51,6 @@
             <p v-html="sanitizeHtml(place.named_for)"></p>
         </div>
 
-        <div v-if="themes.length > 0">
-            <h3>Themes</h3>
-            <p>This place is included in these themes:</p>
-            <span v-for="(theme, index) in themes" :key="theme">
-                <router-link :to="'/information/themes#' + theme.name">{{ theme.name }}</router-link>
-                <span v-if="index + 1 < themes.length">, </span>
-            </span>
-        </div>
-
         <template v-if="place.un_sdg && place.un_sdg > 0 && place.un_sdg <= Object.keys(un_sustainable_development_goal_descriptions).length">
             <h3>UN Sustainable Development Goal</h3>
             <p>This place name is linked to a United Nations Sustainable Development goal.</p>
@@ -135,7 +126,6 @@ export default {
     data: function () {
         return {
             other_names: [],
-            themes: [],
             un_sustainable_development_goal_descriptions: {
                 1: "No Poverty – End poverty in all its forms everywhere.",
                 2: "Zero Hunger – End hunger, achieve food security and improved nutrition, and promote sustainable agriculture.",
@@ -200,7 +190,6 @@ export default {
     watch: {
         'pg.name_id': function () {
             this.getOtherNames()
-            this.getThemes()
         }
     },
     methods: {
@@ -208,11 +197,6 @@ export default {
             this.other_names = []
             const response = await axios.get(join(process.env.BASE_URL, `/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}`))
             this.other_names = response.data
-        },
-        async getThemes() {
-            this.themes = []
-            const response = await axios.get(join(process.env.BASE_URL, `/api/themes?place_names=cs.{${this.place.place_name_mapping}}`))
-            this.themes = response.data
         },
         toDMS(decimal_degrees, isLatitude) {
             const degrees = Math.floor(Math.abs(decimal_degrees));

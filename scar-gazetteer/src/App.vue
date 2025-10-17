@@ -22,7 +22,6 @@
               <b-nav-item to="/information"><b-icon-info-circle-fill /> Information</b-nav-item>
               <b-nav-item v-if="$store.state.user.isAdmin" to="/new-name"><b-icon-plus-circle-fill /> Add new
                 name</b-nav-item>
-              <b-nav-item v-if="$store.state.user.isAdmin" to="/themes"><b-icon-card-text /> Edit themes</b-nav-item>
             </b-navbar-nav>
 
             <b-navbar-nav class="nav-right">

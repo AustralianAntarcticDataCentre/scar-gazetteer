@@ -23,7 +23,6 @@ const InformationNamingAuthorities = () => import("../pages/InformationNamingAut
 const InformationStatistics = () => import("../pages/InformationStatistics.vue")
 const NewPlaceName = () => import("../pages/NewPlaceName.vue")
 const EditPlaceName = () => import("../pages/EditPlaceName.vue")
-const Themes = () => import("../pages/Themes.vue")
 const NotFound = () => import("../pages/NotFound.vue")
 
 import store from "../store"
@@ -131,14 +130,6 @@ const router = new Router({
         {
             path: '/new-name',
             component: NewPlaceName,
-            meta: {
-                requiresAdmin: true,
-                sitemap: { ignoreRoute: true }
-            }
-        },
-        {
-            path: '/themes',
-            component: Themes,
             meta: {
                 requiresAdmin: true,
                 sitemap: { ignoreRoute: true }
