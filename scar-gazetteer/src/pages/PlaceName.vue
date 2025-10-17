@@ -1,5 +1,5 @@
 <template>
-    <b-container class="place" v-if="!place.$get.isPending">
+    <b-container class="place" v-if="!place.$get.isPending && place.id">
         <h1>
             {{ place.place_name_mapping }}
             <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button>
@@ -88,6 +88,9 @@
             <p>{{ place.comments }}</p>
         </template>
     </b-container>
+    <b-container v-else-if="!place.$get.isPending && !place.id">
+        <NotFound />
+    </b-container>
     <b-container v-else>
         <div class="spinner-div d-flex justify-content-center">
             <b-spinner class="spinner"></b-spinner>
@@ -103,10 +106,11 @@ import DOMPurify from 'dompurify'
 import PlaceNameMap from '@/components/PlaceNameMap.vue'
 import { getNameForNumericIsoCountryCode } from '@/utils'
 import { join } from '../utils'
+import NotFound from './NotFound.vue'
 
 export default {
     name: 'PlaceName',
-    components: { PlaceNameMap },
+    components: { PlaceNameMap, NotFound },
     metaInfo: function () {
         return {
             script: [{
