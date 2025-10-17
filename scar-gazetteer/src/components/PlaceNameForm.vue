@@ -1,13 +1,5 @@
 <template>
     <b-form novalidate @submit.prevent="submit">
-        <b-form-group label-for="place_name_mapping" class="my-1">
-            <template #label>
-                <span style="color: red;">*</span> Mapping place name:
-            </template>
-            <small>Must be at least 2 characters.</small>
-            <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_mapping.$model" type="text"
-                required :state="validateState('place_name_mapping')" />
-        </b-form-group>
         <b-form-group label-for="place_name_gazetteer" class="my-1">
             <template #label>
                 <span style="color: red;">*</span> Gazetteer place name:
@@ -15,6 +7,15 @@
             <small>Must be at least 2 characters.</small>
             <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_gazetteer.$model"
                 required :state="validateState('place_name_gazetteer')" type="text" />
+        </b-form-group>
+
+        <b-form-group label-for="place_name_mapping" class="my-1">
+            <template #label>
+                <span style="color: red;">*</span> Mapping place name:
+            </template>
+            <small>Must be at least 2 characters.</small>
+            <b-form-input id="place_name_mapping" v-model="$v.form_data.place_name_mapping.$model" type="text"
+                required :state="validateState('place_name_mapping')" />
         </b-form-group>
 
         <b-form-group v-if="!form.name_id" label="Is this place known by an existing name in the SCAR CGA?" v-slot="{ ariaDescribedby }">

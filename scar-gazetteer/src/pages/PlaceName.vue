@@ -1,16 +1,19 @@
 <template>
-    <b-container class="place" v-if="!place.$get.isPending && place.id">
+    <b-container class="place" v-if="!place.$get.isPending && place.name_id">
         <h1>
-            {{ place.place_name_mapping }}
+            {{ place.place_name_gazetteer }}
             <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button>
         </h1>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
         <p v-if="place.feature_types">
-            Feature type: 
-            <a :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{ place.feature_types.feature_type_name }}</a>
-            <span v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition">
-                <b-icon-info-circle />
-            </span>
+            Displayed as: {{ place.place_name_mapping }} <span v-b-tooltip.hover title="How this place name appears on a map."><b-icon-info-circle /></span><br>
+            <template v-if="place.feature_types">
+                Feature type: 
+                <a :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{ place.feature_types.feature_type_name }}</a>
+                <span v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition">
+                    <b-icon-info-circle />
+                </span>
+            </template>
         </p>
 
         <audio v-if="place.pronunciation_audio_url" controls>
@@ -28,7 +31,7 @@
             <p>Other names for this place:</p>
             <ul>
                 <li v-for="name of other_names" :key="name.name_id">
-                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_mapping }}({{ name.gazetteer }})</router-link>
+                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
                 </li>
             </ul>
         </div>
@@ -88,7 +91,7 @@
             <p>{{ place.comments }}</p>
         </template>
     </b-container>
-    <b-container v-else-if="!place.$get.isPending && !place.id">
+    <b-container v-else-if="!place.$get.isPending && !place.name_id">
         <NotFound />
     </b-container>
     <b-container v-else>
@@ -191,7 +194,7 @@ export default {
     methods: {
         async getOtherNames() {
             this.other_names = []
-            const response = await axios.get(join(process.env.BASE_URL, `/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}`))
+            const response = await axios.get(join(process.env.BASE_URL, `/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}&select=place_id,name_id,place_name_gazetteer,gazetteer:gazetteers(gazetteer_name,country_id)`))
             this.other_names = response.data
         },
         toDMS(decimal_degrees, isLatitude) {
