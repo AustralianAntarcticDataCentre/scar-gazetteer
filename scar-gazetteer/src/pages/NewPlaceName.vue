@@ -18,8 +18,6 @@ const initialForm = () => ({
     "altitude": null,
     "altitude_accuracy": null,
     "narrative": "",
-    "narrative_translation": "",
-    "machine_translation": false,
     "named_for": null,
     "un_sdg": 0,
     "gazetteer": null,

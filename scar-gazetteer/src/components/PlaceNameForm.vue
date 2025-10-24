@@ -64,15 +64,6 @@
         <b-form-group label="Narrative:" label-for="narrative" class="my-1">
             <b-form-textarea id="narrative" v-model="$v.form_data.narrative.$model" rows="3" max-rows="6" />
         </b-form-group>
-        <b-form-group label="Narrative translation:" label-for="narrative_translation" class="my-1">
-            <b-form-textarea id="narrative_translation" v-model="$v.form_data.narrative_translation.$model" rows="3"
-                max-rows="6" />
-        </b-form-group>
-
-        <b-form-group label="Is machine translation:" label-for="machine_translation" class="my-1">
-            <b-form-select id="machine_translation" class="form-select my-1" v-model="$v.form_data.machine_translation.$model"
-                :options="lists.machine_translation" :state="validateState($v.form_data.machine_translation)" />
-        </b-form-group>
 
         <b-form-group label="Named for:" label-for="named-for" class="my-1">
             <b-form-textarea id="named-for" v-model="$v.form_data.named_for.$model" rows="3" max-rows="6" />
@@ -164,7 +155,6 @@ export default {
                     { value: 17, text: "Partnerships for the Goals"}
                 ],
                 relic: [{ value: false, text: 'No' }, { value: true, text: 'Yes' }],
-                machine_translation: [{ value: false, text: 'No' }, { value: true, text: 'Yes' }],
             }
         }
     },
@@ -208,13 +198,6 @@ export default {
             },
             narrative: {
 
-            },
-            narrative_translation: {
-
-            },
-            machine_translation: {
-                required,
-                boolean,
             },
             named_for: {
 

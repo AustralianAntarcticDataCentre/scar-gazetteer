@@ -41,14 +41,6 @@
             <p v-html="sanitizeHtml(place.narrative)"></p>
         </div>
 
-        <div v-if="place.narrative_translation">
-            <h3>Narrative translation</h3>
-            <p v-html="sanitizeHtml(place.narrative_translation)"></p>
-            <div v-if="place.machine_translation">
-                <b-alert variant="info" show><b-icon-info-circle-fill /> Note: This text has been machine-translated and may not be accurate.</b-alert>
-            </div>
-        </div>
-
         <div v-if="place.named_for">
             <h3>Named for</h3>
             <p v-html="sanitizeHtml(place.named_for)"></p>
