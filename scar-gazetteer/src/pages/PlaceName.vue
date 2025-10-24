@@ -1,18 +1,23 @@
 <template>
     <b-container class="place" v-if="!place.$get.isPending && place.name_id">
-        <h1>
-            {{ place.place_name_gazetteer }}
+        <div class="d-flex align-items-center gap-3">
+            <h1 class="mb-0">
+                {{ place.place_name_gazetteer }}
+            </h1>
             <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button>
-        </h1>
+        </div>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
-        <p v-if="place.feature_types">
-            Displayed as: {{ place.place_name_mapping }} <span v-b-tooltip.hover title="How this place name appears on a map."><b-icon-info-circle /></span><br>
-            <template v-if="place.feature_types">
-                Feature type: 
-                <a :href="`https://data.aad.gov.au/feature-type/${place.feature_types.feature_type_code}`">{{ place.feature_types.feature_type_name }}</a>
-                <span v-if="place.feature_types.definition" v-b-tooltip.hover :title="place.feature_types.definition">
+        <p>
+            Displayed as: {{ place.place_name_mapping || "Unknown" }} <span v-b-tooltip.hover title="How this place name appears on a map."><b-icon-info-circle /></span><br>
+            Feature type: 
+            <template v-if="place.feature_type">
+                <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a>
+                <span v-if="place.feature_type.definition" v-b-tooltip.hover :title="place.feature_type.definition">
                     <b-icon-info-circle />
                 </span>
+            </template>
+            <template v-else>
+                Unknown
             </template>
         </p>
 
@@ -22,29 +27,25 @@
         </audio>
 
         <h3>Origin</h3>
-        <p v-if="place.gazetteers">
+        <p>
             This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>.
             It is part of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.
         </p>
 
-        <div v-if="other_names.length">
-            <p>Other names for this place:</p>
-            <ul>
-                <li v-for="name of other_names" :key="name.name_id">
-                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
-                </li>
-            </ul>
-        </div>
+        <p>Other names for this place:</p>
+        <ul>
+            <li v-for="name of other_names" :key="name.name_id">
+                <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
+            </li>
+        </ul>
 
-        <div v-if="place.narrative">
-            <h3>Narrative</h3>
-            <p v-html="sanitizeHtml(place.narrative)"></p>
-        </div>
+        <h3>Narrative</h3>
+        <p v-if="place.narrative" v-html="sanitizeHtml(place.narrative)"></p>
+        <p v-else>Not recorded</p>
 
-        <div v-if="place.named_for">
-            <h3>Named for</h3>
-            <p v-html="sanitizeHtml(place.named_for)"></p>
-        </div>
+        <h3>Named for</h3>
+        <p v-if="place.named_for" v-html="sanitizeHtml(place.named_for)"></p>
+        <p v-else>Not recorded</p>
 
         <template v-if="place.un_sdg && place.un_sdg > 0 && place.un_sdg <= Object.keys(un_sustainable_development_goal_descriptions).length">
             <h3>UN Sustainable Development Goal</h3>
@@ -73,15 +74,16 @@
             <li>Latitude: {{ place.geometry.coordinates[1] }}° ({{ toDMS(place.geometry.coordinates[1], isLatitude = true) }})</li>
             <li>Longitude: {{ place.geometry.coordinates[0] }}° ({{ toDMS(place.geometry.coordinates[0], isLatitude = false) }})</li>
             <li>Altitude: {{ place.altitude || "Not recorded" }}</li>
+            <li>Location accuracy: {{ place.altitude_accuracy || "Not recorded" }}</li>
+            <li>Coordinate accuracy: {{ place.coordinate_accuracy || "Not recorded" }}</li>
         </ul>
 
         <h3>Map</h3>
         <PlaceNameMap :coordinates="{ latitude: place.geometry.coordinates[1], longitude: place.geometry.coordinates[0] }" />
 
-        <template v-if="place.comments != null">
-            <h3>Comments</h3>
-            <p>{{ place.comments }}</p>
-        </template>
+        <h3>Comments</h3>
+        <p v-if="place.comments" v-html="sanitizeHtml(place.comments)"></p>
+        <p v-else>No comments</p>
     </b-container>
     <b-container v-else-if="!place.$get.isPending && !place.name_id">
         <NotFound />
@@ -162,7 +164,7 @@ export default {
             return {
                 route: 'place_names',
                 query: {
-                    select: ['*', 'gazetteers(*), feature_types(*)'],
+                    select: ['*', 'gazetteers(*), feature_type:feature_types(*)'],
                     and: {
                         'name_id.eq': this.$route.params.id
                     }
