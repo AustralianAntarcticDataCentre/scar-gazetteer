@@ -1,11 +1,11 @@
 <template>
-    <b-container>
+    <div>
         <h1>Edit place name</h1>
         <div class="spinner-div d-flex justify-content-center" v-if="pg.$get.isPending">
             <b-spinner class="spinner"></b-spinner>
         </div>
         <place-name-form v-if="!form_data.$get.isPending" :form="form_data" v-on:reset="reset" v-on:submit="submit" v-on:deletePlacename="deletePlacename" />
-    </b-container>
+    </div>
 </template>
 
 <script>

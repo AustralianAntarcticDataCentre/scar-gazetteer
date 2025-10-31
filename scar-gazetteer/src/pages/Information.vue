@@ -1,27 +1,73 @@
+<script setup lang="ts">
+import { BIconChevronDoubleDown } from 'bootstrap-vue';
+
+export default {
+    components: { BIconChevronDoubleDown },
+    data: () => ({
+        showNavigation: true,
+        isMinWidthLg: true,
+        mediaQueryList: null,
+    }),
+    methods: {
+        onMediaQueryListChange(event) {
+            this.isMinWidthLg = event.matches
+        }
+    },
+    watch: {
+        isMinWidthLg() {
+            this.showNavigation = this.isMinWidthLg
+        },
+        '$route'() {
+            this.showNavigation = this.isMinWidthLg
+        }
+    },
+    created() {
+        this.mediaQueryList = window.matchMedia("(min-width: 992px)"); // Bootstrap lg breakpoint
+        this.isMinWidthLg = this.mediaQueryList.matches
+        this.mediaQueryList.addEventListener("change", this.onMediaQueryListChange)
+    },
+    destroyed() {
+        this.mediaQueryList.removeEventListener("change", this.onMediaQueryListChange)
+        this.mediaQueryList = null
+    }
+}
+</script>
+
 <template>
-    <b-container class="infomation-content">
+    <div class="infomation-content">
         <b-row>
-            <b-col cols="3">
-                <b-nav pills vertical>
-                    <b-nav-item exact active-class="active" to="/information">General information</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/terminology">Terminology</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/statistics">Statistics</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/glossary">Glossary</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/naming-authorities">Naming authorities</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/history">History</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/data-and-validation">Data and validation</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/cga-characteristics">CGA characteristics</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/citation-information">Citation information</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/batch-instructions">Instructions for batch edits</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/themes">Themes</b-nav-item>
-                    <b-nav-item active-class="active" to="/information/download">Download</b-nav-item>
-                </b-nav>
+            <b-col cols="12" lg="3">
+                <b-card tag="nav" no-body class="overflow-hidden mb-3 mb-lg-0">
+                    <b-card-header class="pl-3 pr-2 py-2 d-lg-none d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Information</h6>
+                        <b-button size="sm" v-b-toggle.information-nav variant="outline-secondary">
+                            <BIconChevronDoubleDown />
+                            <span class="sr-only">Show menu</span>
+                        </b-button>
+                    </b-card-header>
+                    <b-collapse id="information-nav" v-model="showNavigation" role="tabpanel">
+                        <b-list-group flush>
+                            <b-list-group-item exact active-class="active" to="/information">General information</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/terminology">Terminology</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/statistics">Statistics</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/glossary">Glossary</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/naming-authorities">Naming authorities</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/history">History</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/data-and-validation">Data and validation</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/cga-characteristics">CGA characteristics</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/citation-information">Citation information</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/batch-instructions">Instructions for batch edits</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/themes">Themes</b-list-group-item>
+                            <b-list-group-item active-class="active" to="/information/download">Download</b-list-group-item>
+                        </b-list-group>
+                    </b-collapse>
+                </b-card>
             </b-col>
-            <b-col>
+            <b-col cols="12" lg="9">
                 <router-view />
             </b-col>
         </b-row>
-    </b-container>
+    </div>
 </template>
 
 <style scoped>

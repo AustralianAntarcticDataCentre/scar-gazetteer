@@ -1,20 +1,20 @@
 <template>
-    <b-container>
+    <div>
         <h1>Statistics</h1>
-        <b-table striped hover label-sort-asc="" label-sort-desc="" label-sort-clear="" :items="statsWithTotal"
+        <Loading v-if="pg.$get.isPending" />
+        <b-table v-else striped hover label-sort-asc="" label-sort-desc="" label-sort-clear="" :items="statsWithTotal"
             :fields="fields" />
-        <div class="spinner-div d-flex justify-content-center" v-if="pg.$get.isPending">
-            <b-spinner class="spinner"></b-spinner>
-        </div>
-    </b-container>
+    </div>
 </template>
 
 <script>
 import { pg } from 'vue-postgrest'
 import { getNameForNumericIsoCountryCode } from '../utils';
+import Loading from '@/components/Loading.vue';
 
 export default {
     name: 'InformationGlossary',
+    components: { Loading },
     data: function () {
         return {
             fields: [

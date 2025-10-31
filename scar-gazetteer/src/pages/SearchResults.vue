@@ -1,65 +1,56 @@
 <template>
-    <b-container class="search">
+    <div class="max-w-md mx-auto">
         <h1>Search results</h1>
-        <p>
-            Page: {{ page.toLocaleString() }} of {{ total_pages.toLocaleString() }}<br>
-            Total results: {{ count.toLocaleString() }}
-        </p>
-        <div class="control">
-            <div class="page-control" v-if="total_pages > 1">
-                <b-button @click="previous" :disabled="page == 1">Previous</b-button>
-                <b-button @click="next" :disabled="page >= total_pages">Next</b-button>
+        <Loading v-if="!count" />
+        <template v-else>
+            <p>
+                {{ count.toLocaleString() }} total results
+            </p>
+            <div class="d-flex justify-content-between flex-wrap mb-3">
+                <b-pagination-nav :link-gen="generatePageLink" :number-of-pages="total_pages" use-router first-number last-number class="mr-3"></b-pagination-nav>
+                <b-button @click="download" variant="outline-secondary"><BIconDownload /> Download</b-button>
             </div>
-            <div class="download-control">
-                <b-button @click="download" variant="outline-primary"><b-icon-download /> Download</b-button>
-            </div>
-        </div>
-        <b-table v-if="!loading" :items="results" :fields="fields">
-            <template #cell(place_name_mapping)="p">
-                <div>
-                    <b-link :to="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
-                        ({{ p.item.gazetteer_code }})</b-link><br />
-                    <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
-                </div>
-            </template>
-            <template #cell(latitude)="lat">
-                <div>
-                    {{ lat.item.latitude }}°
-                </div>
-            </template>
-            <template #cell(longitude)="lon">
-                <div>
-                    {{ lon.item.longitude }}°
-                </div>
-            </template>
-            <template #cell(feature_types)="f">
-                <div v-if="f.item.feature_type_name">
-                    <a
-                        :href="`https://data.aad.gov.au/feature-type/${f.item.feature_type_code}`">{{ f.item.feature_type_name }}</a>
-                </div>
-            </template>
-        </b-table>
-        <b-container v-else>
-            <div class="spinner-div d-flex justify-content-center">
-                <b-spinner class="spinner"></b-spinner>
-            </div>
-        </b-container>
-        <div class="control" v-if="total_pages > 1">
-            <div class="page-control">
-                <b-button @click="previous" :disabled="page == 1">Previous</b-button>
-                <b-button @click="next" :disabled="page >= total_pages">Next</b-button>
-            </div>
-        </div>
-    </b-container>
+            <b-table v-if="!loading" :items="results" :fields="fields" responsive>
+                <template #cell(place_name_mapping)="p">
+                    <div>
+                        <b-link :to="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
+                            ({{ p.item.gazetteer_code }})</b-link><br />
+                        <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
+                    </div>
+                </template>
+                <template #cell(latitude)="lat">
+                    <div>
+                        {{ lat.item.latitude }}°
+                    </div>
+                </template>
+                <template #cell(longitude)="lon">
+                    <div>
+                        {{ lon.item.longitude }}°
+                    </div>
+                </template>
+                <template #cell(feature_types)="f">
+                    <div v-if="f.item.feature_type_name">
+                        <a
+                            :href="`https://data.aad.gov.au/feature-type/${f.item.feature_type_code}`">{{ f.item.feature_type_name }}</a>
+                    </div>
+                </template>
+            </b-table>
+            <Loading v-else class="mb-3" />
+        <b-pagination-nav :link-gen="generatePageLink" :number-of-pages="total_pages" use-router first-number last-number></b-pagination-nav>
+        </template>
+    </div>
 </template>
 
 <script>
 import qs from 'qs'
 import axios from 'axios'
 import { join } from '../utils';
+import { BIconDownload } from 'bootstrap-vue';
+import Loading from '../components/Loading.vue';
 
 export default {
     name: 'SearchResults',
+    components: { BIconDownload, Loading },
     data: function () {
         return {
             loading: false,
@@ -146,23 +137,10 @@ export default {
                 this.loading = false
             }
         },
-        next: function () {
-            if (this.page >= this.total_pages) {
-                return
+        generatePageLink(pageNumber) {
+            return {
+                query: { ...this.$route.query, page: pageNumber },
             }
-
-            const query = Object.assign({}, this.$route.query);
-            query.page = parseInt(this.page) + 1;
-            this.$router.push({ query });
-        },
-        previous: function () {
-            if (this.page == 1) {
-                return
-            }
-
-            const query = Object.assign({}, this.$route.query);
-            query.page = parseInt(this.page) - 1;
-            this.$router.push({ query });
         },
         download: function () {
             let filter = this.parseFilter()
@@ -182,7 +160,6 @@ export default {
         }
     },
 }
-
 </script>
 
 <style scoped>
@@ -190,10 +167,6 @@ export default {
     color: #fff;
     background-color: #999;
     text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
-}
-
-.search {
-    max-width: 50em;
 }
 
 .control {

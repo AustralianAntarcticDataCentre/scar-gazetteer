@@ -902,3 +902,9 @@ div.generic_container {
 #dc_slides {
   margin-left: -20px;
   margin-right: -20px; }
+
+/* Add required indicator to input labels */
+label:has(+ div [required])::before {
+  content: '* ';
+  color: red;
+}

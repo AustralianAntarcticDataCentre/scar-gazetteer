@@ -1,6 +1,6 @@
 <template>
-    <b-container class="main-content">
-        <h1>Welcome to the SCAR Composite Gazetteer of Antarctica</h1>
+    <div class="main-content">
+        <h1>SCAR Composite Gazetteer of Antarctica</h1>
 
         <p>The SCAR Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
 
@@ -16,23 +16,25 @@
         <p>For queries about the CGA email scar.cga@unisi.it</p>
 
         <ul class="unstyled">
-            <li><b-icon-bar-chart style="text-align: center" /> <b-link to="/information/statistics"> View SCAR Gazetteer
+            <li><BIconBarChart style="text-align: center" /> <b-link to="/information/statistics"> View SCAR Gazetteer
                     summary information</b-link></li>
-            <li><b-icon-cloud-arrow-down style="text-align: center" /> <b-link to="/information/download"> Download SCAR Gazetteer</b-link>
+            <li><BIconCloudArrowDown style="text-align: center" /> <b-link to="/information/download"> Download SCAR Gazetteer</b-link>
             </li>
-            <li><b-icon-file-earmark-text style="text-align: center" /> <b-link to="/information/batch-instructions">
+            <li><BIconFileEarmarkText style="text-align: center" /> <b-link to="/information/batch-instructions">
                     Instructions for batch edits</b-link></li>
         </ul>
-    </b-container>
+    </div>
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import axios from 'axios'
 import { join } from '../utils';
+import { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText } from 'bootstrap-vue';
 
 export default {
     name: "Main",
+    components: { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText },
     data: function () {
         return {
             feature_count: 0,
@@ -100,6 +102,6 @@ export default {
 }
 
 .main-content {
-    max-width: 60em;
+    max-width: 50rem;
 }
 </style>

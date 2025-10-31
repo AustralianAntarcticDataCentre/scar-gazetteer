@@ -1,8 +1,8 @@
 <template>
-    <b-container>
-        <h2>Download</h2>
+    <div>
+        <h1>Download</h1>
 
-        <h3>Citation information</h3>
+        <h2>Citation information</h2>
         <p>When citing this dataset, use the following example as a guide.</p>
         <p>Secretariat SCAR (1992, updated 2022).
             Composite Gazetteer of Antarctica, <em>Scientific Committee on Antarctic Research</em>.
@@ -23,25 +23,27 @@
                 <b-form-select id="format" v-model="form.format" :options="formats" />
             </b-form-group>
             <br>
-            <b-button type="submit" variant="primary"><b-icon-download /> Download </b-button>
+            <b-button type="submit" variant="primary"><BIconDownload /> Download</b-button>
         </b-form>
-    </b-container>
+    </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { getNameForNumericIsoCountryCode, join } from '../utils'
 import download from 'downloadjs'
+import { BIconDownload } from 'bootstrap-vue';
 
 export default {
     name: "Search",
+    components: { BIconDownload },
     data: function () {
         return {
             form: {
                 gazetteer: null,
                 format: 'text/csv'
             },
-            gazetteers: [{ value: null, text: "All Gazetteers" }],
+            gazetteers: [{ value: null, text: "All gazetteers" }],
             formats: [
                 { value: 'text/csv', text: "CSV" },
                 { value: 'application/geo+json', text: 'GeoJSON' },

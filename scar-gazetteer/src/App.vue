@@ -1,194 +1,134 @@
 <template>
-  <b-container fluid="sm">
-    <b-container id="header">
-      <b-row>
-        <b-col><a href="https://scar.org"><img src="~@/assets/scar_logo_sm.gif" alt="S C A R" /></a></b-col>
-        <b-col>
-          <h1>SCAR COMPOSITE GAZETTEER OF ANTARCTICA</h1>
-        </b-col>
-        <b-col></b-col>
-      </b-row>
-    </b-container>
+    <div class="d-flex flex-column vh-100">
+        <b-navbar toggleable="lg" type="dark" variant="info">
+            <b-container class="px-sm-3">
+                <b-navbar-brand to="/">SCAR CGA</b-navbar-brand>
 
-    <div v-if="isLoggedIn" id="login-status"><small>You are logged in as {{ username }}</small></div>
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-    <div id="main-menu-placeholder">
-      <div id="main-menu" data-spy="affix" data-offset-top="286">
-        <b-container>
-          <b-navbar type="dark" variant="primary">
-            <b-navbar-brand to="/">SCAR Gazetteer</b-navbar-brand>
-            <b-navbar-nav>
-              <b-nav-item to="/search"><b-icon-search /> Search</b-nav-item>
-              <b-nav-item to="/information"><b-icon-info-circle-fill /> Information</b-nav-item>
-              <b-nav-item v-if="$store.state.user.isAdmin" to="/new-name"><b-icon-plus-circle-fill /> Add new
-                name</b-nav-item>
-            </b-navbar-nav>
+                <b-collapse id="nav-collapse" is-nav>
+                    <!-- Right aligned nav items -->
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item to="/search"
+                            ><BIconSearch /> Search</b-nav-item
+                        >
+                        <b-nav-item to="/information"
+                            ><BIconInfoCircle /> Information</b-nav-item
+                        >
+                        <b-nav-item
+                            v-if="$store.state.user.isAdmin"
+                            to="/new-name"
+                            ><BIconPlusCircle /> Add place name</b-nav-item
+                        >
 
-            <b-navbar-nav class="nav-right">
-              <b-button v-if="!isLoggedIn" id="login-button" size="sm" @click="$bvModal.show('login-modal')">
-                <b-icon-person-fill /> Login
-              </b-button>
-              <div v-else class="form-inline">
-                <b-button id="logout-button" size="sm" @click="logout"><b-icon-person /> Logout</b-button>
-              </div>
-            </b-navbar-nav>
-          </b-navbar>
+                        <b-nav-item
+                            v-if="!isLoggedIn"
+                            @click="$bvModal.show('login-modal')"
+                            ><BIconPerson /> Login</b-nav-item
+                        >
+                        <b-nav-item-dropdown v-else right>
+                            <template #button-content>
+                                <BIconPerson /> <em>{{ username }}</em>
+                            </template>
+                            <b-dropdown-item @click="logout"
+                                >Logout</b-dropdown-item
+                            >
+                        </b-nav-item-dropdown>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-container>
+        </b-navbar>
+
+        <LoginModal />
+
+        <b-container tag="main" class="flex-grow-1 py-3 py-lg-4">
+            <router-view />
         </b-container>
-      </div>
+
+        <footer class="bg-light mt-8">
+            <b-container class="py-4">
+                <p>
+                    The SCAR CGA is edited by Italian representatives from Comitato per i nomi geografici antartici.
+                </p>
+                <p class="mb-0">
+                    The SCAR CGA is hosted by the
+                        <a href="https://data.aad.gov.au" target="_blank"
+                            >Australian Antarctic Data Centre</a
+                        >.
+                </p>
+            </b-container>
+        </footer>
     </div>
-
-    <b-modal id="login-modal" title="Login" hide-header-close @ok="handleLogin" @cancel="resetForm" @hidden="resetForm">
-      <b-form @submit.prevent="handleLogin">
-        <b-form-group label="Username" label-for="username">
-          <b-form-input
-            id="username"
-            v-model="form.username"
-            type="text"
-            required
-            autofocus
-          />
-        </b-form-group>
-
-        <b-form-group label="Password" label-for="password">
-          <b-form-input
-            id="password"
-            v-model="form.password"
-            type="password"
-            required
-          />
-        </b-form-group>
-
-        <input type="submit" hidden />
-
-        <b-alert v-if="loginError && form.submitted && loginError.response.status === 401" variant="danger" show>
-          Invalid username or password
-        </b-alert>
-        <b-alert v-if="loginError && form.submitted && loginError.response.status === 429" variant="warning" show>
-          Error: Too many requests
-        </b-alert>
-        <b-alert v-if="loginError && form.submitted && loginError.response.status !== 401 && loginError.response.status !== 429" variant="warning" show>
-          Error: Could not log in
-        </b-alert>
-      </b-form>
-    </b-modal>
-
-    <router-view />
-    <div class="footer">
-      <p><i>The SCAR CGA is edited by Italian representatives from Comitato per i nomi geografici antartici.</i></p>
-      <p><i>The SCAR CGA is hosted by the <a href="https://data.aad.gov.au">Australian Antarctic Data Centre</a>.</i></p>
-    </div>
-  </b-container>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-import { setDefaultToken } from 'vue-postgrest'
+import { mapActions, mapState } from "vuex";
+import { setDefaultToken } from "vue-postgrest";
+import LoginModal from "@/components/LoginModal.vue";
+import { BIconInfoCircle, BIconPerson, BIconPlusCircle, BIconSearch } from "bootstrap-vue";
 
 export default {
-  name: 'App',
-  components: {
-  },
-  metaInfo: function () {
-    return {
-      title: 'SCAR Composite Gazetteer of Antarctica',
-      meta: [
-        { name: 'description', content: 'SCAR Composite Gazetteer of Antarctica' },
-        { property: 'og:title', content: 'SCAR Composite Gazetteer of Antarctica' },
-        { property: 'og:site_name', content: 'SCAR Composite Gazetteer of Antarctica' },
-        { property: 'og:type', content: 'website' },
-        { name: 'robots', content: 'index,follow' },
-      ]
-    }
-  },
-  data: function () {
-    return {
-      form: {
-        username: '',
-        password: '',
-        submitted: false
-      }
-    }
-  },
-  methods: {
-    ...mapActions('user', [
-      'authenticate',
-      'logout'
-    ]),
-    handleLogin: function (bvModalEvt) {
-      if (bvModalEvt) {
-        bvModalEvt.preventDefault()
-      }
-      this.form.submitted = true
-      this.authenticate({ username: this.form.username, password: this.form.password })
-        .then(() => {
-          if (!this.loginError) {
-            this.$bvModal.hide('login-modal')
-            this.resetForm()
-          }
-        })
+    name: "App",
+    components: {
+        LoginModal, BIconInfoCircle, BIconPerson, BIconPlusCircle, BIconSearch,
     },
-    resetForm: function () {
-      this.form.username = ''
-      this.form.password = ''
-      this.form.submitted = false
-    }
-  },
-  computed: {
-    ...mapState('user', [
-      'isLoggedIn',
-      'loginError',
-      'username'
-    ]),
-  },
-  mounted: function () {
-    setDefaultToken(this.$store.getters['user/getToken'])
-  }
-}
+    metaInfo: function () {
+        return {
+            title: "SCAR Composite Gazetteer of Antarctica",
+            meta: [
+                {
+                    name: "description",
+                    content: "SCAR Composite Gazetteer of Antarctica",
+                },
+                {
+                    property: "og:title",
+                    content: "SCAR Composite Gazetteer of Antarctica",
+                },
+                {
+                    property: "og:site_name",
+                    content: "SCAR Composite Gazetteer of Antarctica",
+                },
+                { property: "og:type", content: "website" },
+                { name: "robots", content: "index,follow" },
+            ],
+        };
+    },
+    methods: {
+        ...mapActions("user", ["logout"]),
+    },
+    computed: {
+        ...mapState("user", ["isLoggedIn", "username"]),
+    },
+    mounted: function () {
+        setDefaultToken(this.$store.getters["user/getToken"]);
+    },
+};
 </script>
 
 <style>
-@import '~@/assets/scar_gaz.css';
-@import '~@/assets/main.css';
+/* @import '~@/assets/scar_gaz.css';
+@import '~@/assets/main.css'; */
 
-.navbar {
-  border-radius: 5px;
+.max-w-sm {
+    max-width: var(--breakpoint-sm);
 }
 
-.navbar-brand {
-  padding-left: 1.5em
+.max-w-md {
+    max-width: var(--breakpoint-md);
 }
 
-.nav-right {
-  justify-content: flex-end;
-  flex-grow: 3;
-  padding-right: 1.5em;
+.max-w-lg {
+    max-width: var(--breakpoint-lg);
 }
 
-.form-inline {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+/* Remove default Bootstrap margin below pagination elements */
+.pagination {
+    margin-bottom: 0;
 }
 
-.form-control {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+/* Add required indicator to input labels */
+label:has(+ div [required])::before {
+  content: '*';
+  color: red;
 }
-
-.footer {
-  padding-top: 2em;
-  margin: 1.5em;
-  font-size: 9pt;
-}
-
-#login-button, #logout-button {
-  margin-right: 0;
-}
-
-#login-status {
-  text-align: right;
-  margin-right: 1em;
-  margin-bottom: 0.2em;
-}
-
 </style>

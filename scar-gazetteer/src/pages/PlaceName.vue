@@ -1,19 +1,19 @@
 <template>
-    <b-container class="place" v-if="!place.$get.isPending && place.name_id">
+    <div class="place" v-if="!place.$get.isPending && place.name_id">
         <div class="d-flex align-items-center gap-3">
             <h1 class="mb-0">
                 {{ place.place_name_gazetteer }}
             </h1>
-            <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><b-icon-pencil-square/> Edit</b-button>
+            <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><BIconPencilSquare /> Edit</b-button>
         </div>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
         <p>
-            Displayed as: {{ place.place_name_mapping || "Unknown" }} <span v-b-tooltip.hover title="How this place name appears on a map."><b-icon-info-circle /></span><br>
+            Displayed as: {{ place.place_name_mapping || "Unknown" }} <span v-b-tooltip.hover title="How this place name appears on a map."><BIconInfoCircle /></span><br>
             Feature type: 
             <template v-if="place.feature_type">
                 <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a>
                 <span v-if="place.feature_type.definition" v-b-tooltip.hover :title="place.feature_type.definition">
-                    <b-icon-info-circle />
+                    <BIconInfoCircle />
                 </span>
             </template>
             <template v-else>
@@ -84,15 +84,15 @@
         <h3>Comments</h3>
         <p v-if="place.comments" v-html="sanitizeHtml(place.comments)"></p>
         <p v-else>No comments</p>
-    </b-container>
-    <b-container v-else-if="!place.$get.isPending && !place.name_id">
+    </div>
+    <div v-else-if="!place.$get.isPending && !place.name_id">
         <NotFound />
-    </b-container>
-    <b-container v-else>
+    </div>
+    <div v-else>
         <div class="spinner-div d-flex justify-content-center">
             <b-spinner class="spinner"></b-spinner>
         </div>
-    </b-container>
+    </div>
 </template>
 
 <script>
@@ -104,10 +104,11 @@ import PlaceNameMap from '@/components/PlaceNameMap.vue'
 import { getNameForNumericIsoCountryCode } from '@/utils'
 import { join } from '../utils'
 import NotFound from './NotFound.vue'
+import { BIconInfoCircle, BIconPencilSquare } from 'bootstrap-vue'
 
 export default {
     name: 'PlaceName',
-    components: { PlaceNameMap, NotFound },
+    components: { PlaceNameMap, NotFound, BIconInfoCircle, BIconPencilSquare },
     metaInfo: function () {
         return {
             script: [{

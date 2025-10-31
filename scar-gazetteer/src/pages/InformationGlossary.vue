@@ -1,32 +1,33 @@
 <template>
-    <b-container>
+    <div>
         <h1>Glossary</h1>
-        <div class="overflow-auto">
-            <b-form-group label="Filter" label-for="filter-input" label-align-sm="left" label-size="lg" class="mb-3">
-                <b-input-group size="m">
-                    <b-form-input id="filter-input" v-model="filter" type="search" placeholder="Matching text">
-                    </b-form-input>
-                </b-input-group>
-            </b-form-group>
+        <div class="">
+            <Loading v-if="pg.$get.isPending" />
+            <template v-else>
+                <b-form-group label="Search glossary" label-for="filter-input">
+                    <b-form-input id="filter-input" v-model="filter" type="search" placeholder="Query"></b-form-input>
+                </b-form-group>
 
-            <b-pagination v-model="currentPage" :total-rows="filteredRows" :per-page="perPage"
-                aria-controls="my-table"></b-pagination>
-            <b-table id="glossary-table" :items="filteredGlossary" :fields="fields" :per-page="perPage"
-                :current-page="currentPage" striped hover label-sort-asc="" label-sort-desc="" label-sort-clear="" />
-            <div class="spinner-div d-flex justify-content-center" v-if="pg.$get.isPending">
-                <b-spinner class="spinner"></b-spinner>
-            </div>
-            <b-pagination v-model="currentPage" :total-rows="filteredRows" :per-page="perPage"
-                aria-controls="my-table"></b-pagination>
+                <b-pagination v-model="currentPage" :total-rows="filteredRows" :per-page="perPage"
+                    aria-controls="glossary-table" class="mb-3"></b-pagination>
+
+                <b-table id="glossary-table" :items="filteredGlossary" :fields="fields" :per-page="perPage"
+                    :current-page="currentPage" striped hover label-sort-asc="" label-sort-desc="" label-sort-clear="" responsive />
+
+                <b-pagination v-model="currentPage" :total-rows="filteredRows" :per-page="perPage"
+                    aria-controls="glossary-table"></b-pagination>
+            </template>
         </div>
-    </b-container>
+    </div>
 </template>
 
 <script>
 import { pg } from 'vue-postgrest'
+import Loading from '@/components/Loading.vue';
 
 export default {
     name: 'InformationGlossary',
+    components: { Loading },
     data: function () {
         return {
             perPage: 50,

@@ -1,8 +1,9 @@
 import Vue from 'vue'
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue'
 import VueMeta from 'vue-meta'
 import Vuelidate from 'vuelidate'
-import '@/assets/bootstrap.css'
+// import '@/assets/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import store from './store';
@@ -13,7 +14,6 @@ Vue.config.productionTip = false
 
 Vue.use(VueMeta)
 Vue.use(BootstrapVue)
-Vue.use(BootstrapVueIcons)
 Vue.use(Vuelidate)
 
 new Vue({

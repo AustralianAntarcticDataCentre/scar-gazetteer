@@ -1,8 +1,8 @@
 <template>
-    <b-container>
+    <div>
         <h1>Add new place name</h1>
         <place-name-form :form="form_data" v-on:submit="submit" v-on:reset="reset" />
-    </b-container>
+    </div>
 </template>
 
 <script>

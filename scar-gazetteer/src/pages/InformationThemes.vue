@@ -1,5 +1,5 @@
 <template>
-    <b-container>
+    <div>
         <h1>Themes</h1>
         <p>A theme or an idea that reoccurs in place names is often used when naming features in Antarctica. The list below contains some of the many themes in existence.</p>
         
@@ -29,7 +29,7 @@
             <li>Mesoamerican/Incan names around Beacon Valley (ie Incas Leap)</li>
             <li>NZ Navy support vessels, Frigate Range</li>
         </ul>
-    </b-container>
+    </div>
 </template>
 
 <script>
