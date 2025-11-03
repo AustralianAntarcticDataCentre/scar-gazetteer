@@ -14,7 +14,6 @@
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
                     <b-collapse id="nav-collapse" is-nav>
-                        <!-- Right aligned nav items -->
                         <b-navbar-nav class="ml-auto">
                             <b-nav-item to="/search"
                                 ><BIconSearch class="mr-1" />Search</b-nav-item

@@ -7,6 +7,8 @@
         @hidden="resetForm"
     >
         <b-form @submit.prevent="handleLogin">
+            <p>Login using an <a href="https://data.aad.gov.au" target="_blank">AADC</a> account.</p>
+
             <b-form-group label="Username" label-for="username">
                 <b-form-input
                     id="username"
@@ -25,6 +27,9 @@
                     required
                     autocomplete="password"
                 />
+                <template #description>
+                    <a href="https://data.aad.gov.au/user/forgotpassword" target="_blank">Forgot password?</a>
+                </template>
             </b-form-group>
 
             <input type="submit" hidden />
