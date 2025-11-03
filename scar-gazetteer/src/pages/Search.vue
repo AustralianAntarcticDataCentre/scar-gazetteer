@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-md mx-auto">
+    <div class="max-w-md">
         <h1>Search for place names</h1>
         <b-form @submit.prevent="search">
             <b-form-group label="Place name" label-for="search_text">

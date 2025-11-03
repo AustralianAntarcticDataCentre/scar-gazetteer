@@ -1,8 +1,6 @@
 <template>
-    <div class="span9">
+    <div>
         <h1>History</h1>
-
-        <h4>HISTORY OF THE WORK PROGRAMME</h4>
         <h4>The first two years, 1992-1994</h4>
         <p>At the XXII SCAR Meeting in 1992, Italy was tasked with compiling a composite gazetteer of Antarctica.</p>
         <p>At the same time the preparation of the guidelines for the correct choice of the names (toponymic guidelines)

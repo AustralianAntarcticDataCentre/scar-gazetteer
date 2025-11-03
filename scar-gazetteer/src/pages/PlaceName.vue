@@ -1,5 +1,5 @@
 <template>
-    <div class="place" v-if="!place.$get.isPending && place.name_id">
+    <div class="max-w-md" v-if="!place.$get.isPending && place.name_id">
         <div class="d-flex align-items-center gap-3">
             <h1 class="mb-0">
                 {{ place.place_name_gazetteer }}
@@ -215,15 +215,3 @@ export default {
     },
 }
 </script>
-
-<style>
-.badge {
-    color: #fff;
-    background-color: #999;
-    text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
-}
-
-.place {
-    max-width: 60em;
-}
-</style>

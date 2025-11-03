@@ -13,7 +13,7 @@
 
         <p>Since 2008, Italy and Australia jointly have managed the CGA, the former taking care of the editing, the latter maintaining the database and website. The SCAR <a href="https://scar.org/science/standing/scagi">Standing Committee on Antarctic Geographic Information (SCAGI)</a> coordinates the project.</p>
 
-        <p>For queries about the CGA email scar.cga@unisi.it</p>
+        <p>For queries about the CGA email <a href="mailto:scar.cga@unisi.it">scar.cga@unisi.it</a>.</p>
 
         <ul class="unstyled">
             <li><BIconBarChart style="text-align: center" /> <b-link to="/information/statistics"> View SCAR Gazetteer

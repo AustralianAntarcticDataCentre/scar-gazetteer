@@ -1,5 +1,5 @@
 <template>
-    <div class="span9">
+    <div>
         <h1>Citation information</h1>
 
         When citing this dataset, use the following example as a guide.

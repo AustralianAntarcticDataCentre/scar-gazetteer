@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-md mx-auto">
+    <div class="max-w-md">
         <h1>Search results</h1>
         <Loading v-if="!count" />
         <template v-else>

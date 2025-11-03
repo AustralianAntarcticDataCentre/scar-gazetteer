@@ -1,6 +1,11 @@
 <template>
     <div class="d-flex flex-column vh-100">
-        <b-navbar toggleable="lg" type="dark" variant="info">
+        <div class="pre-nav">
+            <b-container class="px-sm-3">
+                This website is an initiative of the <a href="https://scar.org" target="_blank">Scientific Committee on Antarctic Research</a>
+            </b-container>
+        </div>
+        <b-navbar class="main-nav" toggleable="lg">
             <b-container class="px-sm-3">
                 <b-navbar-brand to="/">SCAR CGA</b-navbar-brand>
 
@@ -48,7 +53,7 @@
         <footer class="bg-light mt-8">
             <b-container class="py-4">
                 <p>
-                    The SCAR CGA is edited by Italian representatives from Comitato per i nomi geografici antartici.
+                    The SCAR CGA is edited by representatives from Comitato per i nomi geografici antartici.
                 </p>
                 <p class="mb-0">
                     The SCAR CGA is hosted by the
@@ -109,6 +114,10 @@ export default {
 /* @import '~@/assets/scar_gaz.css';
 @import '~@/assets/main.css'; */
 
+body {
+    font-family: 'Arial';
+}
+
 .max-w-sm {
     max-width: var(--breakpoint-sm);
 }
@@ -130,5 +139,33 @@ export default {
 label:has(+ div [required])::before {
   content: '*';
   color: red;
+}
+
+a[href^="http://"]:after,
+a[href^="https://"]:after {
+  content: ""; /* Adds an arrow icon after the link */
+  margin-left: 0.3em; /* Provides spacing */
+  background-color: currentColor; /* Example styling: blue color */
+  text-decoration: none;
+  display: inline-block;
+  width: 1.5ch;
+  height: 1.5ch;
+  mask: url('data:image/svg+xml,<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill="currentColor" fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"></path><path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"></path></svg>');
+}
+
+.pre-nav {
+    font-size: .8em;
+    background-color: #ebebeb;
+    color: #505050;
+    padding: 0.4em 0;
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+}
+
+.main-nav {
+    border-bottom: 1px solid #eeeeee;
 }
 </style>

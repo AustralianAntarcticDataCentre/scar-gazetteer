@@ -1,5 +1,5 @@
 <template>
-    <div class="span9">
+    <div>
         <h1>Instructions for batch edits</h1>
 
         <p>These instructions are for SCAGI members. It is important to note that a CSV file is used as the upload file
@@ -15,7 +15,7 @@
             <li>Open up the saved .csv file and perform edits.</li>
             <li>Remove rows that have not been updated.</li>
             <li>Email the .csv file to <a href="mailto:scar.cga@unisi.it">scar.cga@unisi.it</a>. Please include your
-                name, organisation and contact details. The Italian SCAGI member, who maintains the content of the
+                name, organisation and contact details. A SCAGI member, who maintains the content of the
                 gazetteer, will review and update accordingly.</li>
         </ol>
         </p>
@@ -25,7 +25,7 @@
             <li>Open this <a href="/static/new_place_names_template.csv">.csv file template</a>.</li>
             <li>Insert new rows for each new place name with values corresponding to the headers in the first row</li>
             <li>Email the .csv file to <a href="mailto:scar.cga@unisi.it">scar.cga@unisi.it</a>. Please include your
-                name, organisation and contact details. The Italian SCAGI member, who maintains the content of the
+                name, organisation and contact details. A SCAGI member, who maintains the content of the
                 gazetteer, will review and update accordingly.</li>
         </ol>
         </p>

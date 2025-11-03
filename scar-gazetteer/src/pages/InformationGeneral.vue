@@ -1,5 +1,5 @@
 <template>
-    <div class="span9">
+    <div>
         <h1>General information</h1>
 
         <p>The Scientific Committee on Antarctic Research (SCAR) initiates, promotes and co-ordinates a wide range of

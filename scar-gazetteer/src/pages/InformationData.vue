@@ -1,5 +1,5 @@
 <template>
-  <div class="span9">
+  <div>
     <h1>SCAR CGA data and validation</h1>
 
     <p>The short history of the SCAR CGA shows that every reasonable effort was made to include all existing

@@ -1,5 +1,5 @@
 <template>
-  <div class="span9">
+  <div>
     <h1>CGA characteristics</h1>
 
     <h4>CHARACTERISTICS OF THE CGA</h4>
