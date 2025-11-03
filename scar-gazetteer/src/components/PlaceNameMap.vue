@@ -2,11 +2,11 @@
     <div>
         <div class="map-controls mb-2">
             <b-button-group size="sm">
-                <b-button :variant="mapProjection === 'EPSG:3031' ? 'primary' : 'outline-primary'"
+                <b-button :variant="mapProjection === 'EPSG:3031' ? 'secondary' : 'outline-secondary'"
                     @click="changeProjection('EPSG:3031')">
                     Polar Stereographic
                 </b-button>
-                <b-button :variant="mapProjection === 'EPSG:4326' ? 'primary' : 'outline-primary'"
+                <b-button :variant="mapProjection === 'EPSG:4326' ? 'secondary' : 'outline-secondary'"
                     @click="changeProjection('EPSG:4326')">
                     Mercator
                 </b-button>

@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="max-w-md">
         <h1>Edit place name</h1>
-        <div class="spinner-div d-flex justify-content-center" v-if="pg.$get.isPending">
+        <div class="d-flex justify-content-center" v-if="pg.$get.isPending">
             <b-spinner class="spinner"></b-spinner>
         </div>
-        <place-name-form v-if="!form_data.$get.isPending" :form="form_data" v-on:reset="reset" v-on:submit="submit" v-on:deletePlacename="deletePlacename" />
+        <place-name-form v-else :form="form_data" v-on:reset="reset" v-on:submit="submit" v-on:deletePlacename="deletePlacename" />
     </div>
 </template>
 

@@ -1,50 +1,53 @@
 <template>
     <div class="d-flex flex-column vh-100">
-        <div class="pre-nav">
-            <b-container class="px-sm-3">
-                This website is an initiative of the <a href="https://scar.org" target="_blank">Scientific Committee on Antarctic Research</a>
-            </b-container>
-        </div>
-        <b-navbar class="main-nav" toggleable="lg">
-            <b-container class="px-sm-3">
-                <b-navbar-brand to="/">SCAR CGA</b-navbar-brand>
+        <header>
+            <h1 class="sr-only">SCAR Composite Gazetteer of Antarctica</h1>
+            <div class="pre-nav">
+                <b-container class="px-sm-3">
+                    This website is an initiative of the <a href="https://scar.org" target="_blank">Scientific Committee on Antarctic Research</a>
+                </b-container>
+            </div>
+            <b-navbar class="main-nav" toggleable="lg">
+                <b-container class="px-sm-3">
+                    <b-navbar-brand to="/">SCAR CGA</b-navbar-brand>
 
-                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+                    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-                <b-collapse id="nav-collapse" is-nav>
-                    <!-- Right aligned nav items -->
-                    <b-navbar-nav class="ml-auto">
-                        <b-nav-item to="/search"
-                            ><BIconSearch class="mr-1" />Search</b-nav-item
-                        >
-                        <b-nav-item to="/information"
-                            ><BIconInfoCircle class="mr-1" />Information</b-nav-item
-                        >
-                        <b-nav-item
-                            v-if="$store.state.user.isAdmin"
-                            to="/new-name"
-                            ><BIconPlusCircle class="mr-1" />Add place name</b-nav-item
-                        >
-
-                        <b-nav-item
-                            v-if="!isLoggedIn"
-                            @click="$bvModal.show('login-modal')"
-                            ><BIconPerson class="mr-1" />Login</b-nav-item
-                        >
-                        <b-nav-item-dropdown v-else right>
-                            <template #button-content>
-                                <BIconPerson class="mr-1" /><em>{{ username }}</em>
-                            </template>
-                            <b-dropdown-item @click="logout"
-                                >Logout</b-dropdown-item
+                    <b-collapse id="nav-collapse" is-nav>
+                        <!-- Right aligned nav items -->
+                        <b-navbar-nav class="ml-auto">
+                            <b-nav-item to="/search"
+                                ><BIconSearch class="mr-1" />Search</b-nav-item
                             >
-                        </b-nav-item-dropdown>
-                    </b-navbar-nav>
-                </b-collapse>
-            </b-container>
-        </b-navbar>
+                            <b-nav-item to="/information"
+                                ><BIconInfoCircle class="mr-1" />Information</b-nav-item
+                            >
+                            <b-nav-item
+                                v-if="$store.state.user.isAdmin"
+                                to="/new-name"
+                                ><BIconPlusCircle class="mr-1" />Add place name</b-nav-item
+                            >
 
-        <LoginModal />
+                            <b-nav-item
+                                v-if="!isLoggedIn"
+                                @click="$bvModal.show('login-modal')"
+                                ><BIconPerson class="mr-1" />Login</b-nav-item
+                            >
+                            <b-nav-item-dropdown v-else right>
+                                <template #button-content>
+                                    <BIconPerson class="mr-1" /><em>{{ username }}</em>
+                                </template>
+                                <b-dropdown-item @click="logout"
+                                    >Logout</b-dropdown-item
+                                >
+                            </b-nav-item-dropdown>
+                        </b-navbar-nav>
+                    </b-collapse>
+                </b-container>
+            </b-navbar>
+
+            <LoginModal />
+        </header>
 
         <b-container tag="main" class="flex-grow-1 py-3 py-lg-4">
             <router-view />

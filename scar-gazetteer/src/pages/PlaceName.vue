@@ -1,20 +1,17 @@
 <template>
     <div class="max-w-md" v-if="!place.$get.isPending && place.name_id">
-        <div class="d-flex align-items-center gap-3">
-            <h1 class="mb-0">
+        <header class="d-flex align-items-center flex-wrap">
+            <h1 class="mb-0 mr-3">
                 {{ place.place_name_gazetteer }}
             </h1>
-            <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin"><BIconPencilSquare /> Edit</b-button>
-        </div>
+            <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin" class="flex-grow-0" variant="outline-secondary"><BIconPencilSquare class="mr-1" />Edit</b-button>
+        </header>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
         <p>
-            Displayed as: {{ place.place_name_mapping || "Unknown" }} <span v-b-tooltip.hover title="How this place name appears on a map."><BIconInfoCircle /></span><br>
+            Displayed as: {{ place.place_name_mapping || "Unknown" }} <HelpHint content="How this place name appears on a map." /><br>
             Feature type: 
             <template v-if="place.feature_type">
-                <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a>
-                <span v-if="place.feature_type.definition" v-b-tooltip.hover :title="place.feature_type.definition">
-                    <BIconInfoCircle />
-                </span>
+                <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a> <HelpHint v-if="place.feature_type.definition" :content="`Geographic feature definition: ${place.feature_type.definition}`" />
             </template>
             <template v-else>
                 Unknown
@@ -26,35 +23,63 @@
             Your browser does not support audio.
         </audio>
 
-        <h3>Origin</h3>
-        <p>
-            This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>.
-            It is part of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.
-        </p>
+        <section>
+            <h2>Origin</h2>
+            <p>
+                This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>.
+                It is part of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.
+            </p>
 
-        <p>Other names for this place:</p>
-        <ul>
-            <li v-for="name of other_names" :key="name.name_id">
-                <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
-            </li>
-        </ul>
+            <p>Other names for this place:</p>
+            <ul>
+                <li v-for="name of other_names" :key="name.name_id">
+                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
+                </li>
+            </ul>
+        </section>
 
-        <h3>Narrative</h3>
-        <p v-if="place.narrative" v-html="sanitizeHtml(place.narrative)"></p>
-        <p v-else>Not recorded</p>
+        <section>
+            <div class="d-flex align-items-center mb-2">
+                <h2 class="mr-2 mb-0">Narrative</h2>
+                <HelpHint content="A description or a narrative about the place to which the record refers." />
+            </div>
+            <p v-if="place.narrative" v-html="sanitizeHtml(place.narrative)"></p>
+            <p v-else>Not recorded.</p>
+        </section>
 
-        <h3>Named for</h3>
-        <p v-if="place.named_for" v-html="sanitizeHtml(place.named_for)"></p>
-        <p v-else>Not recorded</p>
+        <section>
+            <div class="d-flex align-items-center mb-2">
+                <h2 class="mr-2 mb-0">Named for</h2>
+                <HelpHint content="The name of the person and related information about the person, who the place was named for." />
+            </div>
+            <p v-if="place.named_for" v-html="sanitizeHtml(place.named_for)"></p>
+            <p v-else>Not recorded.</p>
+        </section>
 
-        <template v-if="place.un_sdg && place.un_sdg > 0 && place.un_sdg <= Object.keys(un_sustainable_development_goal_descriptions).length">
-            <h3>UN Sustainable Development Goal</h3>
-            <p>This place name is linked to a United Nations Sustainable Development goal.</p>
+        <section>
+            <h2>Location</h2>
+            <ul>
+                <li>Latitude: {{ place.geometry.coordinates[1] }}° ({{ toDMS(place.geometry.coordinates[1], isLatitude = true) }})</li>
+                <li>Longitude: {{ place.geometry.coordinates[0] }}° ({{ toDMS(place.geometry.coordinates[0], isLatitude = false) }})</li>
+                <li>Altitude: {{ place.altitude ? `${place.altitude}m` : "Not recorded" }}</li>
+                <li>Location accuracy: {{ place.altitude_accuracy ? `${place.altitude_accuracy}m` : "Not recorded" }}</li>
+                <li>Coordinate accuracy: {{ place.coordinate_accuracy ? `${place.coordinate_accuracy}m` : "Not recorded" }}</li>
+            </ul>
+        </section>
+
+        <section class="mb-3">
+            <h2>Map</h2>
+            <PlaceNameMap :coordinates="{ latitude: place.geometry.coordinates[1], longitude: place.geometry.coordinates[0] }" />
+        </section>
+
+        <section v-if="place.un_sdg && place.un_sdg > 0 && place.un_sdg <= Object.keys(un_sustainable_development_goal_descriptions).length" class="mb-3">
+            <h2 class="mr-2 mb-0">UN Sustainable Development Goal</h2>
+            <p>This place name is linked to a United Nations Sustainable Development Goal.</p>
 
             <b-card no-body class="overflow-hidden">
                 <b-row no-gutters>
                     <b-col md="3">
-                        <b-card-img :src="join(process.env.BASE_URL, `/static/un_sdg/un_sdg_${place.un_sdg}.png`)"
+                        <b-card-img :src="unsdgImage(place.un_sdg)"
                             :alt="`UN Sustainable Development Goal Number ${place.un_sdg}`" class="h-100"></b-card-img>
                     </b-col>
                     <b-col md="8">
@@ -67,29 +92,17 @@
                     </b-col>
                 </b-row>
             </b-card>
-        </template>
+        </section>
 
-        <h3>Location</h3>
-        <ul>
-            <li>Latitude: {{ place.geometry.coordinates[1] }}° ({{ toDMS(place.geometry.coordinates[1], isLatitude = true) }})</li>
-            <li>Longitude: {{ place.geometry.coordinates[0] }}° ({{ toDMS(place.geometry.coordinates[0], isLatitude = false) }})</li>
-            <li>Altitude: {{ place.altitude || "Not recorded" }}</li>
-            <li>Location accuracy: {{ place.altitude_accuracy || "Not recorded" }}</li>
-            <li>Coordinate accuracy: {{ place.coordinate_accuracy || "Not recorded" }}</li>
-        </ul>
-
-        <h3>Map</h3>
-        <PlaceNameMap :coordinates="{ latitude: place.geometry.coordinates[1], longitude: place.geometry.coordinates[0] }" />
-
-        <h3>Comments</h3>
+        <h2>Comments</h2>
         <p v-if="place.comments" v-html="sanitizeHtml(place.comments)"></p>
-        <p v-else>No comments</p>
+        <p v-else>No comments.</p>
     </div>
     <div v-else-if="!place.$get.isPending && !place.name_id">
         <NotFound />
     </div>
     <div v-else>
-        <div class="spinner-div d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
             <b-spinner class="spinner"></b-spinner>
         </div>
     </div>
@@ -104,11 +117,12 @@ import PlaceNameMap from '@/components/PlaceNameMap.vue'
 import { getNameForNumericIsoCountryCode } from '@/utils'
 import { join } from '../utils'
 import NotFound from './NotFound.vue'
-import { BIconInfoCircle, BIconPencilSquare } from 'bootstrap-vue'
+import { BIconPencilSquare } from 'bootstrap-vue'
+import HelpHint from '@/components/HelpHint.vue'
 
 export default {
     name: 'PlaceName',
-    components: { PlaceNameMap, NotFound, BIconInfoCircle, BIconPencilSquare },
+    components: { PlaceNameMap, NotFound, BIconPencilSquare, HelpHint },
     metaInfo: function () {
         return {
             script: [{
@@ -209,6 +223,9 @@ export default {
         },
         sanitizeHtml(html) {
             return DOMPurify.sanitize(html, { ALLOWED_TAGS: ['b', 'strong', 'i', 'em', 'a', 'br', 'mark', 'q', 'sub', 'sup', 'u'], KEEP_CONTENT: true })
+        },
+        unsdgImage(unsdg) {
+            return join(process.env.BASE_URL, `/static/un_sdg/un_sdg_${unsdg}.png`)
         },
         getNameForNumericIsoCountryCode,
         join
