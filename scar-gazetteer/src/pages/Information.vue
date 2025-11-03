@@ -34,7 +34,7 @@ export default {
 </script>
 
 <template>
-    <div class="infomation-content">
+    <div>
         <b-row>
             <b-col cols="12" lg="3">
                 <b-card tag="nav" no-body class="overflow-hidden mb-3 mb-lg-0">
@@ -47,18 +47,18 @@ export default {
                     </b-card-header>
                     <b-collapse id="information-nav" v-model="showNavigation" role="tabpanel">
                         <b-list-group flush>
-                            <b-list-group-item exact active-class="active" to="/information">General information</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/terminology">Terminology</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/statistics">Statistics</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/glossary">Glossary</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/naming-authorities">Naming authorities</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/history">History</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/data-and-validation">Data and validation</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/cga-characteristics">CGA characteristics</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/citation-information">Citation information</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/batch-instructions">Instructions for batch edits</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/themes">Themes</b-list-group-item>
-                            <b-list-group-item active-class="active" to="/information/download">Download</b-list-group-item>
+                            <b-list-group-item to="/information">General information</b-list-group-item>
+                            <b-list-group-item to="/information/terminology">Terminology</b-list-group-item>
+                            <b-list-group-item to="/information/statistics">Statistics</b-list-group-item>
+                            <b-list-group-item to="/information/glossary">Glossary</b-list-group-item>
+                            <b-list-group-item to="/information/naming-authorities">Naming authorities</b-list-group-item>
+                            <b-list-group-item to="/information/history">History</b-list-group-item>
+                            <b-list-group-item to="/information/data-and-validation">Data and validation</b-list-group-item>
+                            <b-list-group-item to="/information/cga-characteristics">CGA characteristics</b-list-group-item>
+                            <b-list-group-item to="/information/citation-information">Citation information</b-list-group-item>
+                            <b-list-group-item to="/information/batch-instructions">Instructions for batch edits</b-list-group-item>
+                            <b-list-group-item to="/information/themes">Themes</b-list-group-item>
+                            <b-list-group-item to="/information/download">Download</b-list-group-item>
                         </b-list-group>
                     </b-collapse>
                 </b-card>
@@ -70,8 +70,8 @@ export default {
     </div>
 </template>
 
-<style scoped>
-.infomation-content {
-    max-width: 70em;
+<style>
+#information-nav .list-group-item.router-link-exact-active {
+    background-color: #ebeced;
 }
 </style>

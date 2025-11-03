@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="max-w-md">
         <h1>Add new place name</h1>
         <place-name-form :form="form_data" v-on:submit="submit" v-on:reset="reset" />
     </div>

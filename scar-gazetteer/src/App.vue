@@ -15,25 +15,25 @@
                     <!-- Right aligned nav items -->
                     <b-navbar-nav class="ml-auto">
                         <b-nav-item to="/search"
-                            ><BIconSearch /> Search</b-nav-item
+                            ><BIconSearch class="mr-1" />Search</b-nav-item
                         >
                         <b-nav-item to="/information"
-                            ><BIconInfoCircle /> Information</b-nav-item
+                            ><BIconInfoCircle class="mr-1" />Information</b-nav-item
                         >
                         <b-nav-item
                             v-if="$store.state.user.isAdmin"
                             to="/new-name"
-                            ><BIconPlusCircle /> Add place name</b-nav-item
+                            ><BIconPlusCircle class="mr-1" />Add place name</b-nav-item
                         >
 
                         <b-nav-item
                             v-if="!isLoggedIn"
                             @click="$bvModal.show('login-modal')"
-                            ><BIconPerson /> Login</b-nav-item
+                            ><BIconPerson class="mr-1" />Login</b-nav-item
                         >
                         <b-nav-item-dropdown v-else right>
                             <template #button-content>
-                                <BIconPerson /> <em>{{ username }}</em>
+                                <BIconPerson class="mr-1" /><em>{{ username }}</em>
                             </template>
                             <b-dropdown-item @click="logout"
                                 >Logout</b-dropdown-item
@@ -133,6 +133,12 @@ body {
 /* Remove default Bootstrap margin below pagination elements */
 .pagination {
     margin-bottom: 0;
+}
+
+/* Override Bootstrap default icon size */
+.b-icon.bi {
+    font-size: 1em !important;
+    vertical-align: -0.15em !important;
 }
 
 /* Add required indicator to input labels */
