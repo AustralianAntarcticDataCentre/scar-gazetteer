@@ -63,8 +63,8 @@ export default {
             ],
             relics: [
                 { value: null, text: "Include relics" },
-                { value: 1, text: "Exclude relics" },
-                { value: 2, text: "Only relics" },
+                { value: 'exclude', text: "Exclude relics" },
+                { value: 'only', text: "Only relics" },
             ],
             gazetteers: [{ value: null, text: "All gazetteers" }],
             form: {

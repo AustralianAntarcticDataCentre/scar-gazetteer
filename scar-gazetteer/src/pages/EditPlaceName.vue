@@ -37,7 +37,7 @@ export default {
 
             this.pg.$patch({ headers: { Prefer: 'return=minimal' } })
                 .then(() => {
-                    this.$router.push({ path: `/place-name/${this.pg.name_id}` })
+                    this.$router.push({ path: `/place-names/${this.pg.name_id}` })
                 })
                 .catch(err => {
                     console.error("PUT failed", err)

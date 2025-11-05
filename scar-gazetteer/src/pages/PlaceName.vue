@@ -4,19 +4,26 @@
             <h1 class="mb-0 mr-3">
                 {{ place.place_name_gazetteer }}
             </h1>
-            <b-button :to="`/place-name/${place.name_id}/edit`" v-if="$store.state.user.isAdmin" class="flex-grow-0" variant="outline-secondary"><BIconPencilSquare class="mr-1" />Edit</b-button>
+            <b-button :to="`/place-names/${place.name_id}/edit`" v-if="$store.state.user.isAdmin" class="flex-grow-0" variant="outline-secondary"><BIconPencilSquare class="mr-1" />Edit</b-button>
         </header>
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
-        <p>
-            Displayed as: {{ place.place_name_mapping || "Unknown" }} <HelpHint content="How this place name appears on a map." /><br>
-            Feature type: 
-            <template v-if="place.feature_type">
-                <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a> <HelpHint v-if="place.feature_type.definition" :content="`Geographic feature definition: ${place.feature_type.definition}`" />
+        <dl class="mt-2">
+            <dt>Displayed as:</dt>
+            <dd>{{ place.place_name_mapping || "Unknown" }} <HelpHint content="How this place name appears on a map." /></dd>
+            <dt>Feature type:</dt>
+            <dd>
+                <template v-if="place.feature_type">
+                    <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a> <HelpHint v-if="place.feature_type.definition" :content="`Geographic feature definition: ${place.feature_type.definition}`" />
+                </template>
+                <template v-else>
+                    Unknown
+                </template>
+            </dd>
+            <template v-if="place.relic_flag">
+                <dt>Is relic:</dt>
+                <dd>Yes <HelpHint v-if="place.feature_type.definition" content="The feature this name belongs to no longer exists." /></dd>
             </template>
-            <template v-else>
-                Unknown
-            </template>
-        </p>
+        </dl>
 
         <audio v-if="place.pronunciation_audio_url" controls>
             <source :src="place.pronunciation_audio_url" type="audio/wav">
@@ -33,7 +40,7 @@
             <p>Other names for this place:</p>
             <ul>
                 <li v-for="name of other_names" :key="name.name_id">
-                    <router-link :to="'/place-name/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
+                    <router-link :to="'/place-names/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
                 </li>
             </ul>
         </section>
@@ -58,13 +65,18 @@
 
         <section>
             <h2>Location</h2>
-            <ul>
-                <li>Latitude: {{ place.geometry.coordinates[1] }}° ({{ toDMS(place.geometry.coordinates[1], isLatitude = true) }})</li>
-                <li>Longitude: {{ place.geometry.coordinates[0] }}° ({{ toDMS(place.geometry.coordinates[0], isLatitude = false) }})</li>
-                <li>Altitude: {{ place.altitude ? `${place.altitude}m` : "Not recorded" }}</li>
-                <li>Location accuracy: {{ place.altitude_accuracy ? `${place.altitude_accuracy}m` : "Not recorded" }}</li>
-                <li>Coordinate accuracy: {{ place.coordinate_accuracy ? `${place.coordinate_accuracy}m` : "Not recorded" }}</li>
-            </ul>
+            <dl>
+                <dt>Decimal degrees:</dt>
+                <dd>{{ place.geometry.coordinates[1] }}, {{ place.geometry.coordinates[0] }}</dd>
+                <dt>DMS:</dt>
+                <dd>{{ toDMS(place.geometry.coordinates[1], isLatitude = true) }}, {{ toDMS(place.geometry.coordinates[0], isLatitude = false) }}</dd>
+                <dt>Altitude:</dt>
+                <dd>{{ place.altitude ? `${place.altitude}m` : "Not recorded" }}</dd>
+                <dt>Location accuracy:</dt>
+                <dd>{{ place.altitude_accuracy ? `${place.altitude_accuracy}m` : "Not recorded" }}</dd>
+                <dt>Coordinate accuracy:</dt>
+                <dd>{{ place.coordinate_accuracy ? `${place.coordinate_accuracy}m` : "Not recorded" }}</dd>
+            </dl>
         </section>
 
         <section class="mb-3">
@@ -232,3 +244,25 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+dl {
+    display: grid;
+    grid-template-columns: auto;
+    column-gap: .5em;
+}
+
+@media (min-width: 576px) {
+    dl {
+        grid-template-columns: max-content auto;
+    }
+}
+
+dd {
+    margin-bottom: .3em;
+}
+
+dd:last-child {
+    margin-bottom: 0;
+}
+</style>

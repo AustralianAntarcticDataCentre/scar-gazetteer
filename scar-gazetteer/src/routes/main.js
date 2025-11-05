@@ -111,7 +111,15 @@ const router = new Router({
             }
         },
         {
-            path: '/place-name/:id',
+            path: '/place-names/create',
+            component: NewPlaceName,
+            meta: {
+                requiresAdmin: true,
+                sitemap: { ignoreRoute: true }
+            }
+        },
+        {
+            path: '/place-names/:id',
             component: PlaceName,
             meta: {
                 sitemap: {
@@ -120,16 +128,8 @@ const router = new Router({
             }
         },
         {
-            path: '/place-name/:id/edit',
+            path: '/place-names/:id/edit',
             component: EditPlaceName,
-            meta: {
-                requiresAdmin: true,
-                sitemap: { ignoreRoute: true }
-            }
-        },
-        {
-            path: '/new-name',
-            component: NewPlaceName,
             meta: {
                 requiresAdmin: true,
                 sitemap: { ignoreRoute: true }
@@ -140,7 +140,7 @@ const router = new Router({
             path: '/display_name.cfm',
             redirect: to => {
                 if (!to.query.gaz_id) return { path: '/search' }
-                return { path: `/place-name/${to.query.gaz_id}` }
+                return { path: `/place-names/${to.query.gaz_id}` }
             }
         },
         {

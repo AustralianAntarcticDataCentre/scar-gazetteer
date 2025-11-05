@@ -3,7 +3,7 @@
         <b-form-group
             label="Gazetteer place name"
             label-for="place_name_gazetteer"
-            description="The name as it appears in the original gazetteer, e.g., Penguin, Lake."
+            description="The name as it appears in the source gazetteer, e.g., Penguin, Lake."
             :state="validateState('place_name_gazetteer')"
             invalid-feedback="Must be at least 2 characters."
         >

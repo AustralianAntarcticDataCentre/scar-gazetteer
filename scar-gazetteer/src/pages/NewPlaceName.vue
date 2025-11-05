@@ -52,7 +52,7 @@ export default {
 
                 await this.pg.$post()
 
-                this.$router.push({ path: `/place-name/${this.pg.name_id}` })
+                this.$router.push({ path: `/place-names/${this.pg.name_id}` })
             } catch (error) {
                 console.log(error)
                 alert(`Error: could not submit new place name (${error})`)

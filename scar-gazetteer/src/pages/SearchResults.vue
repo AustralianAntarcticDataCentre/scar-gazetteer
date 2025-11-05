@@ -13,7 +13,7 @@
             <b-table v-if="!loading" :items="results" :fields="fields" responsive>
                 <template #cell(place_name_mapping)="p">
                     <div>
-                        <b-link :to="`/place-name/${p.item.name_id}`">{{ p.item.place_name_mapping }}
+                        <b-link :to="`/place-names/${p.item.name_id}`">{{ p.item.place_name_mapping }}
                             ({{ p.item.gazetteer_code }})</b-link><br />
                         <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
                     </div>
@@ -99,12 +99,12 @@ export default {
                 filter['feature_type_code'] = `eq.${this.$route.query.feature_type}`
             }
 
-            if (this.$route.query.relics == 1) {
-                filter['relic_flag'] = `is.false`
+            if (this.$route.query.relics === 'exclude') {
+                filter['is_relic'] = `is.false`
             }
 
-            if (this.$route.query.relics == 2) {
-                filter['relic_flag'] = `is.true`
+            if (this.$route.query.relics === 'only') {
+                filter['is_relic'] = `is.true`
             }
 
             if (this.$route.query.date_after && this.$route.query.date_before) {
@@ -127,7 +127,7 @@ export default {
             filter['offset'] = (this.page - 1) * this.page_size
 
             try {
-                const response = await axios.get(join(process.env.BASE_URL, `/api/rpc/search?select=name_id,place_id,place_name_mapping,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code&${qs.stringify(filter, { arrayFormat: "repeat" })}`), { headers: { 'Prefer': 'count=exact' } })
+                const response = await axios.get(join(process.env.BASE_URL, `/api/rpc/search?select=name_id,place_id,place_name_mapping,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code,is_relic,date_named&${qs.stringify(filter, { arrayFormat: "repeat" })}`), { headers: { 'Prefer': 'count=exact' } })
                 this.results = response.data
                 this.count = Number(response.headers['content-range'].split('/')[1])
             } catch (error) {

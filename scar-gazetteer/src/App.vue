@@ -23,7 +23,7 @@
                             >
                             <b-nav-item
                                 v-if="$store.state.user.isAdmin"
-                                to="/new-name"
+                                to="/place-names/create"
                                 ><BIconPlusCircle class="mr-1" />Add place name</b-nav-item
                             >
 
