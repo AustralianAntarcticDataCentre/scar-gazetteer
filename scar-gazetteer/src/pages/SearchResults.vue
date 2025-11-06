@@ -1,7 +1,7 @@
 <template>
     <div class="max-w-md">
         <h1>Search results</h1>
-        <Loading v-if="!count" />
+        <Loading v-if="loading" />
         <template v-else>
             <p>
                 {{ count.toLocaleString() }} total results
@@ -53,7 +53,7 @@ export default {
     components: { BIconDownload, Loading },
     data: function () {
         return {
-            loading: false,
+            loading: true,
             fields: [
                 { key: 'place_name_mapping', label: "Place name", sortable: false },
                 { key: 'latitude', sortable: false },
@@ -70,7 +70,7 @@ export default {
             return Math.max(this.$route.query.page ?? 1, 1)
         },
         total_pages() {
-            return Math.ceil(this.count / this.page_size)
+            return Math.max(Math.ceil(this.count / this.page_size), 1)
         }
     },
     mounted: function () {

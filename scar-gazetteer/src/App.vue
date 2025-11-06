@@ -9,7 +9,7 @@
             </div>
             <b-navbar class="main-nav" toggleable="lg">
                 <b-container class="px-sm-3">
-                    <b-navbar-brand to="/">SCAR CGA</b-navbar-brand>
+                    <b-navbar-brand to="/">Antarctic Place Names</b-navbar-brand>
 
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

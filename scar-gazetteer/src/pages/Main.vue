@@ -1,8 +1,8 @@
 <template>
     <div class="main-content">
-        <h1>SCAR Composite Gazetteer of Antarctica</h1>
+        <h1>Composite Gazetteer of Antarctica</h1>
 
-        <p>The SCAR Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
+        <p>The <a href="https://scar.org" target="_blank">SCAR</a> Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
 
         <p>It has been compiled over a period of {{ years }} years
             (commenced 1992) and consists of <b-link :to="'/search/results'">{{ name_count.toLocaleString() }} names</b-link> that correspond to {{ feature_count.toLocaleString() }} features.

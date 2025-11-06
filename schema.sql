@@ -97,13 +97,12 @@ CREATE OR REPLACE FUNCTION gazetteer.search(search_text text)
 AS $function$
         BEGIN
 			RETURN QUERY
-            select * from gazetteer.place_names_consolidated
-            where LOWER(unaccent(place_name_mapping)) like '%' || LOWER(unaccent(search_text)) || '%'
+            SELECT * FROM gazetteer.place_names_consolidated
+            WHERE LOWER(unaccent(place_name_mapping)) LIKE '%' || LOWER(unaccent(search_text)) || '%'
             OR place_id::text = search_text
             OR name_id::text = search_text;
-        end;
+        END;
     $function$
-
 
 
 ALTER FUNCTION gazetteer.search(search_text text) OWNER TO postgres;

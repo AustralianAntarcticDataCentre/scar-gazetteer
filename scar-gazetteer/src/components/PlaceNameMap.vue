@@ -69,6 +69,8 @@ async function loadWmtsLayer(url, layer) {
     const result = parser.read(text);
     const options = optionsFromCapabilities(result, { layer })
 
+    options.wrapX = true
+
     return new TileLayer({
         opacity: 1,
         source: new WMTS(options),
