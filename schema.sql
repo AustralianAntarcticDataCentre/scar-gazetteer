@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict OCOsBIT5vfqnQAglp2ImnO3xXzhLyjn8Y8dvqbilPdZ0qwkrOdvLMnPQdtXC6Va
+\restrict 5IbN8r5v6lhnH8cjx3YkZMbbX7lAqgrTiSdynGyiCieu39418AIzohEnPtktxVM
 
 -- Dumped from database version 17.5 (Debian 17.5-1.pgdg110+1)
 -- Dumped by pg_dump version 17.6
 
--- Started on 2025-11-07 03:36:32 UTC
+-- Started on 2025-11-07 06:32:31 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -32,7 +32,7 @@ CREATE SCHEMA gazetteer;
 ALTER SCHEMA gazetteer OWNER TO postgres;
 
 --
--- TOC entry 2047 (class 1247 OID 44617)
+-- TOC entry 2051 (class 1247 OID 44617)
 -- Name: application/vnd.google-earth.kml+xml; Type: DOMAIN; Schema: gazetteer; Owner: postgres
 --
 
@@ -42,7 +42,35 @@ CREATE DOMAIN gazetteer."application/vnd.google-earth.kml+xml" AS text;
 ALTER DOMAIN gazetteer."application/vnd.google-earth.kml+xml" OWNER TO postgres;
 
 --
--- TOC entry 852 (class 1255 OID 36882)
+-- TOC entry 859 (class 1255 OID 44637)
+-- Name: audit_entry(); Type: FUNCTION; Schema: gazetteer; Owner: postgres
+--
+
+CREATE FUNCTION gazetteer.audit_entry() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $_$
+DECLARE
+    primary_column_name TEXT;
+    primary_column_value TEXT;
+BEGIN
+    primary_column_name := TG_ARGV[0];
+
+    EXECUTE format('SELECT (($1).%I)::text', primary_column_name)
+    USING NEW
+    INTO primary_column_value;
+
+    INSERT INTO gazetteer.audit (user_id, entity, entity_id, event_type, event_before, event_after, created_at) 
+	VALUES (current_setting('request.jwt.claims', true)::json#>>'{user,username}', TG_TABLE_NAME, primary_column_value, TG_OP, row_to_json(OLD), row_to_json(NEW), now());
+
+    RETURN NEW;
+END;
+$_$;
+
+
+ALTER FUNCTION gazetteer.audit_entry() OWNER TO postgres;
+
+--
+-- TOC entry 855 (class 1255 OID 36882)
 -- Name: authenticate(); Type: FUNCTION; Schema: gazetteer; Owner: postgres
 --
 
@@ -64,7 +92,7 @@ $$;
 ALTER FUNCTION gazetteer.authenticate() OWNER TO postgres;
 
 --
--- TOC entry 859 (class 1255 OID 44621)
+-- TOC entry 863 (class 1255 OID 44621)
 -- Name: get_next_id(text, text); Type: FUNCTION; Schema: gazetteer; Owner: postgres
 --
 
@@ -85,8 +113,8 @@ CREATE FUNCTION gazetteer.get_next_id(table_name text, id_column text) RETURNS i
 ALTER FUNCTION gazetteer.get_next_id(table_name text, id_column text) OWNER TO postgres;
 
 --
--- TOC entry 4710 (class 0 OID 0)
--- Dependencies: 859
+-- TOC entry 4725 (class 0 OID 0)
+-- Dependencies: 863
 -- Name: FUNCTION get_next_id(table_name text, id_column text); Type: COMMENT; Schema: gazetteer; Owner: postgres
 --
 
@@ -94,7 +122,7 @@ COMMENT ON FUNCTION gazetteer.get_next_id(table_name text, id_column text) IS 'T
 
 
 --
--- TOC entry 591 (class 1255 OID 44619)
+-- TOC entry 594 (class 1255 OID 44619)
 -- Name: place_names_kml_final(gazetteer."application/vnd.google-earth.kml+xml"); Type: FUNCTION; Schema: gazetteer; Owner: postgres
 --
 
@@ -144,18 +172,20 @@ CREATE TABLE gazetteer.place_names (
     un_sdg integer,
     gazetteer character varying(4) NOT NULL,
     feature_type_code integer,
-    relic_flag boolean NOT NULL,
+    relic_flag boolean DEFAULT FALSE NOT NULL,
     date_named date,
     comments text,
     geometry public.geometry NOT NULL,
-    pronunciation_audio_url text
+    pronunciation_audio_url text,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
 ALTER TABLE gazetteer.place_names OWNER TO postgres;
 
 --
--- TOC entry 390 (class 1255 OID 44618)
+-- TOC entry 391 (class 1255 OID 44618)
 -- Name: place_names_kml_trans(text, gazetteer.place_names); Type: FUNCTION; Schema: gazetteer; Owner: postgres
 --
 
@@ -244,7 +274,7 @@ CREATE VIEW gazetteer.place_names_consolidated AS
 ALTER VIEW gazetteer.place_names_consolidated OWNER TO postgres;
 
 --
--- TOC entry 478 (class 1255 OID 44615)
+-- TOC entry 481 (class 1255 OID 44615)
 -- Name: search(text); Type: FUNCTION; Schema: gazetteer; Owner: postgres
 --
 
@@ -264,7 +294,24 @@ CREATE FUNCTION gazetteer.search(search_text text) RETURNS SETOF gazetteer.place
 ALTER FUNCTION gazetteer.search(search_text text) OWNER TO postgres;
 
 --
--- TOC entry 2074 (class 1255 OID 44620)
+-- TOC entry 470 (class 1255 OID 44627)
+-- Name: update_updated(); Type: FUNCTION; Schema: gazetteer; Owner: postgres
+--
+
+CREATE FUNCTION gazetteer.update_updated() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION gazetteer.update_updated() OWNER TO postgres;
+
+--
+-- TOC entry 2081 (class 1255 OID 44620)
 -- Name: place_names_kml_agg(gazetteer.place_names); Type: AGGREGATE; Schema: gazetteer; Owner: postgres
 --
 
@@ -277,6 +324,25 @@ CREATE AGGREGATE gazetteer.place_names_kml_agg(gazetteer.place_names) (
 
 
 ALTER AGGREGATE gazetteer.place_names_kml_agg(gazetteer.place_names) OWNER TO postgres;
+
+--
+-- TOC entry 325 (class 1259 OID 44646)
+-- Name: audit; Type: TABLE; Schema: gazetteer; Owner: postgres
+--
+
+CREATE TABLE gazetteer.audit (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id text,
+    entity text,
+    entity_id text,
+    event_type text,
+    event_before json,
+    event_after json,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE gazetteer.audit OWNER TO postgres;
 
 --
 -- TOC entry 321 (class 1259 OID 36902)
@@ -342,7 +408,7 @@ ALTER TABLE gazetteer.place_names ALTER COLUMN name_id ADD GENERATED BY DEFAULT 
 
 
 --
--- TOC entry 4528 (class 2606 OID 36923)
+-- TOC entry 4539 (class 2606 OID 36923)
 -- Name: feature_types feature_type_pkey; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -351,7 +417,7 @@ ALTER TABLE ONLY gazetteer.feature_types
 
 
 --
--- TOC entry 4530 (class 2606 OID 44559)
+-- TOC entry 4541 (class 2606 OID 44559)
 -- Name: gazetteers gazetteers_pkey; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -360,7 +426,7 @@ ALTER TABLE ONLY gazetteer.gazetteers
 
 
 --
--- TOC entry 4534 (class 2606 OID 36927)
+-- TOC entry 4545 (class 2606 OID 36927)
 -- Name: glossary glossary_pkey; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -369,7 +435,7 @@ ALTER TABLE ONLY gazetteer.glossary
 
 
 --
--- TOC entry 4526 (class 2606 OID 36890)
+-- TOC entry 4537 (class 2606 OID 36890)
 -- Name: place_names place_names_pkey; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -378,7 +444,7 @@ ALTER TABLE ONLY gazetteer.place_names
 
 
 --
--- TOC entry 4532 (class 2606 OID 44557)
+-- TOC entry 4543 (class 2606 OID 44557)
 -- Name: gazetteers uk_code; Type: CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -387,7 +453,23 @@ ALTER TABLE ONLY gazetteer.gazetteers
 
 
 --
--- TOC entry 4522 (class 1259 OID 44623)
+-- TOC entry 4546 (class 1259 OID 44653)
+-- Name: idx_audit_entity; Type: INDEX; Schema: gazetteer; Owner: postgres
+--
+
+CREATE INDEX idx_audit_entity ON gazetteer.audit USING btree (entity) WITH (deduplicate_items='true');
+
+
+--
+-- TOC entry 4547 (class 1259 OID 44654)
+-- Name: idx_audit_entity_id; Type: INDEX; Schema: gazetteer; Owner: postgres
+--
+
+CREATE INDEX idx_audit_entity_id ON gazetteer.audit USING btree (entity_id) WITH (deduplicate_items='true');
+
+
+--
+-- TOC entry 4533 (class 1259 OID 44623)
 -- Name: idx_place_names_place_id; Type: INDEX; Schema: gazetteer; Owner: postgres
 --
 
@@ -395,7 +477,7 @@ CREATE INDEX idx_place_names_place_id ON gazetteer.place_names USING btree (plac
 
 
 --
--- TOC entry 4523 (class 1259 OID 44625)
+-- TOC entry 4534 (class 1259 OID 44625)
 -- Name: idx_place_names_place_name_gazetteer; Type: INDEX; Schema: gazetteer; Owner: postgres
 --
 
@@ -403,7 +485,7 @@ CREATE INDEX idx_place_names_place_name_gazetteer ON gazetteer.place_names USING
 
 
 --
--- TOC entry 4524 (class 1259 OID 44624)
+-- TOC entry 4535 (class 1259 OID 44624)
 -- Name: idx_place_names_place_name_mapping; Type: INDEX; Schema: gazetteer; Owner: postgres
 --
 
@@ -411,7 +493,23 @@ CREATE INDEX idx_place_names_place_name_mapping ON gazetteer.place_names USING b
 
 
 --
--- TOC entry 4537 (class 2606 OID 36942)
+-- TOC entry 4551 (class 2620 OID 44644)
+-- Name: place_names place_names_audit_tg; Type: TRIGGER; Schema: gazetteer; Owner: postgres
+--
+
+CREATE TRIGGER place_names_audit_tg AFTER INSERT OR DELETE OR UPDATE ON gazetteer.place_names FOR EACH ROW EXECUTE FUNCTION gazetteer.audit_entry('name_id');
+
+
+--
+-- TOC entry 4552 (class 2620 OID 44641)
+-- Name: place_names place_names_updated_tg; Type: TRIGGER; Schema: gazetteer; Owner: postgres
+--
+
+CREATE TRIGGER place_names_updated_tg BEFORE UPDATE ON gazetteer.place_names FOR EACH ROW EXECUTE FUNCTION gazetteer.update_updated();
+
+
+--
+-- TOC entry 4550 (class 2606 OID 36942)
 -- Name: glossary feature_type_code_fk; Type: FK CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -420,7 +518,7 @@ ALTER TABLE ONLY gazetteer.glossary
 
 
 --
--- TOC entry 4535 (class 2606 OID 36932)
+-- TOC entry 4548 (class 2606 OID 36932)
 -- Name: place_names feature_types_fk; Type: FK CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -429,7 +527,7 @@ ALTER TABLE ONLY gazetteer.place_names
 
 
 --
--- TOC entry 4536 (class 2606 OID 44572)
+-- TOC entry 4549 (class 2606 OID 44572)
 -- Name: place_names gazetteer_fk; Type: FK CONSTRAINT; Schema: gazetteer; Owner: postgres
 --
 
@@ -438,7 +536,7 @@ ALTER TABLE ONLY gazetteer.place_names
 
 
 --
--- TOC entry 4695 (class 3256 OID 36947)
+-- TOC entry 4710 (class 3256 OID 36947)
 -- Name: place_names delete_place_names; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -446,7 +544,7 @@ CREATE POLICY delete_place_names ON gazetteer.place_names FOR DELETE TO scar_adm
 
 
 --
--- TOC entry 4696 (class 3256 OID 36948)
+-- TOC entry 4711 (class 3256 OID 36948)
 -- Name: place_names edit_place_names; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -454,7 +552,7 @@ CREATE POLICY edit_place_names ON gazetteer.place_names FOR UPDATE TO scar_admin
 
 
 --
--- TOC entry 4692 (class 0 OID 36892)
+-- TOC entry 4707 (class 0 OID 36892)
 -- Dependencies: 319
 -- Name: feature_types; Type: ROW SECURITY; Schema: gazetteer; Owner: postgres
 --
@@ -462,7 +560,7 @@ CREATE POLICY edit_place_names ON gazetteer.place_names FOR UPDATE TO scar_admin
 ALTER TABLE gazetteer.feature_types ENABLE ROW LEVEL SECURITY;
 
 --
--- TOC entry 4697 (class 3256 OID 36949)
+-- TOC entry 4712 (class 3256 OID 36949)
 -- Name: place_names full_edit; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -470,7 +568,7 @@ CREATE POLICY full_edit ON gazetteer.place_names FOR UPDATE TO scar_admin USING 
 
 
 --
--- TOC entry 4698 (class 3256 OID 36951)
+-- TOC entry 4713 (class 3256 OID 36951)
 -- Name: place_names full_view; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -478,7 +576,7 @@ CREATE POLICY full_view ON gazetteer.place_names FOR SELECT TO scar_admin USING 
 
 
 --
--- TOC entry 4693 (class 0 OID 36897)
+-- TOC entry 4708 (class 0 OID 36897)
 -- Dependencies: 320
 -- Name: gazetteers; Type: ROW SECURITY; Schema: gazetteer; Owner: postgres
 --
@@ -486,7 +584,7 @@ CREATE POLICY full_view ON gazetteer.place_names FOR SELECT TO scar_admin USING 
 ALTER TABLE gazetteer.gazetteers ENABLE ROW LEVEL SECURITY;
 
 --
--- TOC entry 4694 (class 0 OID 36906)
+-- TOC entry 4709 (class 0 OID 36906)
 -- Dependencies: 322
 -- Name: glossary; Type: ROW SECURITY; Schema: gazetteer; Owner: postgres
 --
@@ -494,7 +592,7 @@ ALTER TABLE gazetteer.gazetteers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gazetteer.glossary ENABLE ROW LEVEL SECURITY;
 
 --
--- TOC entry 4699 (class 3256 OID 36952)
+-- TOC entry 4714 (class 3256 OID 36952)
 -- Name: place_names insert_place_names; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -502,7 +600,7 @@ CREATE POLICY insert_place_names ON gazetteer.place_names FOR INSERT TO scar_adm
 
 
 --
--- TOC entry 4691 (class 0 OID 36884)
+-- TOC entry 4706 (class 0 OID 36884)
 -- Dependencies: 318
 -- Name: place_names; Type: ROW SECURITY; Schema: gazetteer; Owner: postgres
 --
@@ -510,7 +608,7 @@ CREATE POLICY insert_place_names ON gazetteer.place_names FOR INSERT TO scar_adm
 ALTER TABLE gazetteer.place_names ENABLE ROW LEVEL SECURITY;
 
 --
--- TOC entry 4700 (class 3256 OID 36953)
+-- TOC entry 4715 (class 3256 OID 36953)
 -- Name: feature_types public_view; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -518,7 +616,7 @@ CREATE POLICY public_view ON gazetteer.feature_types FOR SELECT TO public_user, 
 
 
 --
--- TOC entry 4701 (class 3256 OID 36954)
+-- TOC entry 4716 (class 3256 OID 36954)
 -- Name: gazetteers public_view; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -526,7 +624,7 @@ CREATE POLICY public_view ON gazetteer.gazetteers FOR SELECT TO public_user, sca
 
 
 --
--- TOC entry 4702 (class 3256 OID 36955)
+-- TOC entry 4717 (class 3256 OID 36955)
 -- Name: glossary public_view; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -534,7 +632,7 @@ CREATE POLICY public_view ON gazetteer.glossary FOR SELECT TO public_user, scar_
 
 
 --
--- TOC entry 4703 (class 3256 OID 36956)
+-- TOC entry 4718 (class 3256 OID 36956)
 -- Name: place_names public_view; Type: POLICY; Schema: gazetteer; Owner: postgres
 --
 
@@ -542,7 +640,7 @@ CREATE POLICY public_view ON gazetteer.place_names FOR SELECT TO public_user USI
 
 
 --
--- TOC entry 4709 (class 0 OID 0)
+-- TOC entry 4724 (class 0 OID 0)
 -- Dependencies: 14
 -- Name: SCHEMA gazetteer; Type: ACL; Schema: -; Owner: postgres
 --
@@ -552,7 +650,7 @@ GRANT USAGE ON SCHEMA gazetteer TO scar_admin;
 
 
 --
--- TOC entry 4710 (class 0 OID 0)
+-- TOC entry 4726 (class 0 OID 0)
 -- Dependencies: 318
 -- Name: TABLE place_names; Type: ACL; Schema: gazetteer; Owner: postgres
 --
@@ -562,7 +660,7 @@ GRANT ALL ON TABLE gazetteer.place_names TO scar_admin;
 
 
 --
--- TOC entry 4711 (class 0 OID 0)
+-- TOC entry 4727 (class 0 OID 0)
 -- Dependencies: 319
 -- Name: TABLE feature_types; Type: ACL; Schema: gazetteer; Owner: postgres
 --
@@ -572,7 +670,7 @@ GRANT SELECT ON TABLE gazetteer.feature_types TO scar_admin;
 
 
 --
--- TOC entry 4712 (class 0 OID 0)
+-- TOC entry 4728 (class 0 OID 0)
 -- Dependencies: 320
 -- Name: TABLE gazetteers; Type: ACL; Schema: gazetteer; Owner: postgres
 --
@@ -582,7 +680,7 @@ GRANT SELECT ON TABLE gazetteer.gazetteers TO scar_admin;
 
 
 --
--- TOC entry 4713 (class 0 OID 0)
+-- TOC entry 4729 (class 0 OID 0)
 -- Dependencies: 324
 -- Name: TABLE place_names_consolidated; Type: ACL; Schema: gazetteer; Owner: postgres
 --
@@ -592,7 +690,7 @@ GRANT SELECT ON TABLE gazetteer.place_names_consolidated TO scar_admin;
 
 
 --
--- TOC entry 4714 (class 0 OID 0)
+-- TOC entry 4730 (class 0 OID 0)
 -- Dependencies: 321
 -- Name: TABLE gaz_count; Type: ACL; Schema: gazetteer; Owner: postgres
 --
@@ -602,7 +700,7 @@ GRANT SELECT ON TABLE gazetteer.gaz_count TO scar_admin;
 
 
 --
--- TOC entry 4715 (class 0 OID 0)
+-- TOC entry 4731 (class 0 OID 0)
 -- Dependencies: 322
 -- Name: TABLE glossary; Type: ACL; Schema: gazetteer; Owner: postgres
 --
@@ -611,11 +709,11 @@ GRANT SELECT ON TABLE gazetteer.glossary TO public_user;
 GRANT SELECT ON TABLE gazetteer.glossary TO scar_admin;
 
 
--- Completed on 2025-11-07 03:36:34 UTC
+-- Completed on 2025-11-07 06:32:32 UTC
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict OCOsBIT5vfqnQAglp2ImnO3xXzhLyjn8Y8dvqbilPdZ0qwkrOdvLMnPQdtXC6Va
+\unrestrict 5IbN8r5v6lhnH8cjx3YkZMbbX7lAqgrTiSdynGyiCieu39418AIzohEnPtktxVM
 
