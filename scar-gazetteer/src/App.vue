@@ -9,7 +9,10 @@
             </div>
             <b-navbar class="main-nav" toggleable="lg">
                 <b-container class="px-sm-3">
-                    <b-navbar-brand to="/">Antarctic Place Names</b-navbar-brand>
+                    <b-navbar-brand to="/" class="d-flex align-items-center">
+                        <img alt="SCAR Logo" src="./assets/scar_logo.svg" class="mr-2" style="width: 2.5em;"/>    
+                        Antarctic Place Names
+                    </b-navbar-brand>
 
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -53,12 +56,16 @@
         </b-container>
 
         <footer class="bg-light mt-8">
-            <b-container class="py-4">
+            <b-container class="py-4" style="font-size: .8rem;">
+                <div class="d-flex mb-3" style="max-width: 220px; gap: 1rem">
+                    <img src="./assets/scar_logo_sm.png" alt="SCAR logo" class="w-50" />
+                    <img src="./assets/pnra_logo_sm.png" alt="PNRA logo" class="w-50" />
+                </div>
                 <p>
                     The SCAR CGA is edited by representatives from Comitato per i nomi geografici antartici.
                 </p>
                 <p class="mb-0">
-                    The SCAR CGA is hosted by the
+                    Hosting is provided by the 
                         <a href="https://data.aad.gov.au" target="_blank"
                             >Australian Antarctic Data Centre</a
                         >.
