@@ -47,7 +47,7 @@ ALTER DOMAIN gazetteer."application/vnd.google-earth.kml+xml" OWNER TO postgres;
 --
 
 CREATE FUNCTION gazetteer.audit_entry() RETURNS trigger
-    LANGUAGE plpgsql
+    LANGUAGE plpgsql SECURITY DEFINER
     AS $_$
 DECLARE
     primary_column_name TEXT;
@@ -59,8 +59,8 @@ BEGIN
     USING NEW
     INTO primary_column_value;
 
-    INSERT INTO gazetteer.audit (user_id, entity, entity_id, event_type, event_before, event_after, created_at) 
-	VALUES (current_setting('request.jwt.claims', true)::json#>>'{user,username}', TG_TABLE_NAME, primary_column_value, TG_OP, row_to_json(OLD), row_to_json(NEW), now());
+    INSERT INTO gazetteer.audit ("user", entity, entity_id, event_type, event_before, event_after, created_at) 
+	VALUES (current_setting('request.jwt.claims', true)::jsonb->'user', TG_TABLE_NAME, primary_column_value, TG_OP, row_to_jsonb(OLD), row_to_jsonb(NEW), now());
 
     RETURN NEW;
 END;
@@ -78,9 +78,9 @@ CREATE FUNCTION gazetteer.authenticate() RETURNS void
     LANGUAGE plpgsql
     AS $$
 declare
-	roles text := current_setting('request.jwt.claims', true)::json->>'roles';
+	roles jsonb := current_setting('request.jwt.claims', true)::jsonb->>'roles';
 begin
-	if roles LIKE '%AADC%' then
+	if roles ?| array['AADC', 'AADC_DEV', 'GAZ_EDIT'] then
 		set local role to scar_admin;
 	else
 		set local role to public_user;
@@ -332,12 +332,12 @@ ALTER AGGREGATE gazetteer.place_names_kml_agg(gazetteer.place_names) OWNER TO po
 
 CREATE TABLE gazetteer.audit (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id text,
+    "user" jsonb,
     entity text,
     entity_id text,
     event_type text,
-    event_before json,
-    event_after json,
+    event_before jsonb,
+    event_after jsonb,
     created_at timestamp without time zone DEFAULT now() NOT NULL
 );
 
