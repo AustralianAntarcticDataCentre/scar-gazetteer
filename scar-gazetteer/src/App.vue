@@ -77,7 +77,6 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { setDefaultToken } from "vue-postgrest";
 import LoginModal from "@/components/LoginModal.vue";
 import { BIconInfoCircle, BIconPerson, BIconPlusCircle, BIconSearch } from "bootstrap-vue";
 
@@ -112,9 +111,6 @@ export default {
     },
     computed: {
         ...mapState("user", ["isLoggedIn", "username"]),
-    },
-    mounted: function () {
-        setDefaultToken(this.$store.getters["user/getToken"]);
     },
 };
 </script>

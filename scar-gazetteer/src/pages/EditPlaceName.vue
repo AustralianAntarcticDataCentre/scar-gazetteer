@@ -24,7 +24,7 @@ export default {
                     'name_id.eq': this.$route.params.id
                 },
                 single: true,
-                token: this.$store.getters['user/getToken']
+                token: this.$store.getters['user/getToken'],
             }
         },
         form_data() {
