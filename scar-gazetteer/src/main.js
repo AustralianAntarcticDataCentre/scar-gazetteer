@@ -2,9 +2,9 @@ import Vue from 'vue'
 import { BootstrapVue } from 'bootstrap-vue'
 import VueMeta from 'vue-meta'
 import Vuelidate from 'vuelidate'
-// import '@/assets/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@/assets/main.css'
 
 import store from './store';
 import App from './App.vue'

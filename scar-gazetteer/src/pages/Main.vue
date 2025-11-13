@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import axios from 'axios'
 import { join } from '../utils';
 import { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText } from 'bootstrap-vue';
@@ -44,7 +43,7 @@ export default {
     },
     computed: {
         years: function () {
-            return dayjs().year() - 1992
+            return new Date().getFullYear() - 1992
         }
     },
     metaInfo: function () {
