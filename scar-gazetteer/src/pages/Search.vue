@@ -94,9 +94,7 @@ export default {
                 return {
                     value: g.gazetteer_code,
                     text:
-                        g.gazetteer_name ||
-                        getNameForNumericIsoCountryCode(g.country_id) ||
-                        "Unknown",
+                        (g.country_id ? getNameForNumericIsoCountryCode(g.country_id) : 'Unknown') + (g.gazetteer_name ? ` - ${g.gazetteer_name}` : ''),
                 };
             });
 
