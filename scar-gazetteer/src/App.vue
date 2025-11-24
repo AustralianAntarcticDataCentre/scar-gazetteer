@@ -59,10 +59,9 @@
             <b-container class="py-4" style="font-size: .8rem;">
                 <div class="d-flex mb-3" style="max-width: 220px; gap: 1rem">
                     <img src="./assets/scar_logo_sm.png" alt="SCAR logo" class="w-50" />
-                    <img src="./assets/pnra_logo_sm.png" alt="PNRA logo" class="w-50" />
                 </div>
                 <p>
-                    The SCAR CGA is edited by representatives from Comitato per i nomi geografici antartici.
+                    The SCAR CGA is edited by representatives from Italian National Antarctic Research Program.
                 </p>
                 <p class="mb-0">
                     Hosting is provided by the 
