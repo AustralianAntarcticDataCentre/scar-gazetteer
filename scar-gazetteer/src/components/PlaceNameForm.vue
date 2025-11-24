@@ -152,7 +152,7 @@
         <b-form-group
             label="Named for"
             label-for="named-for"
-            description="The name of the person and related information about the person, who this place was named for."
+            description="The reason the feature was given this name. Include details, for example, about the person, theme or physical attributes."
         >
             <b-form-textarea
                 id="named-for"
