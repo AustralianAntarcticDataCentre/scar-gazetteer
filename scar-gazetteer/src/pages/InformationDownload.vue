@@ -68,7 +68,7 @@ export default {
             let filter = "";
 
             if (this.form.gazetteer) {
-                filter = `?gazetteer=eq.${this.form.gazetteer}`;
+                filter = `?gazetteer_code=eq.${this.form.gazetteer}`;
             }
 
             let url = join(process.env.BASE_URL, `/api/place_names${filter}`);
