@@ -11,9 +11,9 @@
                 <b-button @click="download" variant="outline-secondary"><BIconDownload /> Download</b-button>
             </div>
             <b-table v-if="!loading" :items="results" :fields="fields" responsive>
-                <template #cell(place_name_mapping)="p">
+                <template #cell(place_name_gazetteer)="p">
                     <div>
-                        <b-link :to="`/place-names/${p.item.name_id}`">{{ p.item.place_name_mapping }}
+                        <b-link :to="`/place-names/${p.item.name_id}`">{{ p.item.place_name_gazetteer }}
                             ({{ p.item.gazetteer_code }})</b-link><br />
                         <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
                     </div>
@@ -55,7 +55,7 @@ export default {
         return {
             loading: true,
             fields: [
-                { key: 'place_name_mapping', label: "Place name", sortable: false },
+                { key: 'place_name_gazetteer', label: "Place name", sortable: false },
                 { key: 'latitude', sortable: false },
                 { key: 'longitude', sortable: false },
                 { key: 'feature_types', label: "Feature type", sortable: false }
@@ -115,7 +115,7 @@ export default {
                 filter['date_named'] = `lte.${this.$route.query.date_before}`
             }
 
-            filter['order'] = 'place_name_mapping.asc'
+            filter['order'] = 'place_name_gazetteer.asc'
 
             return filter
         },
@@ -127,7 +127,7 @@ export default {
             filter['offset'] = (this.page - 1) * this.page_size
 
             try {
-                const response = await axios.get(join(process.env.BASE_URL, `/api/rpc/search?select=name_id,place_id,place_name_mapping,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code,is_relic,date_named&${qs.stringify(filter, { arrayFormat: "repeat" })}`), { headers: { 'Prefer': 'count=exact' } })
+                const response = await axios.get(join(process.env.BASE_URL, `/api/rpc/search?select=name_id,place_id,place_name_gazetteer,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code,is_relic,date_named&${qs.stringify(filter, { arrayFormat: "repeat" })}`), { headers: { 'Prefer': 'count=exact' } })
                 this.results = response.data
                 this.count = Number(response.headers['content-range'].split('/')[1])
             } catch (error) {
