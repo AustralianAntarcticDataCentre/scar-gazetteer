@@ -61,7 +61,7 @@
         <section>
             <div class="d-flex align-items-center mb-2">
                 <h2 class="mr-2 mb-0">Named for</h2>
-                <HelpHint content="The name of the person and related information about the person, who the place was named for." />
+                <HelpHint content="The reason the feature was given this name. Including details, for example, about the person, theme, or physical attributes." />
             </div>
             <p v-if="place.named_for" v-html="sanitizeHtml(place.named_for)"></p>
             <p v-else>Not recorded.</p>

@@ -4,35 +4,45 @@
 
         <h2>Citation information</h2>
         <p>When citing this dataset, use the following example as a guide.</p>
-        <p>Secretariat SCAR (1992, updated 2022).
-            Composite Gazetteer of Antarctica, <em>Scientific Committee on Antarctic Research</em>.
-            GCMD Metadata (<a
-                href="http://gcmd.nasa.gov/records/SCAR_Gazetteer.html">http://gcmd.nasa.gov/records/SCAR_Gazetteer.html</a>)
-        </p>
+        <blockquote>
+            Secretariat SCAR (1992, updated 2025). Composite Gazetteer of
+            Antarctica, Scientific Committee on Antarctic Research.
+            (http://placenames.aq/)
+        </blockquote>
 
-        <div class="alert alert-info"><strong>Note:</strong> These files maintain <span class="label label-info"
-                id="diacritic_info" data-toggle="tooltip"
-                title="A sign, such as an accent or cedilla, which when written above or below a letter indicates a difference in pronunciation from the same letter when unmarked or differently marked.">diacritics</span>.
-            Please be mindful not to use software that does not keep diacritics.</div>
+        <div class="alert alert-info">
+            <strong>Note:</strong> These file formats maintain diacritics.
+            Please be mindful not to use software that does not keep diacritics.
+        </div>
 
         <b-form @submit="submit">
             <b-form-group label="Gazetteer:" label-for="gazetteer">
-                <b-form-select id="gazetteer" v-model="form.gazetteer" :options="gazetteers" />
+                <b-form-select
+                    id="gazetteer"
+                    v-model="form.gazetteer"
+                    :options="gazetteers"
+                />
             </b-form-group>
             <b-form-group label="Format:" label-for="format">
-                <b-form-select id="format" v-model="form.format" :options="formats" />
+                <b-form-select
+                    id="format"
+                    v-model="form.format"
+                    :options="formats"
+                />
             </b-form-group>
-            <br>
-            <b-button type="submit" variant="primary"><BIconDownload /> Download</b-button>
+            <br />
+            <b-button type="submit" variant="primary"
+                ><BIconDownload /> Download</b-button
+            >
         </b-form>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { getNameForNumericIsoCountryCode, join } from '../utils'
-import download from 'downloadjs'
-import { BIconDownload } from 'bootstrap-vue';
+import axios from "axios";
+import { getNameForNumericIsoCountryCode, join } from "../utils";
+import download from "downloadjs";
+import { BIconDownload } from "bootstrap-vue";
 
 export default {
     name: "Search",
@@ -41,62 +51,77 @@ export default {
         return {
             form: {
                 gazetteer: null,
-                format: 'text/csv'
+                format: "text/csv",
             },
             gazetteers: [{ value: null, text: "All gazetteers" }],
             formats: [
-                { value: 'text/csv', text: "CSV" },
-                { value: 'application/geo+json', text: 'GeoJSON' },
-                { value: 'application/vnd.google-earth.kml+xml', text: 'KML' }],
-        }
+                { value: "text/csv", text: "CSV" },
+                { value: "application/geo+json", text: "GeoJSON" },
+                { value: "application/vnd.google-earth.kml+xml", text: "KML" },
+            ],
+        };
     },
     methods: {
         submit: function (event) {
-            event.preventDefault()
+            event.preventDefault();
 
-            let filter = ""
+            let filter = "";
 
             if (this.form.gazetteer) {
-                filter = `?gazetteer=eq.${this.form.gazetteer}`
+                filter = `?gazetteer=eq.${this.form.gazetteer}`;
             }
 
-            let url = join(process.env.BASE_URL, `/api/place_names${filter}`)
+            let url = join(process.env.BASE_URL, `/api/place_names${filter}`);
 
-            if(this.form.format == 'text/csv') {
-                url = join(process.env.BASE_URL, `/api/place_names_consolidated${filter}`)
+            if (this.form.format == "text/csv") {
+                url = join(
+                    process.env.BASE_URL,
+                    `/api/place_names_consolidated${filter}`
+                );
             }
 
             const options = {
-            headers: {
-                Accept: this.form.format
-            }
+                headers: {
+                    Accept: this.form.format,
+                },
             };
             fetch(url, options)
-            .then( res => res.blob() )
-            .then( blob => {
+                .then((res) => res.blob())
+                .then((blob) => {
+                    let gazetteer = this.form.gazetteer || "All";
+                    let fileSuffix = ".csv";
 
-                let gazetteer = this.form.gazetteer || 'All'
-                let fileSuffix = '.csv'
+                    if (this.form.format == "application/geo+json") {
+                        fileSuffix = ".json";
+                    } else if (
+                        this.form.format ==
+                        "application/vnd.google-earth.kml+xml"
+                    ) {
+                        fileSuffix = ".kml";
+                    }
 
-                if (this.form.format == 'application/geo+json') {
-                    fileSuffix = '.json'
-                } else if (this.form.format == 'application/vnd.google-earth.kml+xml') {
-                    fileSuffix = '.kml'
-                }
-
-                download(blob, `SCAR-CGA-${gazetteer}${fileSuffix}`, this.form.format)
-            });
-        }
+                    download(
+                        blob,
+                        `SCAR-CGA-${gazetteer}${fileSuffix}`,
+                        this.form.format
+                    );
+                });
+        },
     },
     mounted: async function () {
-        let response = await axios.get(join(process.env.BASE_URL, `/api/gazetteers`))
-        let gaz = response.data
+        let response = await axios.get(
+            join(process.env.BASE_URL, `/api/gazetteers`)
+        );
+        let gaz = response.data;
 
-        let formatted = gaz.map(g => {
-            return { value: g.gazetteer_code, text: getNameForNumericIsoCountryCode(g.country_id) }
-        })
+        let formatted = gaz.map((g) => {
+            return {
+                value: g.gazetteer_code,
+                text: getNameForNumericIsoCountryCode(g.country_id),
+            };
+        });
 
-        this.gazetteers = this.gazetteers.concat(formatted)
-    }
-}
+        this.gazetteers = this.gazetteers.concat(formatted);
+    },
+};
 </script>
