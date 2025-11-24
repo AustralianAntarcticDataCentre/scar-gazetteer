@@ -23,6 +23,10 @@
                 <dt>Is relic:</dt>
                 <dd>Yes <HelpHint v-if="place.feature_type.definition" content="The feature this name belongs to no longer exists." /></dd>
             </template>
+            <template v-if="place.date_named">
+                <dt>Date named:</dt>
+                <dd>{{ place.date_named }}</dd>
+            </template>
         </dl>
 
         <audio v-if="place.pronunciation_audio_url" controls>
@@ -67,8 +71,8 @@
             <h2>Location</h2>
             <dl>
                 <dt>Decimal degrees:</dt>
-                <dd>{{ place.geometry.coordinates[1] }}, {{ place.geometry.coordinates[0] }}</dd>
-                <dt>DMS:</dt>
+                <dd>{{ place.geometry.coordinates[1] }}&deg;, {{ place.geometry.coordinates[0] }}&deg;</dd>
+                <dt>Degrees, minutes, seconds:</dt>
                 <dd>{{ toDMS(place.geometry.coordinates[1], isLatitude = true) }}, {{ toDMS(place.geometry.coordinates[0], isLatitude = false) }}</dd>
                 <dt>Altitude:</dt>
                 <dd>{{ place.altitude ? `${place.altitude}m` : "Not recorded" }}</dd>
