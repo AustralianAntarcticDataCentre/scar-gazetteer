@@ -3,7 +3,7 @@
         <b-form-group
             label="Gazetteer place name"
             label-for="place_name_gazetteer"
-            description="The name as it appears in the source gazetteer, e.g., Penguin, Lake."
+            description="The name as it appears in a gazetteer, i.e. the specific part of the name is shown first e.g., Penguin, Lake."
             :state="validateState('place_name_gazetteer')"
             invalid-feedback="Must be at least 2 characters."
         >
@@ -67,7 +67,7 @@
         <b-form-group
             label="Latitude"
             label-for="latitude"
-            description="The latitude, expressed in decimal degrees of the place, e.g., -62.345."
+            description="The latitude expressed in decimal degrees e.g. -62.345."
             :state="validateState($v.coordinates.latitude)"
             invalid-feedback="Must be a number between -90 and -60."
         >
@@ -82,7 +82,7 @@
         <b-form-group
             label="Longitude"
             label-for="longitude"
-            description="The longitude, expressed in decimal degrees of the place, e.g., 12.345."
+            description="The longitude expressed in decimal degrees e.g. 12.345."
             :state="validateState($v.coordinates.longitude)"
             invalid-feedback="Must be a number between -180 and 180."
         >
@@ -404,21 +404,26 @@ export default {
             return $dirty ? ($error ? false : undefined) : undefined;
         },
         async loadGazetteers() {
-            const { data } = await axios.get(
+            let { data } = await axios.get(
                 join(
                     process.env.BASE_URL,
-                    `/api/gazetteers?order=gazetteer_name.asc`
+                    `/api/gazetteers`
                 )
             );
 
-            const formatted = data.map((g) => {
+            let formatted = data.map((g) => {
                 return {
                     value: g.gazetteer_code,
                     text:
-                        g.gazetteer_name ||
-                        getNameForNumericIsoCountryCode(g.country_id),
+                        (g.country_id
+                            ? getNameForNumericIsoCountryCode(g.country_id)
+                            : "Unknown") +
+                        (g.gazetteer_name ? ` - ${g.gazetteer_name}` : ""),
                 };
             });
+
+            // Sort alphabetically
+            formatted.sort((a, b) => a.text < b.text ? -1 : a.text > b.text ? 1 : 0)
 
             this.lists.gazetteers = this.lists.gazetteers.concat(formatted);
         },

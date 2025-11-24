@@ -63,8 +63,8 @@ export default {
             ],
             relics: [
                 { value: null, text: "Include relics" },
-                { value: 'exclude', text: "Exclude relics" },
-                { value: 'only', text: "Only relics" },
+                { value: "exclude", text: "Exclude relics" },
+                { value: "only", text: "Only relics" },
             ],
             gazetteers: [{ value: null, text: "All gazetteers" }],
             form: {
@@ -86,7 +86,7 @@ export default {
             let { data } = await axios.get(
                 join(
                     process.env.BASE_URL,
-                    `/api/gazetteers?order=gazetteer_name.asc`
+                    `/api/gazetteers`
                 )
             );
 
@@ -94,9 +94,15 @@ export default {
                 return {
                     value: g.gazetteer_code,
                     text:
-                        (g.country_id ? getNameForNumericIsoCountryCode(g.country_id) : 'Unknown') + (g.gazetteer_name ? ` - ${g.gazetteer_name}` : ''),
+                        (g.country_id
+                            ? getNameForNumericIsoCountryCode(g.country_id)
+                            : "Unknown") +
+                        (g.gazetteer_name ? ` - ${g.gazetteer_name}` : ""),
                 };
             });
+
+            // Sort alphabetically
+            formatted.sort((a, b) => a.text < b.text ? -1 : a.text > b.text ? 1 : 0)
 
             this.gazetteers = this.gazetteers.concat(formatted);
         },
