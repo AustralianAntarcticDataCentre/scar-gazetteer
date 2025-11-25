@@ -8,7 +8,7 @@
         <p>
             To prepare a file for batch <strong>updates</strong> of existing place names:
         <ol>
-            <li>Go to the <b-link to="/search">SCAR Composite Gazettteer of Antarctica search page</b-link> and perform a search
+            <li>Go to the <b-link to="/search">SCAR Composite Gazetteer of Antarctica search page</b-link> and perform a search
                 that will retrieve the relevant records.</li>
             <li>On the search results page, click the button titled "Download" (blue button at top right).</li>
 
