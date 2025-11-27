@@ -2,6 +2,20 @@
     <div class="main-content">
         <h1>Composite Gazetteer of Antarctica</h1>
 
+        <BCard bg-variant="light" tag="form" class="mb-3" @submit.prevent="search">
+            <label for="homepage-search" class="sr-only">Search place names</label>
+            <BInputGroup>
+                <BFormInput id="homepage-search" v-model="form.search_text" placeholder="Search place names..."/>
+                <template #append>
+                    <BButton type="submit"><BIconSearch /><span class="sr-only">Search</span></BButton>
+                </template>
+            </BInputGroup>
+            <div class="small mt-2" style="margin-bottom: -.4em;">
+                <BLink to="/search">Advanced search</BLink><br>
+                <BLink to="/search/results">View all names</BLink>
+            </div>
+        </BCard>
+
         <p>The <a href="https://scar.org" target="_blank">SCAR</a> Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
 
         <p>It has been compiled over a period of {{ years }} years
@@ -27,23 +41,32 @@
 </template>
 
 <script>
+import qs from "qs";
 import axios from 'axios'
 import { join } from '../utils';
-import { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText } from 'bootstrap-vue';
+import { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText, BIconSearch } from 'bootstrap-vue';
 
 export default {
     name: "Main",
-    components: { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText },
+    components: { BIconBarChart, BIconCloudArrowDown, BIconFileEarmarkText, BIconSearch },
     data: function () {
         return {
             feature_count: 0,
             name_count: 0,
-            gazetteer_count: 0
+            gazetteer_count: 0,
+            form: {
+                search_text: "",
+            },
         }
     },
     computed: {
         years: function () {
             return new Date().getFullYear() - 1992
+        }
+    },
+    methods: {
+        search() {
+            this.$router.push(`/search/results?${qs.stringify(this.form)}`);
         }
     },
     metaInfo: function () {

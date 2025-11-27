@@ -4,7 +4,7 @@
         <Loading v-if="loading" />
         <template v-else>
             <p>
-                {{ count.toLocaleString() }} total results
+                {{ count.toLocaleString() }} total results {{ $route.query.search_text ? `for "${$route.query.search_text}"` : '' }}
             </p>
             <div class="d-flex justify-content-between flex-wrap mb-3">
                 <b-pagination-nav :link-gen="generatePageLink" :number-of-pages="total_pages" use-router first-number last-number class="mr-3"></b-pagination-nav>
