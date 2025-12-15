@@ -8,7 +8,7 @@
 -- Dumped by pg_dump version 17.6
 
 -- Started on 2025-11-07 06:32:31 UTC
-
+ 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -20,7 +20,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
 --
 -- TOC entry 14 (class 2615 OID 36881)
 -- Name: gazetteer; Type: SCHEMA; Schema: -; Owner: postgres
@@ -170,13 +169,23 @@ CREATE TABLE gazetteer.place_names (
     narrative text,
     named_for text,
     un_sdg integer,
-    gazetteer character varying(4) NOT NULL,
+    gazetteer character varying(4),
     feature_type_code integer,
     relic_flag boolean DEFAULT FALSE NOT NULL,
     date_named date,
     comments text,
     geometry public.geometry NOT NULL,
     pronunciation_audio_url text,
+    country_id integer,
+    scar_feature_class text,
+    is_complete_flag BOOLEAN,
+    view_by_public_flag BOOLEAN,
+    is_proposed_flag BOOLEAN,
+    accepted_by TEXT,
+    verified_by TEXT,
+    scar_map_cat_id INTEGER,
+    status text,
+    status_notes text,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL
 );
