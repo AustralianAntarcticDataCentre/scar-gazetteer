@@ -186,6 +186,10 @@ CREATE TABLE gazetteer.place_names (
     scar_map_cat_id INTEGER,
     status text,
     status_notes text,
+    source_name character varying(500),
+    source_publisher character varying(100),
+    source_identifier character varying(100),
+    source_scale character varying(15),
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     updated_at timestamp without time zone DEFAULT now() NOT NULL
 );
