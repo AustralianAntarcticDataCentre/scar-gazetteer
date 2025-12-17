@@ -2,8 +2,6 @@ services:
   web:
     image: ${CONTAINER_IMAGE_FRONTEND}
     build: ./scar-gazetteer
-    depends_on:
-      - api
     deploy:
       mode: replicated
       replicas: 1
@@ -68,7 +66,7 @@ services:
       - aadc-traefik-net
     depends_on: !reset []
 
-  db: !reset null
+  db: !reset
 
 networks:
   aadc-traefik-net:
