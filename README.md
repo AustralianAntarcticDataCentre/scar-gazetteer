@@ -20,5 +20,4 @@ Docker will allocate a random port to the Postgres container each time it is sta
 To import data from a local SQL file use `psql -h 127.0.0.1 -p {port} -U postgres -f ./path/to/file.sql`.
 
 ## License
-Copyright Commonwealth of Australia
-Released under MIT License
+Copyright Commonwealth of Australia. Released under MIT License.

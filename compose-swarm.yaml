@@ -1,6 +1,7 @@
 services:
   web:
     image: ${CONTAINER_IMAGE_FRONTEND}
+    build: ./scar-gazetteer
     depends_on:
       - api
     deploy:
