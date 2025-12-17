@@ -14,7 +14,7 @@
                 <template #cell(place_name_gazetteer)="p">
                     <div>
                         <b-link :to="`/place-names/${p.item.name_id}`">{{ p.item.place_name_gazetteer }}
-                            ({{ p.item.gazetteer_code }})</b-link><br />
+                            ({{ p.item.gazetteer_code || 'Unknown' }})</b-link><br />
                         <b-badge>Name ID: {{ p.item.name_id }}</b-badge> <b-badge>Place ID: {{ p.item.place_id }}</b-badge>
                     </div>
                 </template>
@@ -36,7 +36,7 @@
                 </template>
             </b-table>
             <Loading v-else class="mb-3" />
-        <b-pagination-nav :link-gen="generatePageLink" :number-of-pages="total_pages" use-router first-number last-number></b-pagination-nav>
+            <b-pagination-nav :link-gen="generatePageLink" :number-of-pages="total_pages" use-router first-number last-number></b-pagination-nav>
         </template>
     </div>
 </template>
