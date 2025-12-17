@@ -59,7 +59,7 @@ BEGIN
     INTO primary_column_value;
 
     INSERT INTO gazetteer.audit ("user", entity, entity_id, event_type, event_before, event_after, created_at) 
-	VALUES (current_setting('request.jwt.claims', true)::jsonb->'user', TG_TABLE_NAME, primary_column_value, TG_OP, row_to_jsonb(OLD), row_to_jsonb(NEW), now());
+	VALUES (current_setting('request.jwt.claims', true)::jsonb->'user', TG_TABLE_NAME, primary_column_value, TG_OP, to_jsonb(OLD), to_jsonb(NEW), now());
 
     RETURN NEW;
 END;
@@ -169,7 +169,7 @@ CREATE TABLE gazetteer.place_names (
     narrative text,
     named_for text,
     un_sdg integer,
-    gazetteer character varying(4),
+    gazetteer character varying(6),
     feature_type_code integer,
     relic_flag boolean DEFAULT FALSE NOT NULL,
     date_named date,
@@ -243,7 +243,7 @@ ALTER TABLE gazetteer.feature_types OWNER TO postgres;
 --
 
 CREATE TABLE gazetteer.gazetteers (
-    gazetteer_code character varying(4) NOT NULL,
+    gazetteer_code character varying(6) NOT NULL,
     gazetteer_name text,
     national_authority text,
     agency text,
@@ -280,8 +280,8 @@ CREATE VIEW gazetteer.place_names_consolidated AS
     n.date_named,
     n.comments
    FROM ((gazetteer.place_names n
-     JOIN gazetteer.gazetteers g ON (((n.gazetteer)::text = (g.gazetteer_code)::text)))
-     JOIN gazetteer.feature_types f ON ((n.feature_type_code = f.feature_type_code)));
+     LEFT OUTER JOIN gazetteer.gazetteers g ON (((n.gazetteer)::text = (g.gazetteer_code)::text)))
+     LEFT OUTER JOIN gazetteer.feature_types f ON ((n.feature_type_code = f.feature_type_code)));
 
 
 ALTER VIEW gazetteer.place_names_consolidated OWNER TO postgres;
@@ -710,6 +710,15 @@ GRANT SELECT ON TABLE gazetteer.place_names_consolidated TO scar_admin;
 
 GRANT SELECT ON TABLE gazetteer.gaz_count TO public_user;
 GRANT SELECT ON TABLE gazetteer.gaz_count TO scar_admin;
+
+--
+-- TOC entry 4730 (class 0 OID 0)
+-- Dependencies: 321
+-- Name: TABLE gaz_count; Type: ACL; Schema: gazetteer; Owner: postgres
+--
+
+GRANT SELECT ON TABLE gazetteer.name_count TO public_user;
+GRANT SELECT ON TABLE gazetteer.name_count TO scar_admin;
 
 
 --
