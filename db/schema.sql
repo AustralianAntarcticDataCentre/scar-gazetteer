@@ -2,8 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict 5IbN8r5v6lhnH8cjx3YkZMbbX7lAqgrTiSdynGyiCieu39418AIzohEnPtktxVM
-
 -- Dumped from database version 17.5 (Debian 17.5-1.pgdg110+1)
 -- Dumped by pg_dump version 17.6
 
@@ -20,6 +18,7 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
 --
 -- TOC entry 14 (class 2615 OID 36881)
 -- Name: gazetteer; Type: SCHEMA; Schema: -; Owner: postgres
@@ -34,6 +33,8 @@ ALTER SCHEMA gazetteer OWNER TO postgres;
 -- TOC entry 2051 (class 1247 OID 44617)
 -- Name: application/vnd.google-earth.kml+xml; Type: DOMAIN; Schema: gazetteer; Owner: postgres
 --
+
+CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA gazetteer;
 
 CREATE DOMAIN gazetteer."application/vnd.google-earth.kml+xml" AS text;
 
@@ -736,6 +737,4 @@ GRANT SELECT ON TABLE gazetteer.glossary TO scar_admin;
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict 5IbN8r5v6lhnH8cjx3YkZMbbX7lAqgrTiSdynGyiCieu39418AIzohEnPtktxVM
 
