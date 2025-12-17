@@ -37,14 +37,14 @@
         <section>
             <h2>Origin</h2>
             <p>
-                This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteers.country_id) }}</strong>.
-                It is part of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.
+                <template v-if="place.gazetteer">This name originates from <strong>{{ getNameForNumericIsoCountryCode(place.gazetteer.country_id) }}</strong>. It is part of the {{ gazetteerName }}, and the SCAR Composite Gazetteer of Antarctica.</template>
+                <template v-else>The origin of this name is unknown as it is not associated with a gazetteer.</template>
             </p>
 
             <p>Other names for this place:</p>
             <ul>
                 <li v-for="name of other_names" :key="name.name_id">
-                    <router-link :to="'/place-names/' + name.name_id"> {{ name.place_name_gazetteer }} ({{ name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id) }})</router-link>
+                    <router-link :to="'/place-names/' + name.name_id">{{ name.place_name_gazetteer }} ({{ name.gazetteer ? (name.gazetteer.gazetteer_name || getNameForNumericIsoCountryCode(name.gazetteer.country_id)) : 'Unknown' }})</router-link>
                 </li>
             </ul>
         </section>
@@ -195,7 +195,7 @@ export default {
             return {
                 route: 'place_names',
                 query: {
-                    select: ['*', 'gazetteers(*), feature_type:feature_types(*)'],
+                    select: ['*', 'gazetteer:gazetteers(*), feature_type:feature_types(*)'],
                     and: {
                         'name_id.eq': this.$route.params.id
                     }
@@ -204,7 +204,7 @@ export default {
             }
         },
         gazetteerName() {
-            return this.place.gazetteers.gazetteer_name || `${getNameForNumericIsoCountryCode(this.place.gazetteers.country_id)} gazetteer`
+            return this.place.gazetteer.gazetteer_name || `${getNameForNumericIsoCountryCode(this.place.gazetteer.country_id)} gazetteer`
         },
         transformedNarrativeParts() {
             if (!this.place.narrative) return []
