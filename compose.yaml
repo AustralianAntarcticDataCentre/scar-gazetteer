@@ -1,43 +1,27 @@
 services:
-  #db:
-  #  image: postgis/postgis:latest
-  #  ports:
-  #    - "5432:5432"
-  #  environment:
-  #    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #  volumes:
-  #    - dbdata:/var/lib/postgresql/data
-
-  #admin:
-  #  image: dpage/pgadmin4:latest
-  #  ports:
-  #    - "5050:80"
-  #  environment:
-  #    PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-  #    PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-  #  depends_on:
-  #    - db
+  db:
+   image: postgis/postgis:17-3.5
+   ports:
+     - "5432" # Host port will be dynamically assigned
+   environment:
+     POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+   volumes:
+     - dbdata:/var/lib/postgresql/data
+     - ./database/roles.sql:/docker-entrypoint-initdb.d/11-roles.sql
+     - ./database/schema.sql:/docker-entrypoint-initdb.d/12-schema.sql
 
   api:
     image: postgrest/postgrest:v14.1
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:3000"
     environment:
       PGRST_DB_URI: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
       PGRST_DB_SCHEMAS: gazetteer
       PGRST_DB_ANON_ROLE: public_user
       PGRST_JWT_SECRET: ${JWT_SECRET}
       PGRST_PRE_REQUEST: gazetteer.authenticate
-#    depends_on:
-#      - db
+    depends_on:
+      - db
 
-  web:
-    image: scar/scar-gazetteer:latest
-    build: ./scar-gazetteer
-    # ports:
-    #   - "8080:80"
-    # depends_on:
-    #   - api
-
-#volumes:
-#  dbdata:
+volumes:
+  dbdata:

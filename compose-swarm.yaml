@@ -29,7 +29,6 @@ services:
       options:
         loki-url: ${LOKI_URL}
         loki-external-labels: "container_name=${APP_NAME_DEPLOYMENT}_web,environment=prod,containerID={{.ID}}"
-    ports: !reset []
     networks:
       - aadc-traefik-net
 
@@ -66,6 +65,9 @@ services:
         loki-external-labels: "container_name=${APP_NAME_DEPLOYMENT}_api,environment=prod,containerID={{.ID}}"
     networks:
       - aadc-traefik-net
+    depends_on: !reset []
+
+  db: !reset null
 
 networks:
   aadc-traefik-net:
