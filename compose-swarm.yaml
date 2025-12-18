@@ -14,6 +14,8 @@ services:
         delay: 5s
         max_attempts: 5
         window: 20s
+      update_config:
+        order: start-first
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=aadc-traefik-net"
