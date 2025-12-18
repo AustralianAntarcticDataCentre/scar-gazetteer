@@ -1,7 +1,7 @@
 services:
   web:
     image: ${CONTAINER_IMAGE_FRONTEND}
-    build: ./scar-gazetteer
+    build: ./
     deploy:
       mode: replicated
       replicas: 1

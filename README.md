@@ -10,7 +10,7 @@ This web app is created with Vue.js, Postgrest, and Postgresql.
 ## Local development
 1. Duplicate `.env.example` to `.env`. Fill in the `DATABASE_PASSWORD` key with a cryptographically random value.
 2. Run `docker compose up` to create the Postgres and PostgREST containers. This will also setup the DB schema.
-3. Run `npm install --prefix scar-gazetteer` and then `npm run serve --prefix scar-gazetteer`.
+3. Run `npm install` and then `npm run serve`.
 4. Application will be available at [http://localhost:8080](http://localhost:8080).
 
 ## Local database access
