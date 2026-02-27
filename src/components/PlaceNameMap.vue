@@ -8,6 +8,7 @@
                 </b-button>
             </b-button-group>
         </div>
+        <b-alert variant="warning" :show="!extentContainsCoordinate">The coordinates of this place name are outside the extent of this map and may not be visible. Try using a different map projection to view this place name.</b-alert>
         <div ref="map" class="map-container"></div>
     </div>
 </template>
@@ -30,6 +31,7 @@ import TileLayer from 'ol/layer/Tile';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities.js';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS.js';
 import { Circle } from 'ol/geom';
+import { containsCoordinate } from 'ol/extent';
 
 const parser = new WMTSCapabilities();
 
@@ -43,10 +45,9 @@ const projections = [
         name: 'Polar Stereographic',
         view: new View({
             center: [0, 0],
-            zoom: 4,
-            maxZoom: 22,
-            extent: [-5000000, -5000000, 5000000, 5000000],
-            //constrainOnlyCenter: false,
+            zoom: 1,
+            maxZoom: 10,
+            extent: [-4500000, -4500000, 4500000, 4500000],
             projection: "EPSG:3031"
         }),
         basemap: loadWmtsLayer('https://tiles.arcgis.com/tiles/C8EMgrsFcRFL6LrL/arcgis/rest/services/Antarctic_Basemap/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?cacheKey=a7cac5fc36cf8cca', 'Antarctic_Basemap')
@@ -54,8 +55,8 @@ const projections = [
     {
         name: 'Mercator',
         view: new View({
-            center: [0, -75],
-            zoom: 0,
+            center: [0, 0],
+            zoom: 2,
             maxZoom: 22,
         }),
         basemap: loadWmtsLayer('https://tiles.arcgis.com/tiles/C8EMgrsFcRFL6LrL/arcgis/rest/services/GEBCO_basemap_NCEI/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?cacheKey=a1b48296ec17c253', 'GEBCO_basemap_NCEI')
@@ -100,7 +101,8 @@ export default {
     data: () => ({
         map: null,
         annotationsLayer: createAnnotationsLayer(),
-        currentProjection: projections[0]
+        currentProjection: projections[0],
+        extentContainsCoordinate: true,
     }),
     methods: {
         async setProjection(projection) {
@@ -120,10 +122,16 @@ export default {
             source.clear()
 
             if (this.coordinates && typeof this.coordinates?.longitude === 'number' && typeof this.coordinates?.latitude === 'number') {
+                // Convert from WGS84 to whatever view we're currently in
+                const geometry = new Point(proj4("EPSG:4326", this.map.getView().getProjection().getCode(), [this.coordinates.longitude, this.coordinates.latitude]))
+
                 source.addFeature(new Feature({
-                    // Convert from WGS84 to whatever view we're currently in
-                    geometry: new Point(proj4("EPSG:4326", this.map.getView().getProjection().getCode(), [this.coordinates.longitude, this.coordinates.latitude]))
+                    geometry
                 }))
+
+                this.map.getView().setCenter(geometry.getCoordinates())
+
+                this.extentContainsCoordinate = containsCoordinate(this.map.getView().calculateExtent(), geometry.getCoordinates())
             } else {
                 console.error("Invalid coordinates")
             }
