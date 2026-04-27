@@ -139,15 +139,14 @@ export default {
             // Add a circle with the same colour as the background to hide the janky tile edge
             if (this.map.getView().getProjection().getCode() === 'EPSG:3031') {
                 const polylineFeature = new Feature({
-                    geometry: new Circle([0, 0], 4529797)
-                })
-
-                polylineFeature.setStyle(new Style({
-                    stroke: new Stroke({
-                        color: '#c1c1c1',
-                        width: 6,
+                    geometry: new Circle([0, 0], 4529797),
+                    style: new Style({
+                        stroke: new Stroke({
+                            color: '#c1c1c1',
+                            width: 6,
+                        })
                     })
-                }))
+                })
 
                 source.addFeature(polylineFeature)
             }

@@ -9,24 +9,22 @@
         <b-badge>Name ID: {{ place.name_id }}</b-badge> <b-badge>Place ID: {{ place.place_id }}</b-badge><br>
         <dl class="mt-2">
             <dt>Displayed as:</dt>
-            <dd>{{ place.place_name_mapping || "Unknown" }} <HelpHint content="How this place name appears on a map." /></dd>
+            <dd>{{ place.place_name_mapping || "Not recorded" }} <HelpHint content="How this place name appears on a map." /></dd>
             <dt>Feature type:</dt>
             <dd>
                 <template v-if="place.feature_type">
                     <a :href="`https://data.aad.gov.au/feature-type/${place.feature_type.feature_type_code}`">{{ place.feature_type.feature_type_name }}</a> <HelpHint v-if="place.feature_type.definition" :content="`Geographic feature definition: ${place.feature_type.definition}`" />
                 </template>
                 <template v-else>
-                    Unknown
+                    Not recorded
                 </template>
             </dd>
             <template v-if="place.relic_flag">
                 <dt>Is relic:</dt>
                 <dd>Yes <HelpHint v-if="place.feature_type.definition" content="The feature this name belongs to no longer exists." /></dd>
             </template>
-            <template v-if="place.date_named">
-                <dt>Date named:</dt>
-                <dd>{{ place.date_named }}</dd>
-            </template>
+            <dt>Date named:</dt>
+            <dd>{{ place.date_named || 'Not recorded' }}</dd>
         </dl>
 
         <audio v-if="place.pronunciation_audio_url" controls>
