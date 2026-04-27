@@ -16,14 +16,11 @@
             </div>
         </BCard>
 
-        <p>The <a href="https://scar.org" target="_blank">SCAR</a> Composite Gazetteer of Antarctica (CGA) is a composite or collection of all those names of geographic features. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
+        <p>The <a href="https://scar.org" target="_blank">SCAR</a> Composite Gazetteer of Antarctica (CGA) offers a composite collection of all Antarctic place names contributed to by <b-link to="/information/statistics">{{ gazetteer_count.toLocaleString() }} countries</b-link>. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.</p>
 
-        <p>It has been compiled over a period of {{ years }} years
-            (commenced 1992) and consists of <b-link :to="'/search/results'">{{ name_count.toLocaleString() }} names</b-link> that correspond to {{ feature_count.toLocaleString() }} features.
-            The place names information has been submitted by the national names committees from <b-link to="/information/statistics">{{ gazetteer_count.toLocaleString() }} countries</b-link>.
-        </p>
+        <p>It commenced in 1992 and continues to be updated, consisting of <b-link :to="'/search/results'">{{ name_count.toLocaleString() }} names</b-link> that correspond to {{ feature_count.toLocaleString() }} features.</p>
 
-        <p>The CGA is compiled purely for the convenience of the scientific community and has no legal authority or standing.</p>
+        <p>The CGA provides support for the scientific community as well as for operational activities and emergency management. The CGA offers practical identification of places, acknowledging discovery, exploration, physical description, and commemoration. Good practice naming guidelines, <a href="https://scar.org/~documents/route%3A/download/5729" target="_blank">International Principles and Procedures for Antarctic Place Names (SCAR Report 41)</a> are encouraged by SCAR to ensure standardised, consistent and accurate place naming in Antarctica.</p>
 
         <p>Since 2008, Italy and Australia jointly have managed the CGA, the former taking care of the editing, the latter maintaining the database and website. The SCAR <a href="https://scar.org/science/standing/scagi">Standing Committee on Antarctic Geographic Information (SCAGI)</a> coordinates the project.</p>
 
@@ -31,7 +28,7 @@
 
         <ul class="unstyled">
             <li><BIconBarChart style="text-align: center" /> <b-link to="/information/statistics"> View SCAR Gazetteer
-                    summary information</b-link></li>
+                    statistics</b-link></li>
             <li><BIconCloudArrowDown style="text-align: center" /> <b-link to="/information/download"> Download SCAR Gazetteer</b-link>
             </li>
             <li><BIconFileEarmarkText style="text-align: center" /> <b-link to="/information/batch-instructions">

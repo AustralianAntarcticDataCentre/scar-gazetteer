@@ -11,8 +11,7 @@
         </blockquote>
 
         <div class="alert alert-info">
-            <strong>Note:</strong> These file formats maintain diacritics.
-            Please be mindful not to use software that does not keep diacritics.
+            <strong>Note:</strong> These files may contain Unicode characters, which may not display as expected in all software.
         </div>
 
         <b-form @submit="submit">

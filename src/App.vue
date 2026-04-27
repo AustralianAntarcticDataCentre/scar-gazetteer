@@ -61,7 +61,7 @@
                     <img src="./assets/scar_logo_sm.png" alt="SCAR logo" class="w-50" />
                 </div>
                 <p>
-                    The SCAR CGA is edited by representatives from the <a href="https://www.pnra.aq/" target="_blank">Italian National Antarctic Research Program</a>.
+                    The SCAR CGA is maintained by representatives from the <a href="https://www.pnra.aq/" target="_blank">Italian National Antarctic Research Program</a>.
                 </p>
                 <p class="mb-0">
                     Hosting is provided by the 

@@ -7,6 +7,8 @@
         @hidden="resetForm"
     >
         <b-form @submit.prevent="handleLogin">
+            <b-alert show>This login is intended for use by SCAR CGA data contributors only.</b-alert>
+
             <p>Login using an <a href="https://data.aad.gov.au" target="_blank">AADC</a> account.</p>
 
             <b-form-group label="Username" label-for="username">

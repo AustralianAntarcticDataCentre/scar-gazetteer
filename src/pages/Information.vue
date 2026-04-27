@@ -54,7 +54,7 @@ export default {
                             <b-list-group-item to="/information/naming-authorities">Naming authorities</b-list-group-item>
                             <b-list-group-item to="/information/history">History</b-list-group-item>
                             <b-list-group-item to="/information/data-and-validation">Data and validation</b-list-group-item>
-                            <b-list-group-item to="/information/cga-characteristics">CGA characteristics</b-list-group-item>
+                            <b-list-group-item to="/information/cga-characteristics">Characteristics</b-list-group-item>
                             <b-list-group-item to="/information/citation-information">Citation information</b-list-group-item>
                             <b-list-group-item to="/information/batch-instructions">Instructions for batch edits</b-list-group-item>
                             <b-list-group-item to="/information/themes">Themes</b-list-group-item>

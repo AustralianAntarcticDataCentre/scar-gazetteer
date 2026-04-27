@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>SCAR CGA data and validation</h1>
+        <h1>Data and validation</h1>
 
         <p>
             The short history of the SCAR CGA shows that every reasonable effort

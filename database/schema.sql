@@ -395,13 +395,13 @@ ALTER TABLE gazetteer.glossary OWNER TO postgres;
 --
 
 CREATE VIEW gazetteer.name_count AS
- SELECT count(p.name_id) AS name_count,
-    p.gazetteer,
+  SELECT count(p.name_id) AS name_count,
     g.country_id
-   FROM (gazetteer.place_names p
-     JOIN gazetteer.gazetteers g ON (((g.gazetteer_code)::text = (p.gazetteer)::text)))
-  GROUP BY p.gazetteer, g.country_id
-  ORDER BY g.country_id;
+   FROM gazetteer.place_names p
+     JOIN gazetteer.gazetteers g ON g.gazetteer_code::text = p.gazetteer::text
+  WHERE g.country_id IS NOT NULL
+  GROUP BY g.country_id
+  ORDER BY (count(p.name_id)) DESC;
 
 
 ALTER VIEW gazetteer.name_count OWNER TO postgres;
