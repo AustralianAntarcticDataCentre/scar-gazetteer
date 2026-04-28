@@ -10,8 +10,6 @@ import store from './store';
 import App from './App.vue'
 import router from './routes/main'
 
-Vue.config.productionTip = false
-
 Vue.use(VueMeta)
 Vue.use(BootstrapVue)
 Vue.use(Vuelidate)

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Postgrest from 'vue-postgrest'
 import axios from 'axios'
-import https from 'https'
 
 const Main = () => import("../pages/Main.vue")
 const Search = () => import("../pages/Search.vue")
@@ -30,11 +29,11 @@ import { join } from '../utils'
 
 Vue.use(Router)
 Vue.use(Postgrest, {
-    apiRoot: join(import.meta.env.VUE_APP_PROXY_PATH, `/api`),
+    apiRoot: join(import.meta.env.BASE_PATH, `/api`),
 })
 
 const router = new Router({
-    base: import.meta.env.VUE_APP_PROXY_PATH,
+    base: import.meta.env.BASE_PATH,
     mode: 'history',
     routes: [
         {
@@ -166,19 +165,15 @@ router.beforeEach(async (to, from, next) => {
     next()
 })
 
-async function getPlaceIds() {
-    const agent = new https.Agent({
-        rejectUnauthorized: false
-    });
+// async function getPlaceIds() {
+//     // const response = await axios.get('https://scartest.data.aad.gov.au/api/place_names?select=name_id', { httpsAgent: agent })
+//     const response = await axios.get('api/place_names?select=name_id')
 
-    // const response = await axios.get('https://scartest.data.aad.gov.au/api/place_names?select=name_id', { httpsAgent: agent })
-    const response = await axios.get('api/place_names?select=name_id', { httpsAgent: agent })
+//     const ids = response.data.map(n => {
+//         return {id: n.name_id}
+//     })
 
-    const ids = response.data.map(n => {
-        return {id: n.name_id}
-    })
-
-    return ids
-}
+//     return ids
+// }
 
 export default router
