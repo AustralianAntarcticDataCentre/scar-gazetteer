@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      'import.meta.env.APP_TITLE': JSON.stringify(env.PROD ? appTitle : `[${mode.toUpperCase()}] ${appTitle}`)
+      'import.meta.env.APP_TITLE': JSON.stringify(mode === 'production' ? appTitle : `[${mode.toUpperCase()}] ${appTitle}`)
     }
   }
 })
