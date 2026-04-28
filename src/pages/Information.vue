@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script>
 import { BIconChevronDoubleDown } from 'bootstrap-vue';
 
 export default {

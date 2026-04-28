@@ -103,7 +103,7 @@ export default {
         }
     },
     mounted: async function () {
-        const response = await axios.get(join(process.env.BASE_URL, `/api/gaz_count`))
+        const response = await axios.get(join(import.meta.env.BASE_URL, `/api/gaz_count`))
         this.name_count = response.data[0].name_count
         this.feature_count = response.data[0].place_count
         this.gazetteer_count = response.data[0].gazetteer_count

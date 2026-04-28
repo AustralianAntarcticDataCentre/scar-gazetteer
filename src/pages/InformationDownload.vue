@@ -70,11 +70,11 @@ export default {
                 filter = `?gazetteer_code=eq.${this.form.gazetteer}`;
             }
 
-            let url = join(process.env.BASE_URL, `/api/place_names${filter}`);
+            let url = join(import.meta.env.BASE_URL, `/api/place_names${filter}`);
 
             if (this.form.format == "text/csv") {
                 url = join(
-                    process.env.BASE_URL,
+                    import.meta.env.BASE_URL,
                     `/api/place_names_consolidated${filter}`
                 );
             }
@@ -109,7 +109,7 @@ export default {
     },
     mounted: async function () {
         let response = await axios.get(
-            join(process.env.BASE_URL, `/api/gazetteers`)
+            join(import.meta.env.BASE_URL, `/api/gazetteers`)
         );
         let gaz = response.data;
 

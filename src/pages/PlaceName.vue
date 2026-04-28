@@ -217,7 +217,7 @@ export default {
     methods: {
         async getOtherNames() {
             this.other_names = []
-            const response = await axios.get(join(process.env.BASE_URL, `/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}&select=place_id,name_id,place_name_gazetteer,gazetteer:gazetteers(gazetteer_name,country_id)`))
+            const response = await axios.get(join(import.meta.env.BASE_URL, `/api/place_names?place_id=eq.${this.place.place_id}&name_id=neq.${this.place.name_id}&select=place_id,name_id,place_name_gazetteer,gazetteer:gazetteers(gazetteer_name,country_id)`))
             this.other_names = response.data
         },
         toDMS(decimal_degrees, isLatitude) {
@@ -239,7 +239,7 @@ export default {
             return DOMPurify.sanitize(html, { ALLOWED_TAGS: ['b', 'strong', 'i', 'em', 'a', 'br', 'mark', 'q', 'sub', 'sup', 'u'], KEEP_CONTENT: true })
         },
         unsdgImage(unsdg) {
-            return join(process.env.BASE_URL, `/static/un_sdg/un_sdg_${unsdg}.png`)
+            return join(import.meta.env.BASE_URL, `/static/un_sdg/un_sdg_${unsdg}.png`)
         },
         getNameForNumericIsoCountryCode,
         join

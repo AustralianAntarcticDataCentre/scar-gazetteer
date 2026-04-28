@@ -85,7 +85,7 @@ export default {
         async getGazetteers() {
             let { data } = await axios.get(
                 join(
-                    process.env.BASE_URL,
+                    import.meta.env.BASE_URL,
                     `/api/gazetteers`
                 )
             );
@@ -109,7 +109,7 @@ export default {
         async getFeatureTypes() {
             let { data } = await axios.get(
                 join(
-                    process.env.BASE_URL,
+                    import.meta.env.BASE_URL,
                     `/api/feature_types?feature_type_code=neq.0&order=feature_type_name.asc`
                 )
             );

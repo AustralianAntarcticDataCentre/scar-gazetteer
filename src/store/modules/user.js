@@ -63,7 +63,7 @@ export default {
         async authenticate({ dispatch, commit }, loginInfo) {
             try {
                 commit('setError', null)
-                let response = await axios.post(join(process.env.BASE_URL, `/user/api/authenticate`), loginInfo)
+                let response = await axios.post(join(import.meta.env.BASE_URL, `/user/api/authenticate`), loginInfo)
 
                 Cookie.set(AAD_JWT_TOKEN, response.data.token, {
                     expires: new Date(response.data.expires),

@@ -127,7 +127,7 @@ export default {
             filter['offset'] = (this.page - 1) * this.page_size
 
             try {
-                const response = await axios.get(join(process.env.BASE_URL, `/api/rpc/search?select=name_id,place_id,place_name_gazetteer,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code,is_relic,date_named&${qs.stringify(filter, { arrayFormat: "repeat" })}`), { headers: { 'Prefer': 'count=exact' } })
+                const response = await axios.get(join(import.meta.env.BASE_URL, `/api/rpc/search?select=name_id,place_id,place_name_gazetteer,latitude,longitude,feature_type_code,feature_type_name,gazetteer_code,is_relic,date_named&${qs.stringify(filter, { arrayFormat: "repeat" })}`), { headers: { 'Prefer': 'count=exact' } })
                 this.results = response.data
                 this.count = Number(response.headers['content-range'].split('/')[1])
             } catch (error) {
@@ -146,7 +146,7 @@ export default {
             let filter = this.parseFilter()
 
             axios({
-                url: join(process.env.BASE_URL, `/api/rpc/search?${qs.stringify(filter, { arrayFormat: "repeat" })}`),
+                url: join(import.meta.env.BASE_URL, `/api/rpc/search?${qs.stringify(filter, { arrayFormat: "repeat" })}`),
                 method: 'GET',
                 headers: { 'Accept': 'text/csv' }
             }).then((response) => {

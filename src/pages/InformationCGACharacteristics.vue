@@ -1,8 +1,6 @@
 <template>
   <div>
     <h1>Characteristics</h1>
-
-    <h4>CHARACTERISTICS OF THE CGA</h4>
     <p>The SCAR Composite Gazetteer of Antarctica (CGA) contains all the names that have been published in national
       gazetteers, plus information about those names where known. The countries who contributed data to the
       project, and the number of names they hold in their national Antarctic gazetteers are listed under

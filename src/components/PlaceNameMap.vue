@@ -85,7 +85,7 @@ function createAnnotationsLayer() {
             image: new Icon({
                 anchor: [0.5, 1],
                 scale: 0.02,
-                src: join(process.env.BASE_URL, `/static/marker.svg`)
+                src: join(import.meta.env.BASE_URL, `/static/marker.svg`)
             })
         })
     });
