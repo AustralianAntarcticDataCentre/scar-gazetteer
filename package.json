@@ -22,7 +22,7 @@
     "vite-plugin-sitemap": "^0.8.2",
     "vue": "^2.7",
     "vue-meta": "^2.4.0",
-    "vue-postgrest": "^1.8",
+    "vue-postgrest": "^1.7",
     "vue-router": "^3.5.4",
     "vuelidate": "^0.7.7",
     "vuex": "^3.6.2"
