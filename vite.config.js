@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
   const appTitle = env.APP_TITLE || 'Antarctic Place Names'
 
   return {
+    base: env.APP_PROXY_PATH || '/',
     plugins: [
       EnvironmentPlugin({ BUILD: 'web' }), // Only needed for Vuelidate compatibility, can be removed when Vuelidate is upgraded.
       vue(),

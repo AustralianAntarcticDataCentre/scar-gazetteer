@@ -1,10 +1,9 @@
 # Step 1
-FROM node:14-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /tmp/app
 COPY ./ .
-RUN npm cache clean --force
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 # Step 2
 FROM nginx:latest
