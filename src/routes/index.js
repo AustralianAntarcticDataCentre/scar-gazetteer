@@ -1,25 +1,23 @@
-import axios from 'axios'
-
-const Main = () => import("../pages/Main.vue")
-const Search = () => import("../pages/Search.vue")
-const SearchResults = () => import("../pages/SearchResults.vue")
-const PlaceName = () => import("../pages/PlaceName.vue")
-const Information = () => import("../pages/Information.vue")
-const InformationDownload = () => import("../pages/InformationDownload.vue")
-const InformationGeneral = () => import("../pages/InformationGeneral.vue")
-const InformationTerminology = () => import("../pages/InformationTerminology.vue")
-const InformationBatchInstructions = () => import("../pages/InformationBatchInstructions.vue")
-const InformationHistory = () => import("../pages/InformationHistory.vue")
-const InformationThemes = () => import("../pages/InformationThemes.vue")
-const InformationCGACharacteristics = () => import("../pages/InformationCGACharacteristics.vue")
-const InformationData = () => import("../pages/InformationData.vue")
-const InformationCitation = () => import("../pages/InformationCitation.vue")
-const InformationGlossary = () => import("../pages/InformationGlossary.vue")
-const InformationNamingAuthorities = () => import("../pages/InformationNamingAuthorities.vue")
-const InformationStatistics = () => import("../pages/InformationStatistics.vue")
-const NewPlaceName = () => import("../pages/NewPlaceName.vue")
-const EditPlaceName = () => import("../pages/EditPlaceName.vue")
-const NotFound = () => import("../pages/NotFound.vue")
+const Main = () => import("@/pages/Main.vue")
+const Search = () => import("@/pages/Search.vue")
+const SearchResults = () => import("@/pages/SearchResults.vue")
+const PlaceName = () => import("@/pages/PlaceName.vue")
+const Information = () => import("@/pages/Information.vue")
+const InformationDownload = () => import("@/pages/InformationDownload.vue")
+const InformationGeneral = () => import("@/pages/InformationGeneral.vue")
+const InformationTerminology = () => import("@/pages/InformationTerminology.vue")
+const InformationBatchInstructions = () => import("@/pages/InformationBatchInstructions.vue")
+const InformationHistory = () => import("@/pages/InformationHistory.vue")
+const InformationThemes = () => import("@/pages/InformationThemes.vue")
+const InformationCGACharacteristics = () => import("@/pages/InformationCharacteristics.vue")
+const InformationData = () => import("@/pages/InformationData.vue")
+const InformationCitation = () => import("@/pages/InformationCitation.vue")
+const InformationGlossary = () => import("@/pages/InformationGlossary.vue")
+const InformationNamingAuthorities = () => import("@/pages/InformationNamingAuthorities.vue")
+const InformationStatistics = () => import("@/pages/InformationStatistics.vue")
+const NewPlaceName = () => import("@/pages/NewPlaceName.vue")
+const EditPlaceName = () => import("@/pages/EditPlaceName.vue")
+const NotFound = () => import("@/pages/NotFound.vue")
 
 const routes = [
     {
@@ -84,9 +82,6 @@ const routes = [
     {
         path: '/search',
         component: Search,
-        meta: {
-            sitemap: { ignoreRoute: true }
-        }
     },
     {
         path: '/search/results',
@@ -108,7 +103,7 @@ const routes = [
         component: PlaceName,
         meta: {
             sitemap: {
-                slugs: async () => await getPlaceIds()
+                slugs: getPlaceIds
             }
         }
     },
@@ -134,15 +129,10 @@ const routes = [
     }
 ]
 
-// async function getPlaceIds() {
-//     // const response = await axios.get('https://scartest.data.aad.gov.au/api/place_names?select=name_id', { httpsAgent: agent })
-//     const response = await axios.get('api/place_names?select=name_id')
-
-//     const ids = response.data.map(n => {
-//         return {id: n.name_id}
-//     })
-
-//     return ids
-// }
+async function getPlaceIds() {
+    const response = await fetch('https://apps.aad.gov.au/scar-cga/api/place_names?select=id:name_id')
+    const data = await response.json()
+    return data
+}
 
 export default routes

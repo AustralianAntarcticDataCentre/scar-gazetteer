@@ -12,3 +12,11 @@
     </p>
   </div>
 </template>
+
+<script>
+  export default {
+    metaInfo: {
+      title: 'Terminology',
+    },
+  }
+</script>

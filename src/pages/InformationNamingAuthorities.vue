@@ -6,3 +6,11 @@
       place-naming authorities, documents and gazetteers.</p>
   </div>
 </template>
+
+<script>
+  export default {
+    metaInfo: {
+      title: 'Naming authorities',
+    },
+  }
+</script>

@@ -88,15 +88,12 @@ export default {
         const appTitle = import.meta.env.APP_TITLE
 
         return {
-            title: appTitle,
+            titleTemplate: (title) => title ? `${title} | ${appTitle}` : appTitle,
             meta: [
                 {
+                    vmid: "description",
                     name: "description",
                     content: "The SCAR Composite Gazetteer of Antarctica (CGA) offers a composite collection of all Antarctic place names contributed to by 29 countries. It includes the names of features south of 60°S, both terrestrial, near shore and under-ice.",
-                },
-                {
-                    property: "og:title",
-                    content: appTitle,
                 },
                 {
                     property: "og:site_name",

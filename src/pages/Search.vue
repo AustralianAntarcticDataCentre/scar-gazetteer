@@ -128,5 +128,8 @@ export default {
         this.getGazetteers();
         this.getFeatureTypes();
     },
+    metaInfo: {
+        title: 'Search'
+    }
 };
 </script>

@@ -31,3 +31,11 @@
         </p>
     </div>
 </template>
+
+<script>
+    export default {
+        metaInfo: {
+            title: 'Data and validation',
+        },
+    }
+</script>

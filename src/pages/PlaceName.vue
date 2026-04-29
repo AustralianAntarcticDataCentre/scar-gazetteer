@@ -139,10 +139,10 @@ export default {
     components: { PlaceNameMap, NotFound, BIconPencilSquare, HelpHint },
     metaInfo: function () {
         return {
-            script: [{
-                type: 'application/ld+json',
-                json: this.jsonld
-            }]
+            title: this.place.place_name_mapping,
+            script: [
+                this.jsonld,
+            ]
         }
     },
     data: function () {
@@ -172,18 +172,25 @@ export default {
     mixins: [pg],
     computed: {
         jsonld() {
+            if (!this.place.name_id) return {}
+
             return {
-                '@context': 'http://schema.org',
-                "@type": "Place",
-                "geo": {
-                    "@type": "GeoCoordinates",
-                    "latitude": this.place.geometry?.coordinates[1],
-                    "longitude": this.place.geometry?.coordinates[0],
-                },
-                "name": this.place.place_name_mapping,
-                // Sanitize HTML to convert any formatting to plain text
-                "description": DOMPurify.sanitize(this.place.narrative || "", { USE_PROFILES: {}, KEEP_CONTENT: true }),
-                "url": `${window.location}`
+                type: 'application/ld+json',
+                json: {
+                    '@context': 'http://schema.org',
+                    "@type": "Landform",
+                    "name": DOMPurify.sanitize(this.place.place_name_mapping, { USE_PROFILES: {}, KEEP_CONTENT: true }),
+                    "geo": {
+                        "@type": "GeoCoordinates",
+                        "latitude": this.place.geometry.coordinates[1],
+                        "longitude": this.place.geometry.coordinates[0],
+                    },
+                    "latitude": this.place.geometry.coordinates[1],
+                    "longitude": this.place.geometry.coordinates[0],
+                    // Sanitize HTML to convert any formatting to plain text
+                    "description": DOMPurify.sanitize(this.place.narrative || "", { USE_PROFILES: {}, KEEP_CONTENT: true }),
+                    "url": `${window.location}`
+                }
             }
         },
         place() {

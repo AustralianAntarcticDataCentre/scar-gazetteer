@@ -2,16 +2,21 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue2'
 import path from 'path'
 import EnvironmentPlugin from 'vite-plugin-environment'
+import sitemap from './src/sitemap'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
-  const appTitle = env.APP_TITLE || 'SCAR Composite Gazetteer of Antarctica (CGA)'
+  const appTitle = env.APP_TITLE || 'Antarctic Place Names'
 
   return {
     plugins: [
       EnvironmentPlugin({ BUILD: 'web' }), // Only needed for Vuelidate compatibility, can be removed when Vuelidate is upgraded.
-      vue()
+      vue(),
+      {
+        ...sitemap(),
+        apply: 'build',
+      },
     ],
     resolve: {
       alias: {

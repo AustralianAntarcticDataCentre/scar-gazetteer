@@ -193,3 +193,11 @@
             toponymy of the continent.</p>
     </div>
 </template>
+
+<script>
+    export default {
+        metaInfo: {
+            title: 'History',
+        },
+    }
+</script>

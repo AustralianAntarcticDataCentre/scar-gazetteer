@@ -79,6 +79,9 @@ export default {
         filter() {
             this.currentPage = 1 // reset to first upon page when filtering
         }
-    }
+    },
+    metaInfo: {
+        title: 'Glossary',
+    },
 }
 </script>

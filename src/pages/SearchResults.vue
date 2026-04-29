@@ -159,6 +159,9 @@ export default {
             });
         }
     },
+    metaInfo: {
+        title: 'Search results',
+    },
 }
 </script>
 

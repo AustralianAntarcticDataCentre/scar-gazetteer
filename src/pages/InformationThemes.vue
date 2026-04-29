@@ -35,7 +35,8 @@
 <script>
 
 export default {
-    name: 'InformationThemes',
-    
+    metaInfo: {
+        title: 'Themes',
+    },
 }
 </script>

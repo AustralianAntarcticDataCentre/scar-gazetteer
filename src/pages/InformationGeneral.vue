@@ -52,10 +52,8 @@
 
 <script>
 export default {
-    name: "InformationGeneral",
-    data: function () {
-        return {
-        }
-    }
+    metaInfo: {
+        title: 'General information',
+    },
 }
 </script>

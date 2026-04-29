@@ -5,3 +5,11 @@
         <blockquote>Secretariat SCAR (1992, updated 2025). Composite Gazetteer of Antarctica, Scientific Committee on Antarctic Research. (http://placenames.aq/)</blockquote>
     </div>
 </template>
+
+<script>
+    export default {
+        metaInfo: {
+            title: 'Citation',
+        },
+    }
+</script>

@@ -62,5 +62,8 @@ export default {
             this.form_data = initialForm()
         }
     },
+    metaInfo: {
+        title: 'New place name',
+    },
 }
 </script>

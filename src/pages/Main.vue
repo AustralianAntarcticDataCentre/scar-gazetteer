@@ -74,12 +74,6 @@ export default {
                     "@context": "https://schema.org",
                     "@type": "WebPage",
                     "name": 'SCAR Composite Gazetteer of Antarctica',
-                    "sourceOrganization": {
-                        "@type": "Organization",
-                        "name": "PROGRAMMA NAZIONALE DI RICERCHE IN ANTARTIDE",
-                        "url": "https://www.pnra.aq/",
-                        "logo": "https://www.pnra.aq/themes/basic/logo.png"
-                    },
                     "publisher": {
                         "@type": "Organization",
                         "name": "Scientific Committee on Antarctic Research (SCAR)",

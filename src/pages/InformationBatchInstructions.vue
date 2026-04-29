@@ -34,10 +34,8 @@
 
 <script>
 export default {
-    name: "InformationGeneral",
-    data: function () {
-        return {
-        }
-    }
+    metaInfo: {
+        title: 'Batch instructions',
+    },
 }
 </script>

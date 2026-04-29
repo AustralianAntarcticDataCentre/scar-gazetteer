@@ -57,6 +57,9 @@ export default {
                     alert(`Error: could not delete place name (${err})`)
                 })
         }
-    }
+    },
+    metaInfo: {
+        title: 'Edit place name',
+    },
 }
 </script>

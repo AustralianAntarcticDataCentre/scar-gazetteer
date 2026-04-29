@@ -122,5 +122,8 @@ export default {
 
         this.gazetteers = this.gazetteers.concat(formatted);
     },
+    metaInfo: {
+        title: 'Download',
+    },
 };
 </script>

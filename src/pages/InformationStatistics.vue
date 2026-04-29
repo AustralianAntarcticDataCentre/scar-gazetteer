@@ -60,6 +60,9 @@ export default {
         '$route.params.id': function () {
             this.pg.$get
         },
-    }
+    },
+    metaInfo: {
+        title: 'Statistics',
+    },
 }
 </script>

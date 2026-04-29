@@ -94,3 +94,11 @@
       used to describe different types of geographic features.</p>
   </div>
 </template>
+
+<script>
+  export default {
+    metaInfo: {
+        title: 'Characteristics',
+    },
+  }
+</script>
