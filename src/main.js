@@ -19,11 +19,11 @@ Vue.use(BootstrapVue)
 Vue.use(Vuelidate)
 Vue.use(Router)
 Vue.use(Postgrest, {
-    apiRoot: join(import.meta.env.BASE_PATH, `/api`),
+    apiRoot: join(import.meta.env.BASE_URL, `/api`),
 })
 
 const router = new Router({
-    base: import.meta.env.BASE_PATH,
+    base: import.meta.env.BASE_URL,
     mode: 'history',
     routes: routes
 })
