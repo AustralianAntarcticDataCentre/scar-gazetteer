@@ -3,25 +3,43 @@ import { join } from 'node:path'
 import Sitemap from 'vite-plugin-sitemap'
 
 async function extractPaths(prefix, routes) {
-    async function extract(route) {
-        let paths = []
-        if (route.path && includeInSitemap(route)) paths.push(join(prefix, route.path))
-        if (route.meta?.sitemap?.slugs) paths.push(...await generatePathsFromSlugs(prefix, route))
-        if (route.children) paths.push(...await extractPaths(join(prefix, route.path), route.children))
-        return paths
-    } 
-
-    return (await Promise.all(routes.reduce((p, c) => {
-        p.push(extract(c))
-        return p
+    return (await Promise.all(routes.reduce((promises, route) => {
+        promises.push(processRoute(prefix, route))
+        return promises
     }, []))).flat(Infinity)
 }
 
-function includeInSitemap(route) {
-    if (route.redirect) return false
-    if (route.meta?.sitemap?.ignoreRoute === true) return false
-    if (/\*|\:/.test(route.path)) return false
-    return true
+async function processRoute(prefix, route) {
+    let paths = []
+
+    // Add any static paths directly to the list
+    if (route.path && !routeExplicitlyIgnored(route) && !routeIsRedirect(route) && !routeIsDynamic(route)) {
+        paths.push(join(prefix, route.path))
+    }
+
+    // Generate dynamic paths if provided for
+    if (routeIsDynamic(route) && route.meta?.sitemap?.slugs) {
+        paths.push(...await generatePathsFromSlugs(prefix, route))
+    }
+
+    // Continue processing any child routes
+    if (route.children) {
+        paths.push(...await extractPaths(join(prefix, route.path), route.children))
+    }
+
+    return paths
+}
+
+function routeExplicitlyIgnored(route) {
+    return !!route.meta?.sitemap?.ignoreRoute === true
+}
+
+function routeIsRedirect(route) {
+    return !!route.redirect
+}
+
+function routeIsDynamic(route) {
+    return /\*|\:/.test(route.path)
 }
 
 async function generatePathsFromSlugs(prefix, route) {
@@ -42,9 +60,10 @@ async function generatePathsFromSlugs(prefix, route) {
 
 const paths = await extractPaths('', routes)
 
-export default function() {
+export default function(basePath) {
     return Sitemap({
-        hostname: 'https://apps.aad.gov.au/scar-cga',
-        dynamicRoutes: paths
+        hostname: 'https://apps.aad.gov.au',
+        basePath: basePath.replace(/\/+$/, ''), // Strip trailing slashes
+        dynamicRoutes: paths,
     })
 }

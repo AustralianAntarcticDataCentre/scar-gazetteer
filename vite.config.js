@@ -8,14 +8,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   const appTitle = env.APP_TITLE || 'Antarctic Place Names'
+  const basePath = env.APP_PROXY_PATH || '/'
 
   return {
-    base: env.APP_PROXY_PATH || '/',
+    base: basePath,
     plugins: [
       EnvironmentPlugin({ BUILD: 'web' }), // Only needed for Vuelidate compatibility, can be removed when Vuelidate is upgraded.
       vue(),
       {
-        ...sitemap(),
+        ...sitemap(basePath),
         apply: 'build',
       },
     ],
