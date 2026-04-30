@@ -2,7 +2,7 @@ services:
   db:
    image: postgis/postgis:17-3.5
    ports:
-     - "5432" # Host port will be dynamically assigned
+     - "5432:5432"
    environment:
      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
    volumes:
@@ -20,8 +20,19 @@ services:
       PGRST_DB_ANON_ROLE: public_user
       PGRST_JWT_SECRET: ${JWT_SECRET}
       PGRST_PRE_REQUEST: gazetteer.authenticate
+      PGRST_OPENAPI_SECURITY_ACTIVE: true
+      PGRST_OPENAPI_SERVER_PROXY_URI: https://apps.aad.gov.au/scar-cga/api
     depends_on:
       - db
+  
+  swagger-ui:
+    image: docker.swagger.io/swaggerapi/swagger-ui
+    ports:
+      - "3001:8080"
+    environment:
+      SWAGGER_JSON_URL: http://localhost:3000
+    depends_on:
+      - api
 
 volumes:
   dbdata:
