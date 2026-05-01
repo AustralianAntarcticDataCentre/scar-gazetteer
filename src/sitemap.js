@@ -13,7 +13,7 @@ async function processRoute(prefix, route) {
     let paths = []
 
     // Add any static paths directly to the list
-    if (route.path && !routeExplicitlyIgnored(route) && !routeIsRoot(prefix, route) && !routeIsRedirect(route) && !routeIsDynamic(route)) {
+    if (route.path && !routeExplicitlyIgnored(route) && !routeIsRedirect(route) && !routeIsDynamic(route)) {
         paths.push(join(prefix, route.path))
     }
 
@@ -42,10 +42,6 @@ function routeIsDynamic(route) {
     return /\*|\:/.test(route.path)
 }
 
-function routeIsRoot(prefix, route) {
-    return prefix === '' && route.path === '/'
-}
-
 async function generatePathsFromSlugs(prefix, route) {
     const resources = await route.meta.sitemap.slugs()
 
@@ -69,5 +65,7 @@ export default function(basePath) {
         hostname: 'https://apps.aad.gov.au',
         basePath: basePath.replace(/\/+$/, ''), // Strip trailing slashes
         dynamicRoutes: paths,
+        extensions: [],
+        changefreq: 'weekly'
     })
 }
