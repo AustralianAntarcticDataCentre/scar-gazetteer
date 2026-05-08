@@ -106,21 +106,33 @@ export default {
                     );
                 });
         },
+        async getGazetteers() {
+            let { data } = await axios.get(
+                join(
+                    import.meta.env.BASE_URL,
+                    `/api/gazetteers`
+                )
+            );
+
+            let formatted = data.map((g) => {
+                return {
+                    value: g.gazetteer_code,
+                    text:
+                        (g.country_id
+                            ? getNameForNumericIsoCountryCode(g.country_id)
+                            : "Unknown") +
+                        (g.gazetteer_name ? ` - ${g.gazetteer_name}` : ""),
+                };
+            });
+
+            // Sort alphabetically
+            formatted.sort((a, b) => a.text < b.text ? -1 : a.text > b.text ? 1 : 0)
+
+            this.gazetteers = this.gazetteers.concat(formatted);
+        },
     },
-    mounted: async function () {
-        let response = await axios.get(
-            join(import.meta.env.BASE_URL, `/api/gazetteers`)
-        );
-        let gaz = response.data;
-
-        let formatted = gaz.map((g) => {
-            return {
-                value: g.gazetteer_code,
-                text: getNameForNumericIsoCountryCode(g.country_id),
-            };
-        });
-
-        this.gazetteers = this.gazetteers.concat(formatted);
+    mounted() {
+        this.getGazetteers();
     },
     metaInfo: {
         title: 'Download',
