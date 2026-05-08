@@ -16,7 +16,7 @@
             this date.
         </p>
 
-        <h2>Submission of data</h2>
+        <h2 class="h4">Submission of data</h2>
 
         <p>
             Data for updating the CGA are provided by members of the SCAR

@@ -5,7 +5,9 @@
       gazetteers, plus information about those names where known. The countries who contributed data to the
       project, and the number of names they hold in their national Antarctic gazetteers are listed under
       <router-link :to="{ path: '/information/statistics' }">Statistics</router-link>. </p>
-    <p><strong>Synonyms</strong><br>In addition to the approved names, several national
+    
+    <h2 class="h4">Synonyms</h2>
+    <p>In addition to the approved names, several national
       gazetteers list synonyms for a given geographic feature; these are commonly labelled as variants in the
       published gazetteers. Synonyms include relic (historical) names, mis-spellings and incorrect applications
       but they also include linguistically correct forms of geographic names in a foreign language. By including
@@ -14,11 +16,11 @@
       gazetteer of another country and vice versa.</p>
     <p>The CGA represents a composite list of approved names taken from all the current national gazetteers
       available. Synonyms in individual gazetteers have been excluded since all the names in current usage exist
-      as approved entries in other gazetteers. However, it is recognized that the lack of historical names and
+      as approved entries in other gazetteers. However, it is recognised that the lack of historical names and
       other types of synonyms will limit the value of the CGA when researching scientific literature of a
       historical nature or written in different languages. The inclusion of such synonyms may be considered for a
       future work.</p>
-    <p><strong>Geographic coverage and content</strong><br>
+    <h2 class="h4">Geographic coverage and content</h2><p>
       The geographic coverage of the CGA lies south of latitude 60°S. Although the interest of SCAR extends North
       of 60°S and encompasses all the areas inside the Antarctic Convergence and also several sub-Antarctic
       islands, the geographic features North of 60°S either fall within the sovereignty of a particular country
@@ -26,7 +28,7 @@
       agreed in SCAR that the CGA should be limited to the area South of 60°S, where as a matter of fact there is
       no single recognised naming authority. Accordingly, those records or sections of national gazetteers which
       refer to areas outside the agreed limit have not been included in the CGA database. </p>
-    <p><strong>Scientific stations</strong><br>
+    <h2 class="h4">Scientific stations</h2><p>
       There are different national approach about whether Antarctic scientific Stations should be included in a
       list of geographic features or not. Some national gazetteers include Antarctic Stations and some do not. A
       man-made structure is not a natural geographic feature but the location of a Station is an important piece
@@ -34,20 +36,20 @@
       no Station has been deleted nor was there an attempt to obtain a complete list of Stations. As a
       consequence, some but not all Antarctic Stations are listed in the CGA. An updated list of the Antarctic
       Station, however, is permanently available on the <a href="www.comnap.aq">COMNAP site</a>.</p>
-    <p><strong>Word order of entries</strong><br>
+    <h2 class="h4">Word order of entries</h2><p>
       Most geographical names (toponym) are composed of a generic term and by a specific term. In the CGA entries
       were arranged alphabetically with the specific term first, as would appear in a gazetteer. For example, Cape
       Dalton would be listed as "Dalton, Cape", Mount Dalton as "Dalton, Mount", Dalton Iceberg Tongue as "Dalton
       Iceberg Tongue". In the early 2020's the official name wasn't clear for many entries, so the CGA displays
       the name as the official name. In addition it shows the name as it would appear in a gazetteer and the name
       as it would appear on a map. This is still a work in progress for many entries. E.g. Mount Abbs would appear
-      in a gazetteer as Abbs, Mount , but on a map as Mount Abbs,</p>
-    <p><strong>Transliteration</strong><br>
+      in a gazetteer as "Abbs, Mount", but on a map as "Mount Abbs".</p>
+    <h2 class="h4">Transliteration</h2><p>
       A characteristic which makes the SCAR CGA a rather singular publication (not unique, however) is the diverse
       origin of the data, derived from different languages and alphabets. The transliteration adopted in the SCAR
       CGA is the one provided by the country approving the relevant names. A transliteration was needed for
       Chinese, Japanese, Russian, Bulgarian, and Polish names.</p>
-    <p><strong>Diacritical marks</strong><br>
+    <h2 class="h4">Diacritical marks</h2><p>
       In several languages words are correctly spelled only by making use of diacritical marks. To reproduce
       correctly all diacritical marks used in the national gazetteers would be cumbersome, so initially they were
       omitted when the names were first made available on the web.</p>
@@ -57,13 +59,13 @@
     </p>
     <p>It is now possible to add diacritical marks to the web content. Some marks may still be missing. Reference
       needs to be made to the now out-of-date printed version of the CGA.</p>
-    <p><strong>Basic information</strong><br>
+    <h2 class="h4">Basic information</h2><p>
       For each name, CGA contains the following information (not all of them always
       available):</p>
     <ul>
       <li> source, i.e. the country which provided the name;</li>
       <li> approval date, when an official approval has been issued by the relevant
-        country's organization for geographical names; </li>
+        country's organisation for geographical names; </li>
       <li>latitude and longitude in decimal degree and degree, minute, second formats;</li>
       <li>height above sea level;</li>
       <li>class; and</li>
@@ -81,10 +83,10 @@
       used to calculate the characteristic co-ordinates of an extended feature (for example, the central point of
       the area inside a contour line), different gazetteers attribute different pairs of co-ordinates to the same
       feature, even when there is perfect agreement about the feature under consideration and its name. </p>
-    <p><strong>Generic terms</strong><br>
+    <h2 class="h4">Generic terms</h2><p>
       The name of a geographic feature is usually made up of two parts which are generally called the generic term
       and the specific term (e.g. the generic part or term of Terra Nova Bay is "Bay" and the specific part is
-      "Terra Nova". That is not always true, however. See for instance the toponym "Tour de Pise" or "Three
+      "Terra Nova"). That is not always true, however. See for instance the toponym "Tour de Pise" or "Three
       Brothers". The International Principles and Procedures for Antarctic Place Names includes more information
       under 5.2 Classification of geographic features.</p>
     <p>Although the generic term provides a good indication of the type of feature being named, it must be

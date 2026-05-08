@@ -2,7 +2,7 @@
     <div>
         <h1>Download</h1>
 
-        <h2>Citation information</h2>
+        <h2 class="h4">Citation information</h2>
         <p>When citing this dataset, use the following example as a guide.</p>
         <blockquote>
             Secretariat SCAR (1992, updated 2025). Composite Gazetteer of

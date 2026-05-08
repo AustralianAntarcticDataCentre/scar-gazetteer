@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>History</h1>
-        <h4>The first two years, 1992-1994</h4>
+        <h2 class="h4">The first two years, 1992-1994</h2>
         <p>At the XXII SCAR Meeting in 1992, Italy was tasked with compiling a composite gazetteer of Antarctica.</p>
         <p>At the same time the preparation of the guidelines for the correct choice of the names (toponymic guidelines)
             was assigned to Germany.</p>
@@ -32,7 +32,8 @@
             format. When the &quot;ad hoc&quot; group in Italy began reassembling all available data into a single
             database, several incongruities, mis-spellings and obscure points became apparent. Some of them were
             discovered when looking at a single national gazetteer, others when comparing two or more gazetteers.</p>
-        <h4>Development between 1994 and 1996</h4>
+        
+        <h2 class="h4">Development between 1994 and 1996</h2>
         <p>A first draft of the Composite Gazetteer of Antarctica was presented and discussed at the WG-GGI meeting in
             1994, held in conjunction with the XXIII SCAR in Rome. The WG-GGI members were requested to revise, as soon
             as possible after the meeting, the list of their nationally approved names included in the CGA, as these had
@@ -47,7 +48,8 @@
         <p>Between XXIII SCAR and the following WG-GGI meeting at XXIV SCAR in Cambridge in 1996, the work proceeded
             along much the same lines as in the past: new countries sent their national lists of names and some
             countries helped to solve ambiguous issues and to amend mis-spellings or misprints.</p>
-        <h4>Work between 1996 and 1998</h4>
+        
+        <h2 class="h4">Work between 1996 and 1998</h2>
         <p>At the WG-GGI meeting in 1996, held in Cambridge jointly with the XXIV SCAR, a preliminary version of the
             combined list of names was tabled by Italy. A new request for receiving additional lists of names and for
             obtaining the authorization and validation of existing data was also addressed to each country. It was
@@ -89,7 +91,7 @@
             maintaining the CGA.</p>
         <p>The SCAR general policy about geographic names was stated anew as the SCAR Recommendation XXV-7 (see Annex
             D).</p>
-        <h4>Work between 1998 and 2000</h4>
+        <h2 class="h4">Work between 1998 and 2000</h2>
         <p>In the years 1998 to 2000 the Italian team entrusted with the compilation of geographical names of Antarctica
             prepared two contributions to the first edition (March 1998) of the SCAR Composite Gazetteer of Antarctica
             (CGA). Both contributions were presented and discussed at Tokyo meeting, July 2000. At the same time the
@@ -119,7 +121,7 @@
         <p>Starting from August 1998 Italy maintains the CGA web site www3.pnra.it/SCAR_GAZE and updates it quarterly:
             1st January, 1st April, 1st June, 1st September. The site, in English and Italian, contains the database of
             geographical names plus some searching facilities.</p>
-        <h4>From 2000 to 2002</h4>
+        <h2 class="h4">From 2000 to 2002</h2>
         <p>At the XXVI SCAR Meeting in Tokyo the process of restructuring SCAR's strategy and procedures was well
             underway and it became rather clear that the structure of SCAR, including the existing Working Groups and in
             particular the WG-GGI (on Geodesy and Geographic Information), was about to undergo a major change.
@@ -127,7 +129,7 @@
         <p>A paper appeared on the SCAR Bulletin described the structure of the CGA and the status of the database. (A
             composite gazetteer of Antarctica; R.Cervellati, M.C.Ramorino, Jorn Sievers, Janet Thomson, Drew Clarke;
             SCAR Bulletin no.138, July 2000). There were at that time 21,552 names corresponding to 16,563 features.</p>
-        <h4>From 2002 to 2004</h4>
+        <h2 class="h4">From 2002 to 2004</h2>
         <p>The new structure of the SCAR became official during the XXVII SCAR Meeting (July 2002) in Shanghai. The
             existing Working Groups were disbanded and most of the previous members flowed into three newly formed
             Standing Scientific Groups. As to the WG-GGI, its members mostly converged into the Geoscience Standing
@@ -171,7 +173,7 @@
         </ul>
         <p>which are not strictly speaking geographical features, nevertheless are felt complementary to the list of
             toponyms.</p>
-        <h4>From 2004 and towards 2006</h4>
+        <h2 class="h4">From 2004 and towards 2006</h2>
         <p>In 2004 SCAR organised two events: the Open Science Conference in July in Bremen and the Delegates Meeting in
             October at Bremerhaven. The GSSG met in July 2004 in the framework of XXVIII SCAR. At the end of the meeting
             the role of Chief Officer passed from Phil O' Brien to Alessandro Capra. Steffen Vogt was elected as the
