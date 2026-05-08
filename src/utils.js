@@ -1,9 +1,11 @@
-import { byNumeric as isoCountryByNumeric } from 'iso-country-codes'
+import isoCountries from './countries.json'
 
 export function getNameForNumericIsoCountryCode(code) {
     code = String(code).padStart(3, '0')
-    if (Object.prototype.hasOwnProperty.call(isoCountryByNumeric, code)) {
-        return isoCountryByNumeric[code].shortName || isoCountryByNumeric[code].altName || isoCountryByNumeric[code].name
+    const country = isoCountries.find((c => c['country-code'] === code))
+    
+    if (country) {
+        return country.name
     }
 
     console.error(`Unknown ISO country code: '${code}'`)
