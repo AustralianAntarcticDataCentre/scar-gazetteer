@@ -62,7 +62,7 @@ const paths = await extractPaths('', routes)
 
 export default function(basePath) {
     return Sitemap({
-        hostname: 'https://apps.aad.gov.au',
+        hostname: 'https://placenames.aq',
         basePath: basePath.replace(/\/+$/, ''), // Strip trailing slashes
         dynamicRoutes: paths,
         extensions: [],
